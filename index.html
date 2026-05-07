@@ -1,0 +1,3316 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Corefinity — Managed Hosting Control Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #080f1a;
+            --navy-mid: #0d1825;
+            --navy-card: #111e2e;
+            --navy-card-hover: #152435;
+            --navy-border: #1a2f48;
+            --navy-border-light: #203a57;
+            --blue-bright: #2196ff;
+            --blue-mid: #1474CC;
+            --blue-glow: rgba(33, 150, 255, 0.15);
+            --orange: #f5722a;
+            --orange-hover: #e05a16;
+            --orange-glow: rgba(245, 114, 42, 0.15);
+            --teal: #00d9be;
+            --teal-glow: rgba(0, 217, 190, 0.12);
+            --slate: #7a96b4;
+            --slate-light: #a8c0d8;
+            --white: #f0f6ff;
+            --white-90: rgba(240, 246, 255, 0.9);
+            --white-60: rgba(240, 246, 255, 0.6);
+            --white-30: rgba(240, 246, 255, 0.3);
+            --white-10: rgba(255, 255, 255, 0.07);
+            --white-05: rgba(255, 255, 255, 0.03);
+            --success: #22d45e;
+            --success-glow: rgba(34, 212, 94, 0.12);
+            --warning: #f5a623;
+            --danger: #ef4444;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --radius: 14px;
+            --radius-sm: 9px;
+            --radius-lg: 20px;
+            --shadow: 0 4px 30px rgba(0, 0, 0, 0.45);
+            --shadow-lg: 0 16px 60px rgba(0, 0, 0, 0.6);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 228px;
+            --topbar-height: 62px;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            background: var(--navy);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(33, 150, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(33, 150, 255, 0.025) 1px, transparent 1px);
+            background-size: 52px 52px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -30%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(33, 150, 255, 0.04) 0%, transparent 65%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--navy)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--navy-border);
+            border-radius: 3px
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--slate)
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: rgba(8, 15, 26, 0.88);
+            backdrop-filter: blur(24px) saturate(160%);
+            -webkit-backdrop-filter: blur(24px) saturate(160%);
+            border-bottom: 1px solid var(--navy-border);
+            height: var(--topbar-height);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 12px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-sm);
+            width: 38px;
+            height: 38px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--slate-light);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .mobile-menu-btn:hover {
+            border-color: var(--blue-bright);
+            color: var(--white)
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .topbar-logo-icon {
+            width: 34px;
+            height: 34px;
+            background: linear-gradient(135deg, #2196ff, #0d5abf);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            font-family: var(--font-display);
+            letter-spacing: -1px;
+            box-shadow: 0 0 20px rgba(33, 150, 255, 0.3);
+        }
+
+        .topbar-logo-text {
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.4px;
+        }
+
+        .topbar-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--navy-border);
+            flex-shrink: 0;
+        }
+
+        .topbar-client-select {
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-sm);
+            padding: 7px 32px 7px 12px;
+            color: var(--slate-light);
+            font-family: var(--font-body);
+            font-size: 12.5px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a96b4' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            min-width: 185px;
+            transition: var(--transition);
+        }
+
+        .topbar-client-select:hover,
+        .topbar-client-select:focus {
+            border-color: var(--blue-bright);
+            outline: none
+        }
+
+        .topbar-search {
+            flex: 1;
+            max-width: 380px;
+            position: relative;
+        }
+
+        .topbar-search input {
+            width: 100%;
+            background: var(--white-05);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-sm);
+            padding: 8px 14px 8px 38px;
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 13px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .topbar-search input::placeholder {
+            color: var(--slate)
+        }
+
+        .topbar-search input:focus {
+            border-color: var(--blue-bright);
+            background: var(--white-10);
+            box-shadow: 0 0 0 3px rgba(33, 150, 255, 0.08)
+        }
+
+        .search-icon-wrap {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--slate);
+            display: flex;
+        }
+
+        .search-kbd {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            border-radius: 5px;
+            padding: 1px 6px;
+            font-size: 10px;
+            color: var(--slate);
+            font-family: var(--font-body);
+            pointer-events: none;
+        }
+
+        .topbar-actions {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .topbar-icon-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--slate-light);
+            transition: var(--transition);
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .topbar-icon-btn:hover {
+            background: var(--white-10);
+            color: var(--white);
+            border-color: var(--blue-bright);
+            box-shadow: 0 0 12px rgba(33, 150, 255, 0.12)
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 7px;
+            height: 7px;
+            background: var(--orange);
+            border-radius: 50%;
+            border: 1.5px solid var(--navy);
+            animation: notif-pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes notif-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 114, 42, 0.5)
+            }
+
+            50% {
+                box-shadow: 0 0 0 4px rgba(245, 114, 42, 0)
+            }
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 5px 10px 5px 5px;
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            border-radius: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .topbar-user:hover {
+            border-color: var(--blue-bright);
+            box-shadow: 0 0 12px rgba(33, 150, 255, 0.1)
+        }
+
+        .topbar-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #e05216, var(--orange));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            font-family: var(--font-display);
+            box-shadow: 0 0 10px rgba(245, 114, 42, 0.3);
+        }
+
+        .topbar-username {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--white-90)
+        }
+
+        .topbar-chevron {
+            color: var(--slate);
+            font-size: 11px
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - var(--topbar-height));
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--navy-mid);
+            border-right: 1px solid var(--navy-border);
+            padding: 16px 0 40px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: sticky;
+            top: var(--topbar-height);
+            height: calc(100vh - var(--topbar-height));
+            transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 2px
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--navy-border)
+        }
+
+        .sidebar-section {
+            margin-bottom: 4px
+        }
+
+        .sidebar-section-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--slate);
+            padding: 12px 18px 5px;
+            display: block;
+            opacity: 0.7;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 18px;
+            text-decoration: none;
+            color: var(--slate-light);
+            font-size: 13.5px;
+            font-weight: 400;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .sidebar-item:hover {
+            color: var(--white);
+            background: var(--white-05)
+        }
+
+        .sidebar-item.active {
+            color: var(--blue-bright);
+            background: rgba(33, 150, 255, 0.07);
+            border-left-color: var(--blue-bright);
+            font-weight: 500
+        }
+
+        .sidebar-item svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.75;
+            flex-shrink: 0
+        }
+
+        .sidebar-item.active svg {
+            opacity: 1
+        }
+
+        .sidebar-badge {
+            margin-left: auto;
+            background: linear-gradient(135deg, var(--orange-hover), var(--orange));
+            color: white;
+            font-size: 9.5px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(245, 114, 42, 0.35);
+        }
+
+        .sidebar-sub {
+            padding-left: 44px
+        }
+
+        .sidebar-sub .sidebar-item {
+            font-size: 12.5px;
+            padding: 5px 18px 5px 0;
+            border-left: none;
+            color: var(--slate);
+            opacity: 0.85
+        }
+
+        .sidebar-sub .sidebar-item:hover {
+            opacity: 1;
+            color: var(--white)
+        }
+
+        .sidebar-sub .sidebar-item.active {
+            color: var(--blue-bright);
+            opacity: 1
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(2px);
+            z-index: 199;
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 30px 32px 60px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--slate);
+            margin-bottom: 7px;
+            flex-wrap: wrap;
+        }
+
+        .breadcrumb a {
+            color: var(--blue-bright);
+            text-decoration: none
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline
+        }
+
+        .breadcrumb span {
+            opacity: 0.45
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 25px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.6px;
+            line-height: 1.2;
+        }
+
+        .page-subtitle {
+            color: var(--slate);
+            font-size: 13.5px;
+            margin-top: 4px
+        }
+
+        .page-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 9px 17px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            text-decoration: none;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--orange), #d95416);
+            color: white;
+            box-shadow: 0 2px 14px rgba(245, 114, 42, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ff7c38, var(--orange));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(245, 114, 42, 0.45)
+        }
+
+        .btn-primary:active {
+            transform: translateY(0)
+        }
+
+        .btn-secondary {
+            background: var(--white-10);
+            color: var(--white-90);
+            border: 1px solid var(--navy-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--blue-bright);
+            color: var(--white)
+        }
+
+        .btn-blue {
+            background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+            color: white;
+            box-shadow: 0 2px 14px rgba(33, 150, 255, 0.3);
+        }
+
+        .btn-blue:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(33, 150, 255, 0.4)
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--slate-light);
+            border: 1px solid var(--navy-border);
+        }
+
+        .btn-ghost:hover {
+            color: var(--white);
+            border-color: var(--slate)
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px
+        }
+
+        .btn-icon {
+            padding: 7px;
+            width: 32px;
+            height: 32px;
+            justify-content: center
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2)
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .stat-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: default;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+        }
+
+        .stat-card.blue::before {
+            background: linear-gradient(90deg, var(--blue-bright), transparent)
+        }
+
+        .stat-card.orange::before {
+            background: linear-gradient(90deg, var(--orange), transparent)
+        }
+
+        .stat-card.teal::before {
+            background: linear-gradient(90deg, var(--teal), transparent)
+        }
+
+        .stat-card.success::before {
+            background: linear-gradient(90deg, var(--success), transparent)
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            opacity: 0.04;
+            transition: var(--transition);
+        }
+
+        .stat-card.blue::after {
+            background: var(--blue-bright)
+        }
+
+        .stat-card.orange::after {
+            background: var(--orange)
+        }
+
+        .stat-card.teal::after {
+            background: var(--teal)
+        }
+
+        .stat-card.success::after {
+            background: var(--success)
+        }
+
+        .stat-card:hover {
+            border-color: var(--navy-border-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3)
+        }
+
+        .stat-card.blue:hover {
+            border-color: rgba(33, 150, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(33, 150, 255, 0.1)
+        }
+
+        .stat-card.orange:hover {
+            border-color: rgba(245, 114, 42, 0.3);
+            box-shadow: 0 8px 30px rgba(245, 114, 42, 0.1)
+        }
+
+        .stat-card.teal:hover {
+            border-color: rgba(0, 217, 190, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 217, 190, 0.1)
+        }
+
+        .stat-card.success:hover {
+            border-color: rgba(34, 212, 94, 0.3);
+            box-shadow: 0 8px 30px rgba(34, 212, 94, 0.1)
+        }
+
+        .stat-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .stat-card-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate);
+            text-transform: uppercase;
+            letter-spacing: 0.9px
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.blue {
+            background: rgba(33, 150, 255, 0.12);
+            color: var(--blue-bright)
+        }
+
+        .stat-icon.orange {
+            background: rgba(245, 114, 42, 0.12);
+            color: var(--orange)
+        }
+
+        .stat-icon.teal {
+            background: rgba(0, 217, 190, 0.12);
+            color: var(--teal)
+        }
+
+        .stat-icon.success {
+            background: rgba(34, 212, 94, 0.12);
+            color: var(--success)
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1;
+            margin-bottom: 7px;
+        }
+
+        .stat-meta {
+            font-size: 12px;
+            color: var(--slate);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            flex-wrap: wrap
+        }
+
+        .stat-change {
+            color: var(--success);
+            font-weight: 600
+        }
+
+        .stat-change.down {
+            color: var(--danger)
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: var(--white-10);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .progress-fill.blue {
+            background: linear-gradient(90deg, var(--blue-mid), var(--blue-bright))
+        }
+
+        .progress-fill.orange {
+            background: linear-gradient(90deg, var(--orange-hover), var(--orange))
+        }
+
+        .progress-fill.teal {
+            background: linear-gradient(90deg, #00b09c, var(--teal))
+        }
+
+        .progress-fill.success {
+            background: linear-gradient(90deg, #16a34a, var(--success))
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 15.5px;
+            font-weight: 600;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .section-title-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--blue-bright);
+            box-shadow: 0 0 8px rgba(33, 150, 255, 0.6)
+        }
+
+        .env-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .env-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            padding: 16px 17px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .env-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, var(--blue-bright), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .env-card:hover {
+            border-color: rgba(33, 150, 255, 0.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(33, 150, 255, 0.08)
+        }
+
+        .env-card:hover::before {
+            opacity: 1
+        }
+
+        .env-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            gap: 8px
+        }
+
+        .env-card-name {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 3px
+        }
+
+        .env-card-url {
+            font-size: 11.5px;
+            color: var(--blue-bright);
+            text-decoration: none;
+            opacity: 0.85
+        }
+
+        .env-card-url:hover {
+            opacity: 1
+        }
+
+        .env-card-stats {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap
+        }
+
+        .env-stat {
+            display: flex;
+            flex-direction: column;
+            gap: 2px
+        }
+
+        .env-stat-val {
+            font-size: 17px;
+            font-weight: 700;
+            font-family: var(--font-display);
+            color: var(--white);
+            letter-spacing: -0.4px
+        }
+
+        .env-stat-label {
+            font-size: 10px;
+            color: var(--slate);
+            text-transform: uppercase;
+            letter-spacing: 0.7px
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 355px;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .panel {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 18px;
+            border-bottom: 1px solid var(--navy-border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .panel-title {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--white)
+        }
+
+        .panel-body {
+            padding: 18px
+        }
+
+        .cf-table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        .cf-table thead tr {
+            border-bottom: 1px solid var(--navy-border)
+        }
+
+        .cf-table th {
+            text-align: left;
+            padding: 10px 14px;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: var(--slate);
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+            white-space: nowrap;
+        }
+
+        .cf-table th .sort-icon {
+            opacity: 0.5;
+            margin-left: 4px;
+            cursor: pointer
+        }
+
+        .cf-table td {
+            padding: 11px 14px;
+            font-size: 13px;
+            color: var(--white-90);
+            border-bottom: 1px solid rgba(26, 47, 72, 0.5);
+            vertical-align: middle;
+        }
+
+        .cf-table tbody tr {
+            transition: var(--transition)
+        }
+
+        .cf-table tbody tr:last-child td {
+            border-bottom: none
+        }
+
+        .cf-table tbody tr:hover td {
+            background: var(--white-05)
+        }
+
+        .cf-table .link {
+            color: var(--blue-bright);
+            text-decoration: none
+        }
+
+        .cf-table .link:hover {
+            text-decoration: underline
+        }
+
+        .cf-table .link-orange {
+            color: var(--orange);
+            text-decoration: none
+        }
+
+        .cf-table .link-orange:hover {
+            text-decoration: underline
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .badge-success {
+            background: rgba(34, 212, 94, 0.1);
+            color: #4ade80;
+            border: 1px solid rgba(34, 212, 94, 0.2)
+        }
+
+        .badge-success::before {
+            background: #4ade80;
+            box-shadow: 0 0 6px #4ade80
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2)
+        }
+
+        .badge-danger::before {
+            background: #f87171
+        }
+
+        .badge-warning {
+            background: rgba(245, 166, 35, 0.1);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 166, 35, 0.2)
+        }
+
+        .badge-warning::before {
+            background: #fbbf24
+        }
+
+        .badge-info {
+            background: rgba(33, 150, 255, 0.1);
+            color: var(--blue-bright);
+            border: 1px solid rgba(33, 150, 255, 0.2)
+        }
+
+        .badge-info::before {
+            background: var(--blue-bright);
+            box-shadow: 0 0 6px var(--blue-bright)
+        }
+
+        .badge-neutral {
+            background: var(--white-10);
+            color: var(--slate-light);
+            border: 1px solid var(--navy-border)
+        }
+
+        .badge-neutral::before {
+            background: var(--slate)
+        }
+
+        .badge-orange {
+            background: rgba(245, 114, 42, 0.1);
+            color: var(--orange);
+            border: 1px solid rgba(245, 114, 42, 0.2)
+        }
+
+        .badge-orange::before {
+            background: var(--orange)
+        }
+
+        .pipeline-stages {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 16px 18px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .pipeline-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 7px;
+            flex: 1;
+            position: relative;
+            min-width: 60px;
+        }
+
+        .pipeline-stage::after {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: var(--navy-border);
+            z-index: 0;
+        }
+
+        .pipeline-stage:last-child::after {
+            display: none
+        }
+
+        .pipeline-stage.done::after {
+            background: var(--success)
+        }
+
+        .pipeline-stage.active::after {
+            background: linear-gradient(90deg, var(--blue-bright), var(--navy-border))
+        }
+
+        .pipeline-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--navy-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: var(--navy);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition);
+        }
+
+        .pipeline-stage.done .pipeline-dot {
+            background: rgba(34, 212, 94, 0.12);
+            border-color: var(--success);
+            color: var(--success)
+        }
+
+        .pipeline-stage.active .pipeline-dot {
+            background: rgba(33, 150, 255, 0.12);
+            border-color: var(--blue-bright);
+            color: var(--blue-bright);
+            animation: pipeline-pulse 1.8s ease-in-out infinite
+        }
+
+        .pipeline-stage.pending .pipeline-dot {
+            background: var(--white-05);
+            border-color: var(--navy-border);
+            color: var(--slate)
+        }
+
+        @keyframes pipeline-pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 3px rgba(33, 150, 255, 0.15)
+            }
+
+            50% {
+                box-shadow: 0 0 0 8px rgba(33, 150, 255, 0.04)
+            }
+        }
+
+        .pipeline-label {
+            font-size: 10.5px;
+            color: var(--slate);
+            font-weight: 500;
+            text-align: center
+        }
+
+        .pipeline-stage.done .pipeline-label {
+            color: var(--success)
+        }
+
+        .pipeline-stage.active .pipeline-label {
+            color: var(--blue-bright);
+            font-weight: 700
+        }
+
+        .task-list {
+            padding: 2px 0
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 18px;
+            transition: var(--transition);
+        }
+
+        .task-item:hover {
+            background: var(--white-05)
+        }
+
+        .task-status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .task-status-icon.done {
+            background: rgba(34, 212, 94, 0.12);
+            color: var(--success)
+        }
+
+        .task-status-icon.running {
+            background: rgba(33, 150, 255, 0.12);
+            color: var(--blue-bright);
+            animation: spin 1.4s linear infinite
+        }
+
+        .task-status-icon.pending {
+            background: var(--white-05);
+            color: var(--slate)
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg)
+            }
+
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .task-name {
+            flex: 1;
+            font-size: 12.5px;
+            color: var(--white-90)
+        }
+
+        .task-name.running {
+            color: var(--white);
+            font-weight: 500
+        }
+
+        .task-name.pending {
+            color: var(--slate)
+        }
+
+        .task-duration {
+            font-size: 11px;
+            color: var(--slate);
+            font-family: 'Courier New', monospace
+        }
+
+        .deploy-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 16px;
+            border-bottom: 1px solid rgba(26, 47, 72, 0.4);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .deploy-row:last-child {
+            border-bottom: none
+        }
+
+        .deploy-row:hover {
+            background: var(--white-05)
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 11px;
+            padding: 10px 16px;
+            border-bottom: 1px solid rgba(26, 47, 72, 0.4);
+            transition: var(--transition);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none
+        }
+
+        .activity-item:hover {
+            background: var(--white-05)
+        }
+
+        .activity-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--blue-mid), var(--blue-bright));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+            font-family: var(--font-display);
+        }
+
+        .activity-avatar.orange {
+            background: linear-gradient(135deg, var(--orange-hover), var(--orange))
+        }
+
+        .activity-avatar.teal {
+            background: linear-gradient(135deg, #00a896, var(--teal))
+        }
+
+        .activity-content {
+            flex: 1;
+            min-width: 0
+        }
+
+        .activity-text {
+            font-size: 12.5px;
+            color: var(--white-90);
+            margin-bottom: 2px
+        }
+
+        .activity-text strong {
+            color: var(--white);
+            font-weight: 600
+        }
+
+        .activity-text .hl {
+            color: var(--blue-bright)
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: var(--slate)
+        }
+
+        .ticket-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 16px;
+            border-bottom: 1px solid rgba(26, 47, 72, 0.4);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .ticket-row:last-child {
+            border-bottom: none
+        }
+
+        .ticket-row:hover {
+            background: var(--white-05)
+        }
+
+        .ticket-id {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--blue-bright);
+            font-family: var(--font-display);
+            min-width: 48px
+        }
+
+        .ticket-info {
+            flex: 1;
+            min-width: 0
+        }
+
+        .ticket-subject {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--white-90);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 2px
+        }
+
+        .ticket-meta {
+            font-size: 11.5px;
+            color: var(--slate);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .ticket-priority {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .priority-high {
+            background: var(--danger);
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.5)
+        }
+
+        .priority-med {
+            background: var(--warning);
+            box-shadow: 0 0 6px rgba(245, 166, 35, 0.5)
+        }
+
+        .priority-low {
+            background: var(--success);
+            box-shadow: 0 0 6px rgba(34, 212, 94, 0.5)
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9px
+        }
+
+        .quick-action {
+            background: var(--white-05);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-sm);
+            padding: 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quick-action:hover {
+            background: rgba(33, 150, 255, 0.06);
+            border-color: rgba(33, 150, 255, 0.3);
+            transform: translateY(-2px)
+        }
+
+        .quick-action-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: rgba(33, 150, 255, 0.12);
+            color: var(--blue-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quick-action-icon.orange {
+            background: rgba(245, 114, 42, 0.12);
+            color: var(--orange)
+        }
+
+        .quick-action-icon.teal {
+            background: rgba(0, 217, 190, 0.12);
+            color: var(--teal)
+        }
+
+        .quick-action-icon.success {
+            background: rgba(34, 212, 94, 0.12);
+            color: var(--success)
+        }
+
+        .quick-action-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--white-90);
+            line-height: 1.3
+        }
+
+        .monitor-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 9px 16px;
+            border-bottom: 1px solid rgba(26, 47, 72, 0.4);
+            transition: var(--transition);
+            flex-wrap: wrap;
+        }
+
+        .monitor-row:last-child {
+            border-bottom: none
+        }
+
+        .monitor-row:hover {
+            background: var(--white-05)
+        }
+
+        .monitor-url {
+            flex: 1;
+            font-size: 12.5px;
+            color: var(--blue-bright);
+            text-decoration: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        .monitor-url:hover {
+            text-decoration: underline
+        }
+
+        .monitor-freq {
+            font-size: 11.5px;
+            color: var(--slate);
+            min-width: 38px;
+            text-align: right;
+            flex-shrink: 0
+        }
+
+        .uptime-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 22px;
+            flex-shrink: 0
+        }
+
+        .uptime-bar {
+            width: 4px;
+            border-radius: 2px;
+            background: var(--success);
+            opacity: 0.65;
+            transition: var(--transition)
+        }
+
+        .uptime-bar.down {
+            background: var(--danger);
+            opacity: 0.9
+        }
+
+        .uptime-bar:hover {
+            opacity: 1
+        }
+
+        .cf-inline-alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            background: rgba(245, 166, 35, 0.06);
+            border: 1px solid rgba(245, 166, 35, 0.18);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
+            margin-bottom: 20px;
+        }
+
+        .cf-inline-alert.info {
+            background: rgba(33, 150, 255, 0.06);
+            border-color: rgba(33, 150, 255, 0.18)
+        }
+
+        .cf-inline-alert.danger {
+            background: rgba(239, 68, 68, 0.06);
+            border-color: rgba(239, 68, 68, 0.18)
+        }
+
+        .cf-alert-icon {
+            font-size: 15px;
+            margin-top: 1px;
+            flex-shrink: 0
+        }
+
+        .cf-alert-icon.warning {
+            color: #fbbf24
+        }
+
+        .cf-alert-icon.info {
+            color: var(--blue-bright)
+        }
+
+        .cf-alert-icon.danger {
+            color: #f87171
+        }
+
+        .cf-alert-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 2px
+        }
+
+        .cf-alert-desc {
+            font-size: 12.5px;
+            color: var(--slate-light)
+        }
+
+        .chip-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--navy-border);
+        }
+
+        .chip {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--navy-border);
+            background: transparent;
+            color: var(--slate-light);
+        }
+
+        .chip.active {
+            background: rgba(33, 150, 255, 0.1);
+            border-color: var(--blue-bright);
+            color: var(--blue-bright)
+        }
+
+        .chip:hover:not(.active) {
+            border-color: var(--slate);
+            color: var(--white)
+        }
+
+        .cf-search {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--white-05);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-sm);
+            padding: 7px 11px;
+            color: var(--slate);
+            font-size: 12.5px;
+            transition: var(--transition);
+        }
+
+        .cf-search:focus-within {
+            border-color: var(--blue-bright);
+            background: var(--white-10)
+        }
+
+        .cf-search input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 12.5px
+        }
+
+        .cf-search input::placeholder {
+            color: var(--slate)
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 11px 14px;
+            border-top: 1px solid var(--navy-border);
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .pagination-info {
+            font-size: 12px;
+            color: var(--slate)
+        }
+
+        .pagination-btns {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap
+        }
+
+        .page-btn {
+            width: 29px;
+            height: 29px;
+            border-radius: 7px;
+            border: 1px solid var(--navy-border);
+            background: transparent;
+            color: var(--slate-light);
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            font-family: var(--font-body);
+        }
+
+        .page-btn:hover {
+            border-color: var(--blue-bright);
+            color: var(--blue-bright)
+        }
+
+        .page-btn.active {
+            background: var(--blue-bright);
+            border-color: var(--blue-bright);
+            color: white
+        }
+
+        .page-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed
+        }
+
+        .cf-checkbox {
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid var(--navy-border);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            accent-color: var(--blue-bright);
+            flex-shrink: 0;
+        }
+
+        .action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            flex-wrap: wrap
+        }
+
+        .footer-bar {
+            margin-top: 36px;
+            padding-top: 18px;
+            border-top: 1px solid var(--navy-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--slate);
+            font-size: 11.5px;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--blue-bright);
+            font-weight: 600;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap
+        }
+
+        .footer-links a {
+            color: var(--slate);
+            text-decoration: none;
+            transition: var(--transition)
+        }
+
+        .footer-links a:hover {
+            color: var(--blue-bright)
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .fade-in {
+            animation: fadeUp 0.5s ease both
+        }
+
+        .fade-in-1 {
+            animation-delay: 0.05s
+        }
+
+        .fade-in-2 {
+            animation-delay: 0.12s
+        }
+
+        .fade-in-3 {
+            animation-delay: 0.19s
+        }
+
+        .fade-in-4 {
+            animation-delay: 0.26s
+        }
+
+        .fade-in-5 {
+            animation-delay: 0.33s
+        }
+
+        .tab-bar {
+            display: flex;
+            gap: 2px;
+            border-bottom: 1px solid var(--navy-border);
+            padding: 0 18px;
+            overflow-x: auto
+        }
+
+        .tab-bar::-webkit-scrollbar {
+            height: 2px
+        }
+
+        .tab-item {
+            padding: 11px 13px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            white-space: nowrap;
+            transition: var(--transition)
+        }
+
+        .tab-item:hover {
+            color: var(--white)
+        }
+
+        .tab-item.active {
+            color: var(--orange);
+            border-bottom-color: var(--orange)
+        }
+
+        .cf-select {
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius-sm);
+            padding: 7px 28px 7px 11px;
+            color: var(--slate-light);
+            font-family: var(--font-body);
+            font-size: 13px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a96b4' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 9px center;
+            outline: none;
+        }
+
+        .cf-select:focus {
+            border-color: var(--blue-bright)
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--navy-border);
+            margin: 18px 0
+        }
+
+        .live-pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--blue-bright);
+            animation: live-blink 1.6s ease-in-out infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes live-blink {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(33, 150, 255, 0.5);
+                opacity: 1
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(33, 150, 255, 0);
+                opacity: 0.7
+            }
+        }
+
+        @media (max-width:1400px) {
+            .env-cards {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:1200px) {
+            .content-grid {
+                grid-template-columns: 1fr
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:960px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: var(--topbar-height);
+                transform: translateX(-100%);
+                z-index: 200;
+                width: 262px;
+                box-shadow: var(--shadow-lg);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0)
+            }
+
+            .sidebar-overlay.active {
+                display: block
+            }
+
+            .mobile-menu-btn {
+                display: flex
+            }
+
+            .topbar-client-select {
+                display: none
+            }
+
+            .topbar-divider {
+                display: none
+            }
+
+            .topbar-search {
+                max-width: 220px
+            }
+
+            .main {
+                padding: 20px 18px 50px
+            }
+        }
+
+        @media (max-width:700px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px
+            }
+
+            .env-cards {
+                grid-template-columns: 1fr
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .topbar-search {
+                max-width: 160px
+            }
+
+            .search-kbd {
+                display: none
+            }
+
+            .page-title {
+                font-size: 21px
+            }
+
+            .stat-value {
+                font-size: 26px
+            }
+
+            .main {
+                padding: 16px 14px 44px
+            }
+
+            .topbar {
+                padding: 0 14px;
+                gap: 8px
+            }
+
+            .cf-table {
+                display: block;
+                overflow-x: auto
+            }
+        }
+
+        @media (max-width:480px) {
+            .topbar-username {
+                display: none
+            }
+
+            .topbar-actions {
+                gap: 4px
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .stat-card {
+                padding: 14px 15px
+            }
+
+            .stat-value {
+                font-size: 24px
+            }
+
+            .env-stat-val {
+                font-size: 15px
+            }
+
+            .btn {
+                padding: 7px 11px;
+                font-size: 12px
+            }
+
+            .btn-sm {
+                padding: 5px 9px;
+                font-size: 11px
+            }
+
+            .page-header-actions .btn-secondary {
+                display: none
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .quick-action-label {
+                font-size: 10.5px
+            }
+        }
+
+        @media (max-width:380px) {
+            .topbar-logo-text {
+                display: none
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+    </style>
+
+<style id="cf-light-theme-dashboard">
+:root[data-theme="light"] {
+  --navy: #F4F6FA;
+  --navy-mid: #FFFFFF;
+  --navy-card: #FFFFFF;
+  --navy-card-hover: #F0F3F8;
+  --navy-border: #E4EAF2;
+  --navy-border-light: #D6DEEA;
+  --blue-glow: rgba(33, 150, 255, 0.10);
+  --orange-glow: rgba(245, 114, 42, 0.10);
+  --teal-glow: rgba(0, 217, 190, 0.08);
+  --slate: #5A6B82;
+  --slate-light: #1F2D40;
+  --white: #0B1829;
+  --white-90: rgba(11,24,41,0.92);
+  --white-60: rgba(11,24,41,0.65);
+  --white-30: rgba(11,24,41,0.35);
+  --white-10: rgba(11,24,41,0.06);
+  --white-05: rgba(11,24,41,0.03);
+  --shadow: 0 4px 30px rgba(15, 30, 55, 0.10);
+  --shadow-lg: 0 16px 60px rgba(15, 30, 55, 0.14);
+}
+:root[data-theme="light"] body { background: var(--navy); color: var(--white); }
+:root[data-theme="light"] .topbar { background: rgba(255,255,255,0.85) !important; }
+:root[data-theme="light"] .sidebar { background: var(--navy-mid) !important; border-right: 1px solid var(--navy-border) !important; }
+</style>
+
+<style id="cf-injected-responsive">
+@media (max-width: 960px) {
+  .sidebar { position: fixed !important; left: 0; top: var(--topbar-height, 62px); transform: translateX(-100%); z-index: 200; width: 262px; height: calc(100vh - var(--topbar-height, 62px)); transition: transform .25s ease; box-shadow: 0 16px 60px rgba(0,0,0,0.6); display: block !important; }
+  .sidebar.mobile-open { transform: translateX(0); }
+  .sidebar-overlay { display: none; position: fixed; inset: var(--topbar-height,62px) 0 0 0; background: rgba(0,0,0,0.5); z-index: 150; }
+  .sidebar-overlay.active { display: block; }
+  .mobile-menu-btn { display: inline-flex !important; }
+  .topbar-client-select, .topbar-divider, .topbar-username { display: none !important; }
+  .topbar-search { max-width: 220px; }
+  .main { padding: 18px !important; }
+}
+@media (max-width: 600px) {
+  .topbar-search { display: none !important; }
+  .topbar-logo-text { display: none; }
+  .stats-row, .grid, .cards-grid { grid-template-columns: 1fr !important; }
+  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+.theme-toggle { position: fixed; bottom: 18px; right: 18px; top: auto; z-index: 9999; width: 44px; height: 44px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #fff; cursor: pointer; backdrop-filter: blur(14px) saturate(160%); box-shadow: 0 6px 20px -8px rgba(0,0,0,0.4); }
+:root[data-theme="light"] .theme-toggle { background: rgba(11,24,41,0.06); border-color: rgba(11,24,41,0.12); color: #0B1829; }
+.theme-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+</style>
+
+</head>
+
+<body>
+
+    <header class="topbar">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+        </button>
+        <a class="topbar-logo" href="index.html">
+            <div class="topbar-logo-icon">Cf</div>
+            <span class="topbar-logo-text">corefinity</span>
+        </a>
+        <div class="topbar-divider"></div>
+        <select class="topbar-client-select">
+            <option>All clients</option>
+            <option>Example Agency</option>
+            <option>Atherton Bikes</option>
+            <option>Sensory Direct</option>
+        </select>
+        <div class="topbar-search">
+            <span class="search-icon-wrap">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                </svg>
+            </span>
+            <input type="text" placeholder="Search anything…" aria-label="Search">
+            <span class="search-kbd">/</span>
+        </div>
+        <div class="topbar-actions">
+            <button class="topbar-icon-btn" title="Terminal">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <polyline points="4 17 10 11 4 5" />
+                    <line x1="12" y1="19" x2="20" y2="19" />
+                </svg>
+            </button>
+            <button class="topbar-icon-btn" title="Documentation">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                </svg>
+            </button>
+            <button class="topbar-icon-btn" title="Notifications">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+                </svg>
+                <span class="notif-dot"></span>
+            </button>
+            <div class="topbar-user">
+                <div class="topbar-avatar">CJ</div>
+                <span class="topbar-username">Catherine Jarosz</span>
+                <span class="topbar-chevron">▾</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Overview</span>
+                <a class="sidebar-item active" href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                    Dashboard
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Infrastructure</span>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                    Websites
+                </a>
+                <a class="sidebar-item " href="environments.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Environments
+                    <span class="sidebar-badge">12</span>
+                </a>
+                <div class="sidebar-sub">
+                    <a class="sidebar-item" href="#">Production</a>
+                    <a class="sidebar-item" href="#">Staging</a>
+                    <a class="sidebar-item" href="#">Development</a>
+                </div>
+                <a class="sidebar-item " href="deployment.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    Deployments
+                </a>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                    Clusters
+                </a>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>
+                    Providers
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Support</span>
+                <a class="sidebar-item " href="tickets.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    Tickets
+                    <span class="sidebar-badge">3</span>
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">Monitoring</span>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    All Monitors
+                </a>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Performance
+                </a>
+            </div>
+            <div class="sidebar-section">
+                <span class="sidebar-section-label">System</span>
+                <a class="sidebar-item " href="profile.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Profile
+                </a>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    Logs
+                </a>
+                <a class="sidebar-item" href="#">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 110 12M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <main class="main">
+
+            <div class="page-header fade-in">
+                <div class="page-header-left">
+                    <div class="breadcrumb">
+                        <a href="index.html">Home</a>
+                        <span>›</span>
+                        <span>Dashboard</span>
+                    </div>
+                    <h1 class="page-title">Dashboard</h1>
+                    <p class="page-subtitle">Welcome back, Catherine. Here's what's happening across your
+                        infrastructure.</p>
+                </div>
+                <div class="page-header-actions">
+                    <button class="btn btn-secondary">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
+                        </svg>
+                        Export
+                    </button>
+                    <button class="btn btn-primary">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5">
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        New Deployment
+                    </button>
+                </div>
+            </div>
+
+            <div class="cf-inline-alert fade-in fade-in-1">
+                <span class="cf-alert-icon warning">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                </span>
+                <div class="cf-alert-content">
+                    <div class="cf-alert-title">Diagnostics issue detected</div>
+                    <div class="cf-alert-desc">Load balancer not attached in <strong>Production Environment</strong>. <a
+                            href="#" style="color:var(--orange);">View diagnostics →</a></div>
+                </div>
+            </div>
+
+            <div class="stats-row fade-in fade-in-2">
+                <div class="stat-card blue">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Environments</span>
+                        <div class="stat-icon blue">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                <polyline points="9 22 9 12 15 12 15 22" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">12</div>
+                    <div class="stat-meta"><span class="stat-change">↑ 2</span> added this month</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill blue" style="width:75%"></div>
+                    </div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Deployments Today</span>
+                        <div class="stat-icon orange">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-meta"><span class="stat-change">94%</span> success rate</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill orange" style="width:94%"></div>
+                    </div>
+                </div>
+                <div class="stat-card teal">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Open Tickets</span>
+                        <div class="stat-icon teal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">3</div>
+                    <div class="stat-meta"><span class="stat-change down">↑ 1</span> new since yesterday</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill teal" style="width:30%"></div>
+                    </div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-card-header">
+                        <span class="stat-card-label">Monitors Up</span>
+                        <div class="stat-icon success">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="stat-value">7<span style="font-size:15px;color:var(--slate);font-weight:400">/7</span>
+                    </div>
+                    <div class="stat-meta"><span class="stat-change">100%</span> uptime today</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill success" style="width:100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-heading fade-in fade-in-2">
+                <div class="section-title">
+                    <span class="section-title-dot"></span>
+                    Active Environments
+                </div>
+                <a href="environments.html" class="btn btn-ghost btn-sm">View all →</a>
+            </div>
+
+            <div class="env-cards fade-in fade-in-3">
+                <div class="env-card" onclick="location.href='environments.html'">
+                    <div class="env-card-header">
+                        <div>
+                            <div class="env-card-name">Production Environment</div>
+                            <a href="#" class="env-card-url">manage.corefinity.com</a>
+                        </div>
+                        <span class="badge badge-success">Up</span>
+                    </div>
+                    <div class="env-card-stats">
+                        <div class="env-stat">
+                            <div class="env-stat-val">3</div>
+                            <div class="env-stat-label">Pods</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val" style="color:var(--success)">27</div>
+                            <div class="env-stat-label">Deploys</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">GCP</div>
+                            <div class="env-stat-label">Provider</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">Laravel</div>
+                            <div class="env-stat-label">Platform</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="env-card" onclick="location.href='environments.html'">
+                    <div class="env-card-header">
+                        <div>
+                            <div class="env-card-name">Staging Environment</div>
+                            <a href="#" class="env-card-url">staging.corefinity.com</a>
+                        </div>
+                        <span class="badge badge-warning">Deploying</span>
+                    </div>
+                    <div class="env-card-stats">
+                        <div class="env-stat">
+                            <div class="env-stat-val">2</div>
+                            <div class="env-stat-label">Pods</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val" style="color:var(--warning)">14</div>
+                            <div class="env-stat-label">Deploys</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">GCP</div>
+                            <div class="env-stat-label">Provider</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">Magento</div>
+                            <div class="env-stat-label">Platform</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="env-card" onclick="location.href='environments.html'">
+                    <div class="env-card-header">
+                        <div>
+                            <div class="env-card-name">Atherton Bikes — Prod</div>
+                            <a href="#" class="env-card-url">athertonbikes.com</a>
+                        </div>
+                        <span class="badge badge-success">Up</span>
+                    </div>
+                    <div class="env-card-stats">
+                        <div class="env-stat">
+                            <div class="env-stat-val">4</div>
+                            <div class="env-stat-label">Pods</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">41</div>
+                            <div class="env-stat-label">Deploys</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">GCP</div>
+                            <div class="env-stat-label">Provider</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">WooCommerce</div>
+                            <div class="env-stat-label">Platform</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="env-card" onclick="location.href='environments.html'">
+                    <div class="env-card-header">
+                        <div>
+                            <div class="env-card-name">Sensory Direct — Prod</div>
+                            <a href="#" class="env-card-url">sensorydirect.com</a>
+                        </div>
+                        <span class="badge badge-success">Up</span>
+                    </div>
+                    <div class="env-card-stats">
+                        <div class="env-stat">
+                            <div class="env-stat-val">3</div>
+                            <div class="env-stat-label">Pods</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">89</div>
+                            <div class="env-stat-label">Deploys</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">GCP</div>
+                            <div class="env-stat-label">Provider</div>
+                        </div>
+                        <div class="env-stat">
+                            <div class="env-stat-val">Magento 2</div>
+                            <div class="env-stat-label">Platform</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid fade-in fade-in-4">
+
+                <div style="display:flex;flex-direction:column;gap:18px;">
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-title" style="display:flex;align-items:center;gap:9px;">
+                                <span class="live-pulse"></span>
+                                Live Deployment
+                            </span>
+                            <div class="action-cluster">
+                                <span class="badge badge-info">In Progress</span>
+                                <button class="btn btn-ghost btn-sm">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="6" y="4" width="4" height="16" />
+                                        <rect x="14" y="4" width="4" height="16" />
+                                    </svg>
+                                    Pause
+                                </button>
+                                <button class="btn btn-danger btn-sm">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <line x1="18" y1="6" x2="6" y2="18" />
+                                        <line x1="6" y1="6" x2="18" y2="18" />
+                                    </svg>
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                        <div
+                            style="padding:13px 16px;background:var(--white-05);border-bottom:1px solid var(--navy-border);">
+                            <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;">update
+                                pricing blade.php <span
+                                    style="color:var(--slate);font-family:'Courier New',monospace;font-weight:400;font-size:11.5px;">(d95e9fbc3f7)</span>
+                            </div>
+                            <div style="display:flex;gap:16px;font-size:12px;color:var(--slate);flex-wrap:wrap;">
+                                <span style="display:flex;align-items:center;gap:5px;">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M2 12h20" />
+                                    </svg>
+                                    Sensory Direct
+                                </span>
+                                <span style="display:flex;align-items:center;gap:5px;">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="8" rx="2" />
+                                        <rect x="2" y="14" width="20" height="8" rx="2" />
+                                    </svg>
+                                    Production
+                                </span>
+                                <span style="display:flex;align-items:center;gap:5px;">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                    </svg>
+                                    Magento 2 Pipeline
+                                </span>
+                                <span style="display:flex;align-items:center;gap:5px;">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                    1m 42s
+                                </span>
+                            </div>
+                        </div>
+                        <div class="pipeline-stages">
+                            <div class="pipeline-stage done">
+                                <div class="pipeline-dot">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </div>
+                                <span class="pipeline-label">Prepare</span>
+                            </div>
+                            <div class="pipeline-stage done">
+                                <div class="pipeline-dot">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </div>
+                                <span class="pipeline-label">Build</span>
+                            </div>
+                            <div class="pipeline-stage active">
+                                <div class="pipeline-dot">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </div>
+                                <span class="pipeline-label">Transfer</span>
+                            </div>
+                            <div class="pipeline-stage pending">
+                                <div class="pipeline-dot">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg>
+                                </div>
+                                <span class="pipeline-label">Finish</span>
+                            </div>
+                        </div>
+                        <div class="task-list">
+                            <div class="task-item">
+                                <div class="task-status-icon done"><svg width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg></div>
+                                <span class="task-name">Pause Alerts</span>
+                                <span class="task-duration">0s</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status-icon done"><svg width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg></div>
+                                <span class="task-name">Checkout Repository</span>
+                                <span class="task-duration">3s</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status-icon done"><svg width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg></div>
+                                <span class="task-name">Create Build Server</span>
+                                <span class="task-duration">7s</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status-icon done"><svg width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="3">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg></div>
+                                <span class="task-name">SSH: composer install</span>
+                                <span class="task-duration">38s</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status-icon running">
+                                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="3">
+                                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83" />
+                                    </svg>
+                                </div>
+                                <span class="task-name running">Transferring changed files…</span>
+                                <span class="task-duration">1m 2s</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status-icon pending"><svg width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="4" />
+                                    </svg></div>
+                                <span class="task-name pending">Link release directory</span>
+                                <span class="task-duration">—</span>
+                            </div>
+                            <div class="task-item">
+                                <div class="task-status-icon pending"><svg width="10" height="10" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="4" />
+                                    </svg></div>
+                                <span class="task-name pending">Flush cache</span>
+                                <span class="task-duration">—</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-title">Recent Deployments</span>
+                            <div class="action-cluster">
+                                <div class="cf-search" style="width:170px;">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="M21 21l-4.35-4.35" />
+                                    </svg>
+                                    <input type="text" placeholder="Search…">
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="location.href='deployments.html'">
+                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <line x1="12" y1="5" x2="12" y2="19" />
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                    </svg>
+                                    Create
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chip-filters">
+                            <span class="chip active">All</span>
+                            <span class="chip">Succeeded</span>
+                            <span class="chip">Failed</span>
+                            <span class="chip">In Progress</span>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="cf-table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" class="cf-checkbox"></th>
+                                        <th>Deployment <span class="sort-icon">⇅</span></th>
+                                        <th>Pipeline</th>
+                                        <th>Status</th>
+                                        <th>Created <span class="sort-icon">⇅</span></th>
+                                        <th>Duration</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" class="cf-checkbox"></td>
+                                        <td>
+                                            <div style="font-weight:500;font-size:13px;"><a
+                                                    href="deployment-detail.html" class="link">update pricing
+                                                    blade.php</a></div>
+                                            <div
+                                                style="font-size:11px;color:var(--slate);font-family:'Courier New',monospace;">
+                                                d95e9fbc3f7</div>
+                                        </td>
+                                        <td><a href="#" class="link-orange" style="font-size:12.5px;">Magento 2
+                                                Pipeline</a></td>
+                                        <td><span class="badge badge-info">In Progress</span></td>
+                                        <td style="font-size:12px;color:var(--slate);">2026-04-22 10:21</td>
+                                        <td style="font-size:12px;color:var(--slate);">1m 42s</td>
+                                        <td>
+                                            <div class="action-cluster">
+                                                <button class="btn btn-danger btn-sm">Cancel</button>
+                                                <button class="btn btn-icon btn-ghost" title="View"
+                                                    onclick="location.href='deployment-detail.html'">
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="cf-checkbox"></td>
+                                        <td>
+                                            <div style="font-weight:500;font-size:13px;"><a
+                                                    href="deployment-detail.html" class="link">Merge branch
+                                                    'release/v2.22.0'</a></div>
+                                            <div
+                                                style="font-size:11px;color:var(--slate);font-family:'Courier New',monospace;">
+                                                892dfb73cf9</div>
+                                        </td>
+                                        <td><a href="#" class="link-orange" style="font-size:12.5px;">Magento 2
+                                                Pipeline</a></td>
+                                        <td><span class="badge badge-success">Succeeded (Current)</span></td>
+                                        <td style="font-size:12px;color:var(--slate);">2026-04-22 09:14</td>
+                                        <td style="font-size:12px;color:var(--slate);">1m 19s</td>
+                                        <td>
+                                            <div class="action-cluster">
+                                                <button class="btn btn-secondary btn-sm">Actions ▾</button>
+                                                <button class="btn btn-icon btn-ghost"
+                                                    onclick="location.href='deployment-detail.html'">
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="cf-checkbox"></td>
+                                        <td>
+                                            <div style="font-weight:500;font-size:13px;"><a
+                                                    href="deployment-detail.html" class="link">fix contact emails
+                                                    handler</a></div>
+                                            <div
+                                                style="font-size:11px;color:var(--slate);font-family:'Courier New',monospace;">
+                                                c60ef7e39b</div>
+                                        </td>
+                                        <td><a href="#" class="link-orange" style="font-size:12.5px;">Laravel Deployment
+                                                Pipeline</a></td>
+                                        <td><span class="badge badge-danger">Failed</span></td>
+                                        <td style="font-size:12px;color:var(--slate);">2026-04-21 17:03</td>
+                                        <td style="font-size:12px;color:var(--slate);">49s</td>
+                                        <td>
+                                            <div class="action-cluster">
+                                                <button class="btn btn-primary btn-sm">
+                                                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2.5">
+                                                        <polyline points="23 4 23 10 17 10" />
+                                                        <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+                                                    </svg>
+                                                    Retry
+                                                </button>
+                                                <button class="btn btn-icon btn-ghost"
+                                                    onclick="location.href='deployment-detail.html'">
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="cf-checkbox"></td>
+                                        <td>
+                                            <div style="font-weight:500;font-size:13px;"><a
+                                                    href="deployment-detail.html" class="link">add blog post
+                                                    pagination</a></div>
+                                            <div
+                                                style="font-size:11px;color:var(--slate);font-family:'Courier New',monospace;">
+                                                3a9f02b1c44</div>
+                                        </td>
+                                        <td><a href="#" class="link-orange" style="font-size:12.5px;">Laravel Deployment
+                                                Pipeline</a></td>
+                                        <td><span class="badge badge-success">Succeeded</span></td>
+                                        <td style="font-size:12px;color:var(--slate);">2026-04-21 15:40</td>
+                                        <td style="font-size:12px;color:var(--slate);">36s</td>
+                                        <td>
+                                            <div class="action-cluster">
+                                                <button class="btn btn-secondary btn-sm">Actions ▾</button>
+                                                <button class="btn btn-icon btn-ghost"
+                                                    onclick="location.href='deployment-detail.html'">
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                                        <circle cx="12" cy="12" r="3" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="pagination">
+                            <span class="pagination-info">Showing 1–4 of 31 deployments</span>
+                            <div class="pagination-btns">
+                                <button class="page-btn" disabled>‹</button>
+                                <button class="page-btn active">1</button>
+                                <button class="page-btn">2</button>
+                                <button class="page-btn">3</button>
+                                <span
+                                    style="display:flex;align-items:center;padding:0 3px;color:var(--slate);font-size:13px;">…</span>
+                                <button class="page-btn">8</button>
+                                <button class="page-btn">›</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:18px;">
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-title">Quick Actions</span>
+                        </div>
+                        <div class="panel-body">
+                            <div class="quick-actions">
+                                <div class="quick-action" onclick="location.href='deployments.html'">
+                                    <div class="quick-action-icon">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                                        </svg>
+                                    </div>
+                                    <span class="quick-action-label">New Deployment</span>
+                                </div>
+                                <div class="quick-action" onclick="location.href='environments.html'">
+                                    <div class="quick-action-icon orange">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                                        </svg>
+                                    </div>
+                                    <span class="quick-action-label">Add Environment</span>
+                                </div>
+                                <div class="quick-action" onclick="location.href='tickets.html'">
+                                    <div class="quick-action-icon teal">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                                        </svg>
+                                    </div>
+                                    <span class="quick-action-label">Raise Ticket</span>
+                                </div>
+                                <div class="quick-action">
+                                    <div class="quick-action-icon success">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <polyline points="23 4 23 10 17 10" />
+                                            <path d="M20.49 15a9 9 0 11-2.12-9.36L23 10" />
+                                        </svg>
+                                    </div>
+                                    <span class="quick-action-label">Restart Pods</span>
+                                </div>
+                                <div class="quick-action">
+                                    <div class="quick-action-icon">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        </svg>
+                                    </div>
+                                    <span class="quick-action-label">IP Firewall</span>
+                                </div>
+                                <div class="quick-action">
+                                    <div class="quick-action-icon orange">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <line x1="12" y1="8" x2="12" y2="12" />
+                                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                                        </svg>
+                                    </div>
+                                    <span class="quick-action-label">Diagnostics</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-title">Open Tickets</span>
+                            <a href="tickets.html" class="btn btn-ghost btn-sm">View all</a>
+                        </div>
+                        <div class="ticket-row" onclick="location.href='ticket-view.html'">
+                            <div class="ticket-priority priority-high"></div>
+                            <div class="ticket-id">#4538</div>
+                            <div class="ticket-info">
+                                <div class="ticket-subject">Testing on staging — emergency</div>
+                                <div class="ticket-meta"><span>Test Company</span><span>Sales</span></div>
+                            </div>
+                            <span class="badge badge-danger">Pending</span>
+                        </div>
+                        <div class="ticket-row" onclick="location.href='ticket-view.html'">
+                            <div class="ticket-priority priority-high"></div>
+                            <div class="ticket-id">#4537</div>
+                            <div class="ticket-info">
+                                <div class="ticket-subject">Emergency tickets on staging</div>
+                                <div class="ticket-meta"><span>Test Company</span><span>Billing</span></div>
+                            </div>
+                            <span class="badge badge-warning">Pending</span>
+                        </div>
+                        <div class="ticket-row" onclick="location.href='ticket-view.html'">
+                            <div class="ticket-priority priority-med"></div>
+                            <div class="ticket-id">#3939</div>
+                            <div class="ticket-info">
+                                <div class="ticket-subject">TEST TICKET FOR SUBSCRIPTIONS</div>
+                                <div class="ticket-meta"><span>Test Company</span><span>Support</span></div>
+                            </div>
+                            <span class="badge badge-neutral">Closed</span>
+                        </div>
+                        <div style="padding:11px 14px;border-top:1px solid var(--navy-border);">
+                            <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center;"
+                                onclick="location.href='tickets.html'">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                                Raise New Ticket
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-title">Monitor Status</span>
+                            <span class="badge badge-success">All Up</span>
+                        </div>
+                        <div class="monitor-row">
+                            <div
+                                style="width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px rgba(34,212,94,0.6);flex-shrink:0;">
+                            </div>
+                            <a href="#" class="monitor-url">example.co.uk/checkout/cart/</a>
+                            <div class="uptime-bars">
+                                <div class="uptime-bar" style="height:11px"></div>
+                                <div class="uptime-bar" style="height:17px"></div>
+                                <div class="uptime-bar" style="height:14px"></div>
+                                <div class="uptime-bar" style="height:19px"></div>
+                                <div class="uptime-bar" style="height:13px"></div>
+                                <div class="uptime-bar" style="height:17px"></div>
+                                <div class="uptime-bar" style="height:20px"></div>
+                            </div>
+                            <span class="monitor-freq">60s</span>
+                        </div>
+                        <div class="monitor-row">
+                            <div
+                                style="width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px rgba(34,212,94,0.6);flex-shrink:0;">
+                            </div>
+                            <a href="#" class="monitor-url">example.co.uk/blizzard-hw60-white-fridge</a>
+                            <div class="uptime-bars">
+                                <div class="uptime-bar" style="height:15px"></div>
+                                <div class="uptime-bar" style="height:13px"></div>
+                                <div class="uptime-bar" style="height:20px"></div>
+                                <div class="uptime-bar" style="height:16px"></div>
+                                <div class="uptime-bar" style="height:18px"></div>
+                                <div class="uptime-bar" style="height:12px"></div>
+                                <div class="uptime-bar" style="height:19px"></div>
+                            </div>
+                            <span class="monitor-freq">60s</span>
+                        </div>
+                        <div class="monitor-row">
+                            <div
+                                style="width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px rgba(34,212,94,0.6);flex-shrink:0;">
+                            </div>
+                            <a href="#" class="monitor-url">example.co.uk/display-fridges</a>
+                            <div class="uptime-bars">
+                                <div class="uptime-bar" style="height:19px"></div>
+                                <div class="uptime-bar" style="height:12px"></div>
+                                <div class="uptime-bar" style="height:16px"></div>
+                                <div class="uptime-bar" style="height:20px"></div>
+                                <div class="uptime-bar" style="height:14px"></div>
+                                <div class="uptime-bar" style="height:17px"></div>
+                                <div class="uptime-bar" style="height:21px"></div>
+                            </div>
+                            <span class="monitor-freq">60s</span>
+                        </div>
+                        <div class="monitor-row">
+                            <div
+                                style="width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 6px rgba(34,212,94,0.6);flex-shrink:0;">
+                            </div>
+                            <a href="#" class="monitor-url">example.co.uk/catering-fridges</a>
+                            <div class="uptime-bars">
+                                <div class="uptime-bar" style="height:13px"></div>
+                                <div class="uptime-bar" style="height:17px"></div>
+                                <div class="uptime-bar" style="height:11px"></div>
+                                <div class="uptime-bar" style="height:19px"></div>
+                                <div class="uptime-bar" style="height:15px"></div>
+                                <div class="uptime-bar" style="height:21px"></div>
+                                <div class="uptime-bar" style="height:17px"></div>
+                            </div>
+                            <span class="monitor-freq">60s</span>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <div class="panel-header">
+                            <span class="panel-title">Recent Activity</span>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">CJ</div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>Catherine Jarosz</strong> triggered a deployment on
+                                    <span class="hl">Production</span></div>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar orange">AP</div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>Adam Peace</strong> updated pipeline config for <span
+                                        class="hl">Magento 2</span></div>
+                                <div class="activity-time">27 minutes ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar teal">NE</div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>Nikoo Esharatabadi</strong> assigned to ticket <span
+                                        class="hl">#4538</span></div>
+                                <div class="activity-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar">CJ</div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>Catherine Jarosz</strong> added SSH key <span
+                                        class="hl">example@client.com</span></div>
+                                <div class="activity-time">3 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-avatar orange">DW</div>
+                            <div class="activity-content">
+                                <div class="activity-text"><strong>David Walsh</strong> rolled back deployment on <span
+                                        class="hl">Staging</span></div>
+                                <div class="activity-time">Yesterday at 16:48</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="footer-bar">
+                <a href="#" class="footer-brand">
+                    <span
+                        style="width:20px;height:20px;background:linear-gradient(135deg,var(--blue-bright),var(--blue-mid));border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;box-shadow:0 0 10px rgba(33,150,255,0.3);">Cf</span>
+                    Corefinity
+                </a>
+                <span>© 2026 Corefinity · v1.9.3 · 22 Apr 2026 — 10:21:05</span>
+                <div class="footer-links">
+                    <a href="#">What's New?</a>
+                    <a href="#">Firewall</a>
+                    <a href="#">Logs</a>
+                    <a href="#">Support</a>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', function () {
+                const parent = this.closest('.chip-filters');
+                if (parent) {
+                    parent.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.progress-fill').forEach(bar => {
+                const w = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => { bar.style.width = w; }, 400);
+            });
+        });
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        if (mobileMenuBtn && sidebar && sidebarOverlay) {
+            mobileMenuBtn.addEventListener('click', function () {
+                sidebar.classList.toggle('mobile-open');
+                sidebarOverlay.classList.toggle('active');
+            });
+            sidebarOverlay.addEventListener('click', function () {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 960 && sidebar) {
+                sidebar.classList.remove('mobile-open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                e.preventDefault();
+                const searchInput = document.querySelector('.topbar-search input');
+                if (searchInput) searchInput.focus();
+            }
+            if (e.key === 'Escape') {
+                if (sidebar) sidebar.classList.remove('mobile-open');
+                if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+            }
+        });
+    </script>
+
+<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+</button>
+<script>
+(function(){
+  var root = document.documentElement;
+  var saved = localStorage.getItem('cf-theme') || 'dark';
+  root.setAttribute('data-theme', saved);
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('#themeToggle'); if(!t) return;
+    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    localStorage.setItem('cf-theme', next);
+  });
+})();
+</script>
+
+<script>
+(function(){
+  function init(){
+    var btn = document.getElementById('mobileMenuBtn');
+    var sb = document.getElementById('sidebar');
+    var ov = document.getElementById('sidebarOverlay');
+    if (!btn || !sb) return;
+    btn.addEventListener('click', function(){
+      sb.classList.toggle('mobile-open');
+      if (ov) ov.classList.toggle('active');
+    });
+    if (ov) ov.addEventListener('click', function(){
+      sb.classList.remove('mobile-open');
+      ov.classList.remove('active');
+    });
+    window.addEventListener('resize', function(){
+      if (window.innerWidth > 960) {
+        sb.classList.remove('mobile-open');
+        if (ov) ov.classList.remove('active');
+      }
+    });
+  }
+  if (document.readyState !== 'loading') init();
+  else document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+
+
+<!-- CF SHARED THEME + RESPONSIVE FIXES -->
+<style id="cf-shared-fixes">
+/* === LIGHT THEME OVERRIDES for navbar/topbar/sidebar and components === */
+:root[data-theme="light"] body { background: var(--c-0b1829) !important; color: var(--c-ffffff) !important; }
+:root[data-theme="light"] body::before { background-image:
+  linear-gradient(rgba(20,116,204,0.05) 1px, transparent 1px),
+  linear-gradient(90deg, rgba(20,116,204,0.05) 1px, transparent 1px) !important; }
+:root[data-theme="light"] .topbar { background: rgba(255,255,255,0.92) !important; border-bottom-color: #E4EAF2 !important; }
+:root[data-theme="light"] .topbar-logo-text,
+:root[data-theme="light"] .topbar-username,
+:root[data-theme="light"] .page-title,
+:root[data-theme="light"] .panel-title,
+:root[data-theme="light"] .sidebar-item { color: #0B1829 !important; }
+:root[data-theme="light"] .sidebar { background: #FFFFFF !important; border-right: 1px solid #E4EAF2 !important; }
+:root[data-theme="light"] .sidebar-item:hover { background: rgba(11,24,41,0.05) !important; color: #0B1829 !important; }
+:root[data-theme="light"] .sidebar-item.active { background: rgba(30,155,255,0.10) !important; color: #1474CC !important; }
+:root[data-theme="light"] .sidebar-section-label { color: #5A6B82 !important; }
+:root[data-theme="light"] .topbar-icon-btn,
+:root[data-theme="light"] .topbar-user,
+:root[data-theme="light"] .topbar-client-select,
+:root[data-theme="light"] .topbar-search input,
+:root[data-theme="light"] .mobile-menu-btn { background: #F4F6FA !important; border-color: #E4EAF2 !important; color: #0B1829 !important; }
+:root[data-theme="light"] .topbar-search input::placeholder { color: #5A6B82 !important; }
+:root[data-theme="light"] .panel,
+:root[data-theme="light"] .card,
+:root[data-theme="light"] .stat-card,
+:root[data-theme="light"] .deployment-card,
+:root[data-theme="light"] .ticket-card,
+:root[data-theme="light"] .env-card { background: #FFFFFF !important; border-color: #E4EAF2 !important; color: #0B1829 !important; box-shadow: 0 4px 24px rgba(11,24,41,0.06) !important; }
+:root[data-theme="light"] .panel-header,
+:root[data-theme="light"] table thead { background: #F4F6FA !important; border-color: #E4EAF2 !important; }
+:root[data-theme="light"] table, :root[data-theme="light"] table td, :root[data-theme="light"] table th { color: #0B1829 !important; border-color: #E4EAF2 !important; }
+:root[data-theme="light"] table tbody tr:hover { background: rgba(11,24,41,0.04) !important; }
+:root[data-theme="light"] .btn-secondary,
+:root[data-theme="light"] .btn.btn-secondary { background: #F4F6FA !important; color: #0B1829 !important; border-color: #E4EAF2 !important; }
+:root[data-theme="light"] input, :root[data-theme="light"] textarea, :root[data-theme="light"] select { background: #FFFFFF !important; color: #0B1829 !important; border-color: #E4EAF2 !important; }
+:root[data-theme="light"] .breadcrumb,
+:root[data-theme="light"] .page-subtitle,
+:root[data-theme="light"] .muted,
+:root[data-theme="light"] .text-muted { color: #5A6B82 !important; }
+:root[data-theme="light"] .sidebar-overlay { background: rgba(11,24,41,0.35) !important; }
+
+/* === EXTRA RESPONSIVE FIXES === */
+@media (max-width: 1024px) {
+  .topbar-search { max-width: 260px !important; }
+  .topbar-username { display: none !important; }
+}
+@media (max-width: 768px) {
+  .topbar { padding: 0 12px !important; gap: 8px !important; }
+  .topbar-client-select { display: none !important; }
+  .topbar-search { display: none !important; }
+  .main { padding: 16px !important; }
+  .page-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+  .page-header-actions { flex-wrap: wrap !important; width: 100% !important; }
+  .page-title { font-size: 22px !important; }
+  table { font-size: 13px !important; }
+  .panel { overflow-x: auto !important; }
+  .grid, .stats-grid, .cards-grid { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 480px) {
+  .topbar { height: 56px !important; }
+  .topbar-logo-text { display: none !important; }
+  .btn { padding: 8px 12px !important; font-size: 13px !important; }
+  .theme-toggle { width: 40px !important; height: 40px !important; bottom: 12px !important; right: 12px !important; }
+}
+img, video, table { max-width: 100%; }
+.main { min-width: 0 !important; }
+</style>
+
+<script>
+/* Sync theme across pages */
+(function(){
+  window.addEventListener('storage', function(e){
+    if (e.key === 'cf-theme' && e.newValue) {
+      document.documentElement.setAttribute('data-theme', e.newValue);
+    }
+  });
+})();
+</script>
+
+</body>
+
+</html>
