@@ -1,1557 +1,1668 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Ticket View — Corefinity</title>
-<style>
-:root{
-  --c-0b1829: #0B1829;
-  --c-0b1829: #0b1829;
-  --c-111f33: #111f33;
-  --c-14263d: #14263d;
-  --c-1e3350: #1e3350;
-  --c-8ca4be: #8ca4be;
-  --c-b4c8df: #b4c8df;
-  --c-ffffff: #ffffff;
-  --c-1e9bff: #1E9BFF;
-  --c-1474cc: #1474CC;
-  --c-00c9b1: #00C9B1;
-  --c-00a896: #00a896;
-  --c-f26522: #F26522;
-  --tt-bg: rgba(255,255,255,0.06);
-  --tt-border: rgba(255,255,255,0.14);
-  --tt-fg: #ffffff;
-}
-:root[data-theme="light"]{
-  --c-0b1829: #F4F6FA;
-  --c-0b1829: #F4F6FA;
-  --c-111f33: #FFFFFF;
-  --c-14263d: #FFFFFF;
-  --c-1e3350: #E4EAF2;
-  --c-8ca4be: #5A6B82;
-  --c-b4c8df: #1F2D40;
-  --c-ffffff: #0B1829;
-  --c-1e9bff: #1E9BFF;
-  --c-1474cc: #1474CC;
-  --c-00c9b1: #00B89E;
-  --c-00a896: #00917F;
-  --c-f26522: #F26522;
-  --tt-bg: rgba(11,24,41,0.06);
-  --tt-border: rgba(11,24,41,0.10);
-  --tt-fg: #0B1829;
-}
-html, body { transition: background-color .35s ease, color .35s ease; }
-.theme-toggle {
-  position: fixed; top: 18px; right: 18px; z-index: 9999;
-  width: 42px; height: 42px; border-radius: 999px;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: var(--tt-bg);
-  border: 1px solid var(--tt-border);
-  color: var(--tt-fg);
-  cursor: pointer;
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  transition: transform .25s ease, background .25s ease, border-color .25s ease;
-  box-shadow: 0 6px 20px -8px rgba(0,0,0,0.3);
-}
-.theme-toggle:hover { transform: translateY(-1px); }
-.theme-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
-
-
-/* ============================
-   CSS CUSTOM PROPERTIES
-============================ */
-:root {
-  --navy: var(--c-0b1829);
-  --navy-mid: var(--c-111f33);
-  --navy-card: var(--c-14263d);
-  --navy-border: var(--c-1e3350);
-  --blue-bright: var(--c-1e9bff);
-  --blue-mid: var(--c-1474cc);
-  --orange: var(--c-f26522);
-  --orange-hover: #d95a16;
-  --teal: var(--c-00c9b1);
-  --slate: var(--c-8ca4be);
-  --slate-light: var(--c-b4c8df);
-  --white: var(--c-ffffff);
-  --white-90: rgba(255,255,255,0.9);
-  --white-60: rgba(255,255,255,0.6);
-  --white-30: rgba(255,255,255,0.3);
-  --white-10: rgba(255,255,255,0.08);
-  --white-05: rgba(255,255,255,0.04);
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 18px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.35);
-  --shadow-lg: 0 12px 48px rgba(0,0,0,0.5);
-  --glow-blue: 0 0 40px rgba(30,155,255,0.18);
-  --glow-orange: 0 0 40px rgba(242,101,34,0.25);
-  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--navy);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ============================
-   SUBTLE GRID BACKGROUND
-============================ */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(30,155,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30,155,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ============================
-   TOP NAVIGATION BAR
-============================ */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(11,24,41,0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--navy-border);
-  height: 60px;
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  gap: 16px;
-}
-
-.topbar-logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-
-.topbar-logo-icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
-  color: white;
-  font-family: var(--font-display);
-  letter-spacing: -1px;
-}
-
-.topbar-logo-text {
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.3px;
-}
-
-.topbar-client-select {
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  border-radius: 8px;
-  padding: 6px 12px;
-  color: var(--slate-light);
-  font-family: var(--font-body);
-  font-size: 13px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238ca4be' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
-  min-width: 180px;
-}
-
-.topbar-search {
-  flex: 1;
-  max-width: 420px;
-  position: relative;
-}
-
-.topbar-search input {
-  width: 100%;
-  background: var(--white-05);
-  border: 1px solid var(--navy-border);
-  border-radius: 8px;
-  padding: 7px 14px 7px 36px;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 13px;
-  outline: none;
-  transition: var(--transition);
-}
-
-.topbar-search input::placeholder { color: var(--slate); }
-.topbar-search input:focus { border-color: var(--blue-bright); background: var(--white-10); }
-
-.topbar-search-icon {
-  position: absolute;
-  left: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--slate);
-  font-size: 14px;
-}
-
-.topbar-actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.topbar-icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--slate-light);
-  font-size: 15px;
-  transition: var(--transition);
-  position: relative;
-}
-
-.topbar-icon-btn:hover { background: var(--white-10); color: var(--white); border-color: var(--blue-bright); }
-
-.notif-dot {
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  width: 7px;
-  height: 7px;
-  background: var(--orange);
-  border-radius: 50%;
-  border: 1.5px solid var(--navy);
-}
-
-.topbar-user {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 5px 10px 5px 5px;
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.topbar-user:hover { border-color: var(--blue-bright); }
-
-.topbar-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  background: linear-gradient(135deg, var(--orange), #e05216);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: white;
-  font-family: var(--font-display);
-}
-
-.topbar-username {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--white-90);
-}
-
-.topbar-chevron { color: var(--slate); font-size: 11px; }
-
-/* ============================
-   LAYOUT SHELL
-============================ */
-.layout {
-  display: flex;
-  min-height: calc(100vh - 60px);
-  position: relative;
-  z-index: 1;
-}
-
-/* ============================
-   SIDEBAR
-============================ */
-.sidebar {
-  width: 220px;
-  flex-shrink: 0;
-  background: var(--navy-mid);
-  border-right: 1px solid var(--navy-border);
-  padding: 20px 0;
-  overflow-y: auto;
-  position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
-}
-
-.sidebar::-webkit-scrollbar { width: 3px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: var(--navy-border); border-radius: 2px; }
-
-.sidebar-section {
-  margin-bottom: 6px;
-}
-
-.sidebar-section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--slate);
-  padding: 10px 20px 6px;
-}
-
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 20px;
-  text-decoration: none;
-  color: var(--slate-light);
-  font-size: 13.5px;
-  font-weight: 400;
-  transition: var(--transition);
-  border-left: 2px solid transparent;
-  cursor: pointer;
-}
-
-.sidebar-item:hover { color: var(--white); background: var(--white-05); }
-
-.sidebar-item.active {
-  color: var(--blue-bright);
-  background: rgba(30,155,255,0.08);
-  border-left-color: var(--blue-bright);
-  font-weight: 500;
-}
-
-.sidebar-item svg {
-  width: 16px;
-  height: 16px;
-  opacity: 0.8;
-  flex-shrink: 0;
-}
-
-.sidebar-item.active svg { opacity: 1; }
-
-.sidebar-badge {
-  margin-left: auto;
-  background: var(--orange);
-  color: white;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 1px 6px;
-  border-radius: 20px;
-}
-
-.sidebar-sub {
-  padding-left: 44px;
-}
-
-.sidebar-sub .sidebar-item {
-  font-size: 13px;
-  padding: 6px 20px 6px 0;
-  border-left: none;
-}
-
-/* ============================
-   MAIN CONTENT
-============================ */
-.main {
-  flex: 1;
-  min-width: 0;
-  padding: 32px 36px 60px;
-  display: flex;
-  gap: 20px;
-}
-
-.main-content {
-  flex: 1;
-  min-width: 0;
-}
-
-/* ============================
-   PAGE HEADER
-============================ */
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  gap: 16px;
-}
-
-.page-header-left {}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
-  color: var(--slate);
-  margin-bottom: 8px;
-}
-
-.breadcrumb a { color: var(--blue-bright); text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
-.breadcrumb span { opacity: 0.5; }
-
-.page-title {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.5px;
-}
-
-.page-subtitle {
-  color: var(--slate);
-  font-size: 14px;
-  margin-top: 4px;
-}
-
-.page-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-/* ============================
-   BUTTONS
-============================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 18px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: var(--transition);
-  text-decoration: none;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.btn-primary {
-  background: var(--orange);
-  color: white;
-  box-shadow: 0 2px 12px rgba(242,101,34,0.35);
-}
-
-.btn-primary:hover { background: var(--orange-hover); transform: translateY(-1px); box-shadow: 0 4px 18px rgba(242,101,34,0.4); }
-
-.btn-secondary {
-  background: var(--white-10);
-  color: var(--white-90);
-  border: 1px solid var(--navy-border);
-}
-
-.btn-secondary:hover { background: var(--white-10); border-color: var(--blue-bright); color: var(--white); }
-
-.btn-blue {
-  background: var(--blue-bright);
-  color: white;
-  box-shadow: 0 2px 12px rgba(30,155,255,0.3);
-}
-
-.btn-blue:hover { background: var(--blue-mid); transform: translateY(-1px); }
-
-.btn-ghost {
-  background: transparent;
-  color: var(--slate-light);
-  border: 1px solid var(--navy-border);
-}
-
-.btn-ghost:hover { color: var(--white); border-color: var(--slate); }
-
-.btn-sm { padding: 6px 12px; font-size: 12.5px; }
-.btn-icon { padding: 8px; width: 34px; height: 34px; justify-content: center; }
-
-.btn-danger { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-.btn-danger:hover { background: rgba(239,68,68,0.25); }
-
-/* ============================
-   PANEL / CARD
-============================ */
-.panel {
-  background: var(--navy-card);
-  border: 1px solid var(--navy-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--navy-border);
-}
-
-.panel-title {
-  font-family: var(--font-display);
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--white);
-}
-
-.panel-body { padding: 20px; }
-
-.panel-body.no-pad { padding: 0; }
-
-/* ============================
-   BADGES / STATUS PILLS
-============================ */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  font-size: 11.5px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.badge::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.badge-success { background: rgba(34,197,94,0.12); color: #4ade80; }
-.badge-success::before { background: #4ade80; box-shadow: 0 0 5px #4ade80; }
-
-.badge-danger { background: rgba(239,68,68,0.12); color: #f87171; }
-.badge-danger::before { background: #f87171; }
-
-.badge-warning { background: rgba(245,158,11,0.12); color: #fbbf24; }
-.badge-warning::before { background: #fbbf24; }
-
-.badge-info { background: rgba(30,155,255,0.12); color: var(--blue-bright); }
-.badge-info::before { background: var(--blue-bright); }
-
-.badge-neutral { background: var(--white-10); color: var(--slate-light); }
-.badge-neutral::before { background: var(--slate); }
-
-.badge-orange { background: rgba(242,101,34,0.12); color: var(--orange); }
-.badge-orange::before { background: var(--orange); }
-
-/* ============================
-   TABS COMPONENT
-============================ */
-.tab-bar {
-  display: flex;
-  gap: 2px;
-  border-bottom: 1px solid var(--navy-border);
-  padding: 0 20px;
-  overflow-x: auto;
-}
-
-.tab-bar::-webkit-scrollbar { height: 2px; }
-
-.tab-item {
-  padding: 12px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--slate);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  white-space: nowrap;
-  transition: var(--transition);
-}
-
-.tab-item:hover {
-  color: var(--white);
-}
-
-.tab-item.active {
-  color: var(--orange);
-  border-bottom-color: var(--orange);
-}
-
-/* ============================
-   FORM ELEMENTS
-============================ */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.form-label {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--slate-light);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.form-input, .form-select, .form-textarea {
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  outline: none;
-  transition: var(--transition);
-}
-
-.form-input::placeholder, .form-textarea::placeholder {
-  color: var(--slate);
-}
-
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--blue-bright);
-  background: rgba(30,155,255,0.05);
-}
-
-.form-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-/* ============================
-   ACTION CLUSTER
-============================ */
-.action-cluster {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ============================
-   COMMENT THREAD
-============================ */
-.comment-thread {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.comment {
-  display: flex;
-  gap: 12px;
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(30,51,80,0.3);
-}
-
-.comment:last-child {
-  border-bottom: none;
-}
-
-.comment-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--blue-mid), var(--blue-bright));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: white;
-  flex-shrink: 0;
-  font-family: var(--font-display);
-}
-
-.comment-avatar.orange { background: linear-gradient(135deg, var(--orange-hover), var(--orange)); }
-.comment-avatar.teal { background: linear-gradient(135deg, var(--c-00a896), var(--teal)); }
-
-.comment-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.comment-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.comment-author {
-  font-weight: 600;
-  color: var(--white);
-  font-size: 13px;
-}
-
-.comment-time {
-  font-size: 12px;
-  color: var(--slate);
-}
-
-.comment-text {
-  color: var(--white-90);
-  font-size: 13.5px;
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.comment-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.comment-action {
-  font-size: 12px;
-  color: var(--slate-light);
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.comment-action:hover {
-  color: var(--blue-bright);
-}
-
-/* ============================
-   SIDEBAR PANEL
-============================ */
-.sidebar-panel {
-  width: 320px;
-  flex-shrink: 0;
-}
-
-.sidebar-section {
-  margin-bottom: 20px;
-}
-
-.sidebar-section-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--slate);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  margin-bottom: 12px;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(30,51,80,0.2);
-  font-size: 13px;
-}
-
-.info-row:last-child {
-  border-bottom: none;
-}
-
-.info-label {
-  color: var(--slate);
-}
-
-.info-value {
-  color: var(--white-90);
-  font-weight: 500;
-}
-
-/* ============================
-   PRIORITY INDICATOR
-============================ */
-.priority-indicator {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.priority-high { background: var(--danger); }
-.priority-medium { background: var(--warning); }
-.priority-low { background: var(--success); }
-
-/* ============================
-   RESPONSIVE TWEAKS
-============================ */
-@media (max-width: 1200px) {
-  .main {
-    flex-direction: column;
-  }
-  
-  .sidebar-panel {
-    width: 100%;
-  }
-}
-
-@media (max-width: 900px) {
-  .sidebar {
-    display: none;
-  }
-
-  .main {
-    padding: 20px;
-  }
-}
-
-/* ============================
-   SCROLLBAR
-============================ */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--navy);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--navy-border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--slate);
-}
-
-</style>
-
-<style id="cf-injected-responsive">
-@media (max-width: 960px) {
-  .sidebar { position: fixed !important; left: 0; top: var(--topbar-height, 62px); transform: translateX(-100%); z-index: 200; width: 262px; height: calc(100vh - var(--topbar-height, 62px)); transition: transform .25s ease; box-shadow: 0 16px 60px rgba(0,0,0,0.6); display: block !important; }
-  .sidebar.mobile-open { transform: translateX(0); }
-  .sidebar-overlay { display: none; position: fixed; inset: var(--topbar-height,62px) 0 0 0; background: rgba(0,0,0,0.5); z-index: 150; }
-  .sidebar-overlay.active { display: block; }
-  .mobile-menu-btn { display: inline-flex !important; }
-  .topbar-client-select, .topbar-divider, .topbar-username { display: none !important; }
-  .topbar-search { max-width: 220px; }
-  .main { padding: 18px !important; }
-}
-@media (max-width: 600px) {
-  .topbar-search { display: none !important; }
-  .topbar-logo-text { display: none; }
-  .stats-row, .grid, .cards-grid { grid-template-columns: 1fr !important; }
-  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-}
-.theme-toggle { position: fixed; bottom: 18px; right: 18px; top: auto; z-index: 9999; width: 44px; height: 44px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #fff; cursor: pointer; backdrop-filter: blur(14px) saturate(160%); box-shadow: 0 6px 20px -8px rgba(0,0,0,0.4); }
-:root[data-theme="light"] .theme-toggle { background: rgba(11,24,41,0.06); border-color: rgba(11,24,41,0.12); color: #0B1829; }
-.theme-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
-</style>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+  <title>Ticket #3421 — Corefinity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #080f1a;
+      --navy-mid: #0d1825;
+      --navy-card: #111e2e;
+      --navy-card-hover: #152435;
+      --navy-border: #1a2f48;
+      --navy-border-light: #203a57;
+      --blue-bright: #2196ff;
+      --blue-mid: #1474CC;
+      --blue-glow: rgba(33, 150, 255, .15);
+      --orange: #f5722a;
+      --orange-hover: #e05a16;
+      --orange-glow: rgba(245, 114, 42, .15);
+      --teal: #00d9be;
+      --teal-glow: rgba(0, 217, 190, .12);
+      --slate: #7a96b4;
+      --slate-light: #a8c0d8;
+      --white: #f0f6ff;
+      --white-90: rgba(240, 246, 255, .9);
+      --white-60: rgba(240, 246, 255, .6);
+      --white-30: rgba(240, 246, 255, .3);
+      --white-10: rgba(255, 255, 255, .07);
+      --white-05: rgba(255, 255, 255, .03);
+      --success: #22d45e;
+      --success-glow: rgba(34, 212, 94, .12);
+      --warning: #f5a623;
+      --danger: #ef4444;
+      --purple: #a855f7;
+      --font-display: 'Syne', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius: 14px;
+      --radius-sm: 9px;
+      --radius-lg: 20px;
+      --shadow: 0 4px 30px rgba(0, 0, 0, .45);
+      --shadow-lg: 0 16px 60px rgba(0, 0, 0, .6);
+      --transition: .2s cubic-bezier(.4, 0, .2, 1);
+      --sidebar-width: 228px;
+      --topbar-height: 62px;
+    }
+
+    :root[data-theme="light"] {
+      --navy: #F4F6FA;
+      --navy-mid: #FFFFFF;
+      --navy-card: #FFFFFF;
+      --navy-card-hover: #F0F3F8;
+      --navy-border: #E4EAF2;
+      --navy-border-light: #D6DEEA;
+      --slate: #5A6B82;
+      --slate-light: #1F2D40;
+      --white: #0B1829;
+      --white-90: rgba(11, 24, 41, .92);
+      --white-60: rgba(11, 24, 41, .65);
+      --white-30: rgba(11, 24, 41, .35);
+      --white-10: rgba(11, 24, 41, .06);
+      --white-05: rgba(11, 24, 41, .03);
+      --shadow: 0 4px 30px rgba(15, 30, 55, .10);
+      --shadow-lg: 0 16px 60px rgba(15, 30, 55, .14);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent
+    }
+
+    html {
+      scroll-behavior: smooth
+    }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      transition: background .3s, color .3s;
+      min-height: 100vh
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(33, 150, 255, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(33, 150, 255, .04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%)
+    }
+
+    :root[data-theme="light"] body::before {
+      background-image: linear-gradient(rgba(20, 116, 204, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 116, 204, .05) 1px, transparent 1px)
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+      color: inherit
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--topbar-height);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 22px;
+      background: rgba(8, 15, 26, .75);
+      backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--navy-border)
+    }
+
+    :root[data-theme="light"] .topbar {
+      background: rgba(255, 255, 255, .85)
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--white-10);
+      border: 1px solid var(--navy-border);
+      align-items: center;
+      justify-content: center;
+      color: var(--white)
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .topbar-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 4px 14px var(--blue-glow)
+    }
+
+    .topbar-logo-text {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 17px;
+      letter-spacing: -.01em
+    }
+
+    .topbar-divider {
+      width: 1px;
+      height: 26px;
+      background: var(--navy-border)
+    }
+
+    .topbar-client-select {
+      height: 36px;
+      padding: 0 32px 0 12px;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 9px;
+      color: var(--white-90);
+      font-size: 13px;
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237a96b4' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 10px center
+    }
+
+    .topbar-search {
+      flex: 1;
+      max-width: 420px;
+      position: relative;
+      display: flex;
+      align-items: center
+    }
+
+    .topbar-search input {
+      width: 100%;
+      height: 36px;
+      padding: 0 38px 0 36px;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 9px;
+      font-size: 13px;
+      transition: var(--transition)
+    }
+
+    .topbar-search input:focus {
+      outline: none;
+      border-color: var(--blue-bright);
+      box-shadow: 0 0 0 3px var(--blue-glow)
+    }
+
+    .search-icon-wrap {
+      position: absolute;
+      left: 12px;
+      color: var(--slate)
+    }
+
+    .search-kbd {
+      position: absolute;
+      right: 10px;
+      font-size: 11px;
+      padding: 2px 7px;
+      background: var(--white-10);
+      border-radius: 5px;
+      color: var(--white-60);
+      font-family: var(--font-mono)
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto
+    }
+
+    .topbar-icon-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white-60);
+      position: relative;
+      transition: var(--transition)
+    }
+
+    .topbar-icon-btn:hover {
+      color: var(--white);
+      border-color: var(--navy-border-light);
+      transform: translateY(-1px)
+    }
+
+    .notif-dot {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      width: 7px;
+      height: 7px;
+      background: var(--orange);
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px var(--navy-mid)
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 10px 4px 4px;
+      border-radius: 10px;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      cursor: pointer;
+      transition: var(--transition)
+    }
+
+    .topbar-user:hover {
+      border-color: var(--navy-border-light)
+    }
+
+    .topbar-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-hover));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      color: #fff
+    }
+
+    .topbar-username {
+      font-size: 13px;
+      font-weight: 500
+    }
+
+    .topbar-chevron {
+      color: var(--slate);
+      font-size: 11px
+    }
+
+    .layout {
+      display: flex;
+      min-height: calc(100vh - var(--topbar-height))
+    }
+
+    .sidebar {
+      width: var(--sidebar-width);
+      flex-shrink: 0;
+      padding: 18px 12px;
+      background: var(--navy-mid);
+      border-right: 1px solid var(--navy-border);
+      position: sticky;
+      top: var(--topbar-height);
+      height: calc(100vh - var(--topbar-height));
+      overflow-y: auto
+    }
+
+    .sidebar::-webkit-scrollbar {
+      width: 5px
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: var(--navy-border);
+      border-radius: 3px
+    }
+
+    .sidebar-section {
+      margin-bottom: 16px
+    }
+
+    .sidebar-section-label {
+      display: block;
+      padding: 0 12px 8px;
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--slate)
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 9px 12px;
+      border-radius: 9px;
+      font-size: 13.5px;
+      color: var(--white-60);
+      transition: var(--transition);
+      position: relative;
+      margin-bottom: 2px
+    }
+
+    .sidebar-item:hover {
+      background: var(--white-10);
+      color: var(--white)
+    }
+
+    .sidebar-item.active {
+      background: linear-gradient(135deg, var(--blue-glow), transparent);
+      color: var(--blue-bright);
+      font-weight: 600
+    }
+
+    .sidebar-item.active::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 3px;
+      background: var(--blue-bright);
+      border-radius: 0 3px 3px 0
+    }
+
+    .sidebar-item svg {
+      width: 17px;
+      height: 17px;
+      flex-shrink: 0;
+      opacity: .85
+    }
+
+    .sidebar-item.active svg {
+      opacity: 1
+    }
+
+    .sidebar-badge {
+      margin-left: auto;
+      font-size: 11px;
+      padding: 1px 7px;
+      background: var(--orange);
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 600
+    }
+
+    .sidebar-sub {
+      padding-left: 14px;
+      border-left: 1px dashed var(--navy-border);
+      margin: 2px 0 6px 22px
+    }
+
+    .sidebar-sub .sidebar-item {
+      padding: 6px 10px;
+      font-size: 12.5px
+    }
+
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: var(--topbar-height) 0 0 0;
+      background: rgba(0, 0, 0, .55);
+      z-index: 99
+    }
+
+    :root[data-theme="light"] .sidebar-item {
+      color: #1F2D40
+    }
+
+    :root[data-theme="light"] .sidebar-item:hover {
+      background: rgba(11, 24, 41, .05);
+      color: #0B1829
+    }
+
+    :root[data-theme="light"] .sidebar-item.active {
+      background: rgba(33, 150, 255, .10);
+      color: #1474CC
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      padding: 28px 32px 60px
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 26px;
+      flex-wrap: wrap
+    }
+
+    .breadcrumb {
+      display: flex;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--slate);
+      margin-bottom: 6px
+    }
+
+    .breadcrumb a:hover {
+      color: var(--blue-bright)
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.1
+    }
+
+    .page-subtitle {
+      margin-top: 6px;
+      color: var(--white-60);
+      font-size: 14px;
+      max-width: 640px
+    }
+
+    .page-header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      white-space: nowrap
+    }
+
+    .btn:hover {
+      transform: translateY(-1px)
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+      color: #fff;
+      box-shadow: 0 6px 18px var(--blue-glow)
+    }
+
+    .btn-secondary {
+      background: var(--navy-card);
+      border-color: var(--navy-border);
+      color: var(--white-90)
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--navy-border-light)
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, .12);
+      border-color: rgba(239, 68, 68, .4);
+      color: var(--danger)
+    }
+
+    .btn-ghost {
+      color: var(--white-60)
+    }
+
+    .btn-ghost:hover {
+      color: var(--white);
+      background: var(--white-10)
+    }
+
+    .btn-sm {
+      height: 32px;
+      padding: 0 12px;
+      font-size: 12.5px
+    }
+
+    .panel {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow)
+    }
+
+    .panel+.panel {
+      margin-top: 18px
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 10px
+    }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600
+    }
+
+    .panel-desc {
+      color: var(--white-60);
+      font-size: 13px;
+      margin-top: 4px
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr)
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr)
+    }
+
+    .stat-card {
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden
+    }
+
+    .stat-label {
+      color: var(--white-60);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 600
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      margin-top: 6px
+    }
+
+    .stat-meta {
+      margin-top: 6px;
+      font-size: 12.5px;
+      color: var(--slate)
+    }
+
+    .stat-trend.up {
+      color: var(--success)
+    }
+
+    .stat-trend.down {
+      color: var(--danger)
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 20px
+    }
+
+    .form-grid.full>* {
+      grid-column: span 2
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .field.span-2 {
+      grid-column: span 2
+    }
+
+    .field label {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--white-90);
+      letter-spacing: .01em
+    }
+
+    .field .hint {
+      font-size: 12px;
+      color: var(--slate);
+      margin-top: 2px
+    }
+
+    .field input[type=text],
+    .field input[type=number],
+    .field input[type=email],
+    .field input[type=password],
+    .field input[type=url],
+    .field select,
+    .field textarea {
+      height: 40px;
+      padding: 0 12px;
+      background: var(--navy-mid);
+      border: 1px solid var(--navy-border);
+      border-radius: 9px;
+      font-size: 13.5px;
+      transition: var(--transition);
+      width: 100%
+    }
+
+    .field textarea {
+      height: auto;
+      padding: 10px 12px;
+      min-height: 100px;
+      resize: vertical;
+      font-family: var(--font-mono);
+      font-size: 12.5px
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: none;
+      border-color: var(--blue-bright);
+      box-shadow: 0 0 0 3px var(--blue-glow)
+    }
+
+    .field select {
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237a96b4' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 32px
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13.5px;
+      color: var(--white-90);
+      cursor: pointer
+    }
+
+    .checkbox-row input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--blue-bright)
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 22px;
+      flex-shrink: 0
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0
+    }
+
+    .slider-sw {
+      position: absolute;
+      inset: 0;
+      background: var(--navy-border-light);
+      border-radius: 22px;
+      transition: .25s
+    }
+
+    .slider-sw::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .25s
+    }
+
+    .switch input:checked+.slider-sw {
+      background: var(--blue-bright)
+    }
+
+    .switch input:checked+.slider-sw::before {
+      transform: translateX(16px)
+    }
+
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid var(--navy-border);
+      border-radius: 10px;
+      background: var(--navy-mid)
+    }
+
+    .switch-row .meta {
+      font-size: 12px;
+      color: var(--slate);
+      margin-top: 2px
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--navy-border);
+      flex-wrap: wrap
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 20px;
+      letter-spacing: .02em
+    }
+
+    .badge.success {
+      background: var(--success-glow);
+      color: var(--success)
+    }
+
+    .badge.warning {
+      background: rgba(245, 166, 35, .12);
+      color: var(--warning)
+    }
+
+    .badge.danger {
+      background: rgba(239, 68, 68, .12);
+      color: var(--danger)
+    }
+
+    .badge.info {
+      background: var(--blue-glow);
+      color: var(--blue-bright)
+    }
+
+    .badge.muted {
+      background: var(--white-10);
+      color: var(--white-60)
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block
+    }
+
+    .dot.success {
+      background: var(--success);
+      box-shadow: 0 0 0 3px var(--success-glow)
+    }
+
+    .dot.warning {
+      background: var(--warning)
+    }
+
+    .dot.danger {
+      background: var(--danger)
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius);
+      background: var(--navy-card)
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      min-width: 560px
+    }
+
+    table thead {
+      background: var(--white-05)
+    }
+
+    table th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--slate);
+      font-weight: 700;
+      border-bottom: 1px solid var(--navy-border)
+    }
+
+    table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--navy-border);
+      color: var(--white-90)
+    }
+
+    table tbody tr:last-child td {
+      border-bottom: none
+    }
+
+    table tbody tr:hover {
+      background: var(--white-05)
+    }
+
+    .env-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 6px;
+      background: var(--navy-card);
+      border: 1px solid var(--navy-border);
+      border-radius: 14px;
+      margin-bottom: 22px;
+      scrollbar-width: thin
+    }
+
+    .env-tabs::-webkit-scrollbar {
+      height: 6px
+    }
+
+    .env-tab {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 9px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white-60);
+      transition: var(--transition);
+      white-space: nowrap;
+      cursor: pointer;
+      background: transparent;
+      border: 1px solid transparent
+    }
+
+    .env-tab:hover {
+      background: var(--white-10);
+      color: var(--white)
+    }
+
+    .env-tab.active {
+      background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+      color: #fff;
+      box-shadow: 0 4px 14px var(--blue-glow)
+    }
+
+    .env-tab svg {
+      width: 14px;
+      height: 14px
+    }
+
+    .tab-panel {
+      display: none;
+      animation: fadeIn .25s ease
+    }
+
+    .tab-panel.active {
+      display: block
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .env-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 22px;
+      background: linear-gradient(135deg, rgba(33, 150, 255, .10), rgba(0, 217, 190, .06));
+      border: 1px solid var(--navy-border);
+      border-radius: var(--radius);
+      margin-bottom: 22px;
+      flex-wrap: wrap
+    }
+
+    .env-hero h2 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .env-hero .meta {
+      display: flex;
+      gap: 18px;
+      color: var(--white-60);
+      font-size: 13px;
+      margin-top: 4px;
+      flex-wrap: wrap
+    }
+
+    .env-hero code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--blue-bright)
+    }
+
+    :root[data-theme="light"] .topbar-icon-btn,
+    :root[data-theme="light"] .topbar-user,
+    :root[data-theme="light"] .topbar-client-select,
+    :root[data-theme="light"] .topbar-search input,
+    :root[data-theme="light"] .mobile-menu-btn {
+      background: #F4F6FA;
+      border-color: #E4EAF2;
+      color: #0B1829
+    }
+
+    :root[data-theme="light"] .panel,
+    :root[data-theme="light"] .stat-card,
+    :root[data-theme="light"] .table-wrap {
+      background: #fff;
+      border-color: #E4EAF2;
+      box-shadow: 0 4px 24px rgba(11, 24, 41, .06)
+    }
+
+    :root[data-theme="light"] table thead {
+      background: #F4F6FA
+    }
+
+    :root[data-theme="light"] .field input,
+    :root[data-theme="light"] .field select,
+    :root[data-theme="light"] .field textarea {
+      background: #fff;
+      border-color: #E4EAF2
+    }
+
+    :root[data-theme="light"] .switch-row {
+      background: #F4F6FA;
+      border-color: #E4EAF2
+    }
+
+    :root[data-theme="light"] .env-tabs {
+      background: #fff;
+      border-color: #E4EAF2
+    }
+
+    .theme-toggle {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 9999;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .18);
+      color: #fff;
+      cursor: pointer;
+      backdrop-filter: blur(14px) saturate(160%);
+      box-shadow: 0 6px 20px -8px rgba(0, 0, 0, .4);
+      transition: transform .2s
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px)
+    }
+
+    :root[data-theme="light"] .theme-toggle {
+      background: rgba(11, 24, 41, .06);
+      border-color: rgba(11, 24, 41, .12);
+      color: #0B1829
+    }
+
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round
+    }
+
+    .theme-toggle .icon-sun {
+      display: none
+    }
+
+    :root[data-theme="light"] .theme-toggle .icon-sun {
+      display: block
+    }
+
+    :root[data-theme="light"] .theme-toggle .icon-moon {
+      display: none
+    }
+
+    @media (max-width:1100px) {
+      .grid-4 {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    @media (max-width:960px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: var(--topbar-height);
+        transform: translateX(-100%);
+        z-index: 200;
+        width: 262px;
+        height: calc(100vh - var(--topbar-height));
+        transition: transform .25s ease;
+        box-shadow: 0 16px 60px rgba(0, 0, 0, .6)
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0)
+      }
+
+      .sidebar-overlay.active {
+        display: block
+      }
+
+      .mobile-menu-btn {
+        display: inline-flex
+      }
+
+      .topbar-client-select,
+      .topbar-divider {
+        display: none
+      }
+
+      .topbar-search {
+        max-width: 240px
+      }
+
+      .main {
+        padding: 22px 18px 60px
+      }
+    }
+
+    @media (max-width:760px) {
+      .topbar {
+        padding: 0 12px;
+        gap: 8px
+      }
+
+      .topbar-search {
+        display: none
+      }
+
+      .topbar-username {
+        display: none
+      }
+
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .form-grid {
+        grid-template-columns: 1fr
+      }
+
+      .form-grid.full>* {
+        grid-column: auto
+      }
+
+      .field.span-2 {
+        grid-column: auto
+      }
+
+      .page-title {
+        font-size: 22px
+      }
+
+      .page-header {
+        align-items: flex-start
+      }
+
+      .page-header-actions {
+        width: 100%;
+        justify-content: flex-start
+      }
+
+      .stat-value {
+        font-size: 24px
+      }
+
+      .panel {
+        padding: 16px
+      }
+
+      .env-hero {
+        padding: 14px 16px
+      }
+
+      .env-hero h2 {
+        font-size: 18px
+      }
+
+      .env-hero .meta {
+        gap: 10px;
+        font-size: 12px
+      }
+
+      table {
+        min-width: 420px
+      }
+
+      table th,
+      table td {
+        padding: 10px 12px
+      }
+
+      .form-actions {
+        justify-content: stretch
+      }
+
+      .form-actions .btn {
+        flex: 1;
+        justify-content: center
+      }
+
+      .switch-row {
+        padding: 10px 12px
+      }
+
+      .env-tab {
+        height: 34px;
+        padding: 0 10px;
+        font-size: 12px
+      }
+
+      .env-tabs {
+        padding: 4px;
+        gap: 4px
+      }
+    }
+
+    @media (max-width:480px) {
+      :root {
+        --topbar-height: 54px
+      }
+
+      .topbar {
+        height: 54px
+      }
+
+      .topbar-logo-text {
+        display: none
+      }
+
+      .topbar-icon-btn:not(:last-child):not(:nth-last-child(2)) {
+        display: none
+      }
+
+      .btn {
+        padding: 0 10px;
+        font-size: 12.5px;
+        height: 36px
+      }
+
+      .btn-sm {
+        height: 30px;
+        padding: 0 10px;
+        font-size: 12px
+      }
+
+      .theme-toggle {
+        width: 40px;
+        height: 40px;
+        bottom: 12px;
+        right: 12px
+      }
+
+      .main {
+        padding: 16px 12px 56px
+      }
+
+      .page-title {
+        font-size: 20px
+      }
+
+      .stat-card {
+        padding: 14px
+      }
+
+      .stat-value {
+        font-size: 22px
+      }
+
+      .panel-title {
+        font-size: 16px
+      }
+
+      .grid {
+        gap: 12px
+      }
+
+      .env-tab svg {
+        display: none
+      }
+
+      .env-tab {
+        padding: 0 10px;
+        font-size: 11.5px
+      }
+
+      .topbar-user {
+        padding: 4px 6px 4px 4px
+      }
+    }
+
+    @media (max-width:360px) {
+      .topbar {
+        padding: 0 8px;
+        gap: 6px
+      }
+
+      .main {
+        padding: 14px 10px 52px
+      }
+
+      .page-title {
+        font-size: 18px
+      }
+
+      .stat-value {
+        font-size: 20px
+      }
+
+      .btn {
+        padding: 0 8px;
+        font-size: 12px
+      }
+
+      .grid-4,
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: 1fr
+      }
+
+      .topbar-actions {
+        gap: 4px
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-
-    <!-- ============================
-     TOP NAVIGATION BAR
-============================ -->
-    <header class="topbar">
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" type="button" style="display:none;background:rgba(255,255,255,0.06);border:1px solid var(--navy-border, rgba(255,255,255,0.14));border-radius:9px;width:38px;height:38px;align-items:center;justify-content:center;cursor:pointer;color:currentColor;flex-shrink:0;margin-right:8px;">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
-        <a class="topbar-logo" href="deployment.html">
-            <div class="topbar-logo-icon">Cf</div>
-            <span class="topbar-logo-text">corefinity</span>
-        </a>
-
-        <select class="topbar-client-select">
-            <option>Currently viewing as: All clients</option>
-            <option>Example Agency</option>
-            <option>Atherton Bikes</option>
-            <option>Sensory Direct</option>
-        </select>
-
-        <div class="topbar-search">
-            <span class="topbar-search-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35" />
-                </svg>
-            </span>
-            <input type="text" placeholder="Press / to search...">
-        </div>
-
-        <div class="topbar-actions">
-            <button class="topbar-icon-btn" title="Notifications">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
-                </svg>
-                <span class="notif-dot"></span>
-            </button>
-
-            <div class="topbar-user">
-                <div class="topbar-avatar">CJ</div>
-                <span class="topbar-username">Catherine Jarosz</span>
-                <span class="topbar-chevron">£</span>
-            </div>
-        </div>
-    </header>
-
-    <!-- ============================
-     LAYOUT SHELL
-============================ -->
-    <div class="layout">
-
-        <!-- SIDEBAR -->
-        <nav class="sidebar" id="sidebar">
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Overview</span>
-                <a class="sidebar-item " href="index.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-                    Dashboard
-                </a>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Infrastructure</span>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-                    Websites
-                </a>
-                <a class="sidebar-item " href="environments.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    Environments
-                    <span class="sidebar-badge">12</span>
-                </a>
-                <div class="sidebar-sub">
-                    <a class="sidebar-item" href="#">Production</a>
-                    <a class="sidebar-item" href="#">Staging</a>
-                    <a class="sidebar-item" href="#">Development</a>
-                </div>
-                <a class="sidebar-item " href="deployment.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    Deployments
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                    Clusters
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>
-                    Providers
-                </a>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Support</span>
-                <a class="sidebar-item active" href="tickets.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-                    Tickets
-                    <span class="sidebar-badge">3</span>
-                </a>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">Monitoring</span>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    All Monitors
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    Performance
-                </a>
-            </div>
-            <div class="sidebar-section">
-                <span class="sidebar-section-label">System</span>
-                <a class="sidebar-item " href="profile.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Profile
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                    Logs
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 110 12M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                    Settings
-                </a>
-            </div>
-        </nav>
-        <div class="sidebar-overlay" id="sidebarOverlay"></div><!-- MAIN CONTENT -->
-        <main class="main">
-
-            <!-- MAIN CONTENT AREA -->
-            <div class="main-content">
-
-                <!-- PAGE HEADER -->
-                <div class="page-header">
-                    <div class="page-header-left">
-                        <div class="breadcrumb">
-                            <a href="deployment.html">Home</a>
-                            <span>£</span>
-                            <a href="tickets.html">Tickets</a>
-                            <span>£</span>
-                            <span>#4538</span>
-                        </div>
-                        <h1 class="page-title">Ticket #4538</h1>
-                        <p class="page-subtitle">Testing on staging - emergency</p>
-                    </div>
-                    <div class="page-header-actions">
-                        <button class="btn btn-secondary">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-                            </svg>
-                            Export
-                        </button>
-                        <button class="btn btn-primary">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M9 11l3 3L22 4" />
-                                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
-                            </svg>
-                            Resolve Ticket
-                        </button>
-                    </div>
-                </div>
-
-                <!-- TABS -->
-                <div class="tab-bar">
-                    <div class="tab-item active" onclick="switchTab('comments')">Comments</div>
-                    <div class="tab-item" onclick="switchTab('history')">History</div>
-                    <div class="tab-item" onclick="switchTab('details')">Details</div>
-                </div>
-
-                <!-- COMMENTS TAB -->
-                <div id="comments-tab" class="panel" style="margin-top:0;border-top-left-radius:0;">
-                    <div class="panel-header">
-                        <span class="panel-title">Comments</span>
-                        <div class="action-cluster">
-                            <span class="badge badge-info">3 comments</span>
-                        </div>
-                    </div>
-
-                    <div class="comment-thread">
-                        <div class="comment">
-                            <div class="comment-avatar">CJ</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author">Catherine Jarosz</span>
-                                    <span class="comment-time">2 hours ago</span>
-                                </div>
-                                <div class="comment-text">
-                                    We need to test the staging environment urgently. The client is reporting issues with the checkout process and we need to verify before pushing to production. This is marked as high priority due to the potential revenue impact.
-                                </div>
-                                <div class="comment-actions">
-                                    <span class="comment-action">Reply</span>
-                                    <span class="comment-action">Edit</span>
-                                    <span class="comment-action">Delete</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="comment">
-                            <div class="comment-avatar orange">AP</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author">Adam Peace</span>
-                                    <span class="comment-time">1 hour ago</span>
-                                </div>
-                                <div class="comment-text">
-                                    I've started testing the staging environment. Initial checks show the checkout flow is working correctly, but there are some console errors related to payment gateway integration. Need to investigate further.
-                                </div>
-                                <div class="comment-actions">
-                                    <span class="comment-action">Reply</span>
-                                    <span class="comment-action">Edit</span>
-                                    <span class="comment-action">Delete</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="comment">
-                            <div class="comment-avatar teal">NE</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author">Nikoo Esharatabadi</span>
-                                    <span class="comment-time">30 minutes ago</span>
-                                </div>
-                                <div class="comment-text">
-                                    Found the issue! The payment gateway API keys were not updated in the staging environment. I've deployed the fix and verified the checkout process is now working correctly. Ready for production deployment.
-                                </div>
-                                <div class="comment-actions">
-                                    <span class="comment-action">Reply</span>
-                                    <span class="comment-action">Edit</span>
-                                    <span class="comment-action">Delete</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ADD COMMENT -->
-                    <div style="padding:20px;border-top:1px solid var(--navy-border);">
-                        <div class="form-group">
-                            <label class="form-label">Add Comment</label>
-                            <textarea class="form-textarea" placeholder="Type your comment here..." rows="3"></textarea>
-                        </div>
-                        <div class="action-cluster">
-                            <button class="btn btn-primary btn-sm">Post Comment</button>
-                            <button class="btn btn-ghost btn-sm">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- HISTORY TAB -->
-                <div id="history-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                    <div class="panel-header">
-                        <span class="panel-title">Ticket History</span>
-                    </div>
-
-                    <div class="comment-thread">
-                        <div class="comment">
-                            <div class="comment-avatar">CJ</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author">Catherine Jarosz</span>
-                                    <span class="comment-time">2 hours ago</span>
-                                </div>
-                                <div class="comment-text">
-                                    <strong>Created ticket</strong> with priority High and status Open
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="comment">
-                            <div class="comment-avatar orange">AP</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author">Adam Peace</span>
-                                    <span class="comment-time">1 hour ago</span>
-                                </div>
-                                <div class="comment-text">
-                                    <strong>Assigned to self</strong> and changed status to In Progress
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="comment">
-                            <div class="comment-avatar teal">NE</div>
-                            <div class="comment-content">
-                                <div class="comment-header">
-                                    <span class="comment-author">Nikoo Esharatabadi</span>
-                                    <span class="comment-time">30 minutes ago</span>
-                                </div>
-                                <div class="comment-text">
-                                    <strong>Added comment</strong>: Found the issue! The payment gateway API keys were not updated in the staging environment.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DETAILS TAB -->
-                <div id="details-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                    <div class="panel-header">
-                        <span class="panel-title">Ticket Details</span>
-                        <div class="action-cluster">
-                            <button class="btn btn-secondary btn-sm">Edit</button>
-                        </div>
-                    </div>
-
-                    <div class="panel-body">
-                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px;">
-                            <div class="form-group">
-                                <label class="form-label">Ticket ID</label>
-                                <input type="text" class="form-input" value="#4538" readonly>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Status</label>
-                                <select class="form-select">
-                                    <option>Open</option>
-                                    <option>In Progress</option>
-                                    <option>Resolved</option>
-                                    <option>Closed</option>
-                                    <option>On Hold</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Priority</label>
-                                <select class="form-select">
-                                    <option>Highest</option>
-                                    <option selected>High</option>
-                                    <option>Medium</option>
-                                    <option>Low</option>
-                                    <option>Lowest</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Type</label>
-                                <select class="form-select">
-                                    <option selected>Bug</option>
-                                    <option>Feature</option>
-                                    <option>Task</option>
-                                    <option>Improvement</option>
-                                    <option>Epic</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Assignee</label>
-                                <select class="form-select">
-                                    <option>Catherine Jarosz</option>
-                                    <option selected>Adam Peace</option>
-                                    <option>Nikoo Esharatabadi</option>
-                                    <option>David Walsh</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Client</label>
-                                <select class="form-select">
-                                    <option selected>Test Company</option>
-                                    <option>Example Agency</option>
-                                    <option>Atherton Bikes</option>
-                                    <option>Sensory Direct</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="margin-top:20px;">
-                            <label class="form-label">Subject</label>
-                            <input type="text" class="form-input" value="Testing on staging - emergency">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Description</label>
-                            <textarea class="form-textarea" rows="6">We need to test the staging environment urgently. The client is reporting issues with the checkout process and we need to verify before pushing to production. This is marked as high priority due to the potential revenue impact.
-
-Issues reported:
-- Checkout not completing successfully
-- Payment gateway errors
-- Customer unable to complete purchases
-
-Environment: Staging
-URL: staging.example.com</textarea>
-                        </div>
-
-                        <div class="action-cluster" style="margin-top:20px;">
-                            <button class="btn btn-primary">Save Changes</button>
-                            <button class="btn btn-secondary">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- RIGHT SIDEBAR -->
-            <div class="sidebar-panel">
-
-                <!-- TICKET INFO -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <span class="panel-title">Ticket Information</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Status</div>
-                            <span class="badge badge-danger">Open</span>
-                        </div>
-
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Priority</div>
-                            <div style="display:flex;align-items:center;gap:8px;">
-                                <div class="priority-indicator priority-high"></div>
-                                <span style="color:var(--white-90);font-weight:500;">High</span>
-                            </div>
-                        </div>
-
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Type</div>
-                            <span class="badge badge-warning">Bug</span>
-                        </div>
-
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Details</div>
-                            <div class="info-row">
-                                <span class="info-label">Ticket ID:</span>
-                                <span class="info-value">#4538</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Created:</span>
-                                <span class="info-value">2026-04-22 09:15</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Updated:</span>
-                                <span class="info-value">2 hours ago</span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">Reporter:</span>
-                                <span class="info-value">Catherine Jarosz</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PEOPLE -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <span class="panel-title">People</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Assignee</div>
-                            <div style="display:flex;align-items:center;gap:8px;">
-                                <div style="width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--orange),#e05216);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;font-family:var(--font-display);">AP</div>
-                                <span style="color:var(--white-90);font-size:13px;">Adam Peace</span>
-                            </div>
-                        </div>
-
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Reporter</div>
-                            <div style="display:flex;align-items:center;gap:8px;">
-                                <div style="width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,var(--blue-mid),var(--blue-bright));display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:white;font-family:var(--font-display);">CJ</div>
-                                <span style="color:var(--white-90);font-size:13px;">Catherine Jarosz</span>
-                            </div>
-                        </div>
-
-                        <div class="sidebar-section">
-                            <div class="sidebar-section-title">Client</div>
-                            <div style="color:var(--white-90);font-size:13px;">Test Company</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ENVIRONMENT -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <span class="panel-title">Environment</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="info-row">
-                            <span class="info-label">Environment:</span>
-                            <span class="info-value">Staging</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">URL:</span>
-                            <span class="info-value" style="color:var(--blue-bright);">staging.example.com</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Platform:</span>
-                            <span class="info-value">Magento 2</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">Server:</span>
-                            <span class="info-value">staging-01</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- QUICK ACTIONS -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <span class="panel-title">Quick Actions</span>
-                    </div>
-                    <div class="panel-body">
-                        <div style="display:flex;flex-direction:column;gap:8px;">
-                            <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
-                                    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                </svg>
-                                Edit Ticket
-                            </button>
-                            <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M22 21v-2a4 4 0 00-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 010 7.75" />
-                                </svg>
-                                Assign to Me
-                            </button>
-                            <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                                    <polyline points="17 8 12 3 7 8" />
-                                    <line x1="12" y1="3" x2="12" y2="15" />
-                                </svg>
-                                Watch Ticket
-                            </button>
-                            <button class="btn btn-danger btn-sm" style="width:100%;justify-content:center;">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="3 6 5 6 21 6" />
-                                    <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
-                                </svg>
-                                Delete Ticket
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-        </main>
+  <header class="topbar">
+    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+    <a class="topbar-logo" href="index.html">
+      <div class="topbar-logo-icon">Cf</div>
+      <span class="topbar-logo-text">corefinity</span>
+    </a>
+    <div class="topbar-divider"></div>
+    <select class="topbar-client-select">
+      <option>All clients</option>
+      <option>Example Agency</option>
+      <option>Atherton Bikes</option>
+      <option>Sensory Direct</option>
+    </select>
+    <div class="topbar-search">
+      <span class="search-icon-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <path d="M21 21l-4.35-4.35" />
+        </svg></span>
+      <input type="text" placeholder="Search anything…" aria-label="Search">
+      <span class="search-kbd">/</span>
     </div>
+    <div class="topbar-actions">
+      <button class="topbar-icon-btn" title="Terminal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8">
+          <polyline points="4 17 10 11 4 5" />
+          <line x1="12" y1="19" x2="20" y2="19" />
+        </svg></button>
+      <button class="topbar-icon-btn" title="Documentation"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
+        </svg></button>
+      <button class="topbar-icon-btn" title="Notifications"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+        </svg><span class="notif-dot"></span></button>
+      <a class="topbar-user" href="profile.html">
+        <div class="topbar-avatar">CJ</div>
+        <span class="topbar-username">Catherine Jarosz</span>
+        <span class="topbar-chevron">▾</span>
+      </a>
+    </div>
+  </header>
 
-    
+  <div class="layout">
+
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Overview</span>
+        <a class="sidebar-item" href="index.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          </svg>
+          Dashboard
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Infrastructure</span>
+        <a class="sidebar-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
+          </svg>
+          Websites
+        </a>
+        <a class="sidebar-item" href="environments.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          Environments
+          <span class="sidebar-badge">12</span>
+        </a>
+        <div class="sidebar-sub">
+          <a class="sidebar-item" href="environments.html">Production</a>
+          <a class="sidebar-item" href="environments.html">Staging</a>
+          <a class="sidebar-item" href="environments.html">Development</a>
+        </div>
+        <a class="sidebar-item" href="deployment.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
+          Deployments
+        </a>
+        <a class="sidebar-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="3" width="20" height="14" rx="2" />
+            <path d="M8 21h8M12 17v4" />
+          </svg>
+          Clusters
+        </a>
+        <a class="sidebar-item" href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="2" width="20" height="8" rx="2" />
+            <rect x="2" y="14" width="20" height="8" rx="2" />
+            <path d="M6 6h.01M6 18h.01" />
+          </svg>
+          Providers
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Support</span>
+        <a class="sidebar-item active" href="tickets.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+          </svg>
+          Tickets
+          <span class="sidebar-badge">3</span>
+        </a>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">Monitoring</span>
+        <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>All Monitors</a>
+        <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>Performance</a>
+      </div>
+      <div class="sidebar-section">
+        <span class="sidebar-section-label">System</span>
+        <a class="sidebar-item" href="profile.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          Profile
+        </a>
+        <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg>Logs</a>
+        <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+          </svg>Settings</a>
+      </div>
+    </nav>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <main class="main">
+
+      <div class="page-header">
+        <div>
+          <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><a
+              href="tickets.html">Tickets</a><span>›</span><span>#3421</span></div>
+          <h1 class="page-title">Ticket #3421</h1>
+          <p class="page-subtitle">Checkout 500 on production · Example Agency</p>
+        </div>
+        <div class="page-header-actions"><button class="btn btn-secondary">Mark as resolved</button><button
+            class="btn btn-primary">Reply</button></div>
+      </div>
+      <div class="grid" style="grid-template-columns:2fr 1fr;gap:18px">
+        <div>
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Conversation</div>
+                <div class="panel-desc">3 messages · last update 4m ago</div>
+              </div><span class="badge warning">In progress</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;gap:12px">
+                <div
+                  style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--orange-hover));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">
+                  SC</div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between"><b>Sam Cooper</b><span
+                      style="color:var(--slate);font-size:12px">2h ago</span></div>
+                  <div style="margin-top:4px;color:var(--white-90)">Customers are getting a 500 on /checkout
+                    intermittently. Started about 2 hours ago. Sentry shows a database timeout.</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px">
+                <div
+                  style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue-bright),var(--blue-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">
+                  CJ</div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between"><b>Catherine (Corefinity)</b><span
+                      style="color:var(--slate);font-size:12px">1h ago</span></div>
+                  <div style="margin-top:4px;color:var(--white-90)">Looking into it now. I see the connection pool is
+                    saturated — scaling pods and investigating the long-running query.</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px">
+                <div
+                  style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--blue-bright),var(--blue-mid));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;flex-shrink:0">
+                  CJ</div>
+                <div style="flex:1">
+                  <div style="display:flex;justify-content:space-between"><b>Catherine (Corefinity)</b><span
+                      style="color:var(--slate);font-size:12px">4m ago</span></div>
+                  <div style="margin-top:4px;color:var(--white-90)">Pods scaled 4→8, slow query identified and patched
+                    in <code
+                      style="font-family:var(--font-mono);font-size:12px;color:var(--blue-bright)">a3f9c21</code>.
+                    Monitoring for 15 min before closing.</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:18px;padding-top:18px;border-top:1px solid var(--navy-border)">
+              <div class="field"><label>Reply</label><textarea placeholder="Write a message…"></textarea></div>
+              <div class="form-actions" style="border:none;padding:14px 0 0"><button class="btn btn-secondary">Add
+                  internal note</button><button class="btn btn-primary">Send reply</button></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="panel-title" style="margin-bottom:14px">Details</div>
+            <div style="display:flex;flex-direction:column;gap:12px;font-size:13.5px">
+              <div style="display:flex;justify-content:space-between"><span
+                  style="color:var(--slate)">Status</span><span class="badge warning">In progress</span></div>
+              <div style="display:flex;justify-content:space-between"><span
+                  style="color:var(--slate)">Priority</span><span class="badge danger">High</span></div>
+              <div style="display:flex;justify-content:space-between"><span
+                  style="color:var(--slate)">Client</span><span>Example Agency</span></div>
+              <div style="display:flex;justify-content:space-between"><span
+                  style="color:var(--slate)">Environment</span><span>example-agency / production</span></div>
+              <div style="display:flex;justify-content:space-between"><span
+                  style="color:var(--slate)">Assignee</span><span>Catherine J.</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--slate)">SLA</span><span
+                  class="badge success">3h 12m left</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title" style="margin-bottom:14px">Linked</div>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+              <a href="deployment.html"
+                style="display:flex;justify-content:space-between;padding:10px;border:1px solid var(--navy-border);border-radius:9px"><span>Deployment
+                  #3421</span><span class="badge success">Live</span></a>
+              <a href="environments.html"
+                style="display:flex;justify-content:space-between;padding:10px;border:1px solid var(--navy-border);border-radius:9px"><span>example-agency
+                  / production</span><span class="badge info">Env</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+    <svg class="icon-moon" viewBox="0 0 24 24">
+      <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+    </svg>
+    <svg class="icon-sun" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" />
+      <path
+        d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+    </svg>
+  </button>
 
 
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var saved = localStorage.getItem('cf-theme') || 'dark';
+      root.setAttribute('data-theme', saved);
+      document.addEventListener('click', function (e) {
+        var t = e.target.closest('#themeToggle'); if (!t) return;
+        var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        root.setAttribute('data-theme', next); localStorage.setItem('cf-theme', next);
+      });
+      window.addEventListener('storage', function (e) { if (e.key === 'cf-theme' && e.newValue) root.setAttribute('data-theme', e.newValue); });
+      function init() {
+        var btn = document.getElementById('mobileMenuBtn'), sb = document.getElementById('sidebar'), ov = document.getElementById('sidebarOverlay');
+        if (btn && sb) {
+          btn.addEventListener('click', function () { sb.classList.toggle('mobile-open'); if (ov) ov.classList.toggle('active'); });
+          if (ov) ov.addEventListener('click', function () { sb.classList.remove('mobile-open'); ov.classList.remove('active'); });
+          window.addEventListener('resize', function () { if (window.innerWidth > 960) { sb.classList.remove('mobile-open'); if (ov) ov.classList.remove('active'); } });
+        }
 
-
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
-  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-  <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-</button>
-<script>
-(function(){
-  var root = document.documentElement;
-  var saved = localStorage.getItem('cf-theme') || 'dark';
-  root.setAttribute('data-theme', saved);
-  document.addEventListener('click', function(e){
-    var t = e.target.closest('#themeToggle'); if(!t) return;
-    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    localStorage.setItem('cf-theme', next);
-  });
-})();
-</script>
-
-<script>
-(function(){
-  function init(){
-    var btn = document.getElementById('mobileMenuBtn');
-    var sb = document.getElementById('sidebar');
-    var ov = document.getElementById('sidebarOverlay');
-    if (!btn || !sb) return;
-    btn.addEventListener('click', function(){
-      sb.classList.toggle('mobile-open');
-      if (ov) ov.classList.toggle('active');
-    });
-    if (ov) ov.addEventListener('click', function(){
-      sb.classList.remove('mobile-open');
-      ov.classList.remove('active');
-    });
-    window.addEventListener('resize', function(){
-      if (window.innerWidth > 960) {
-        sb.classList.remove('mobile-open');
-        if (ov) ov.classList.remove('active');
+        document.querySelectorAll('.env-tabs').forEach(function (group) {
+          group.querySelectorAll('.env-tab').forEach(function (tab) {
+            tab.addEventListener('click', function () {
+              group.querySelectorAll('.env-tab').forEach(function (t) { t.classList.remove('active'); });
+              tab.classList.add('active');
+              var target = tab.getAttribute('data-tab');
+              document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+              var el = document.getElementById('panel-' + target); if (el) el.classList.add('active');
+            });
+          });
+        });
       }
-    });
-  }
-  if (document.readyState !== 'loading') init();
-  else document.addEventListener('DOMContentLoaded', init);
-})();
-</script>
-
-
-<!-- CF SHARED THEME + RESPONSIVE FIXES -->
-<style id="cf-shared-fixes">
-/* === LIGHT THEME OVERRIDES for navbar/topbar/sidebar and components === */
-:root[data-theme="light"] body { background: var(--c-0b1829) !important; color: var(--c-ffffff) !important; }
-:root[data-theme="light"] body::before { background-image:
-  linear-gradient(rgba(20,116,204,0.05) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(20,116,204,0.05) 1px, transparent 1px) !important; }
-:root[data-theme="light"] .topbar { background: rgba(255,255,255,0.92) !important; border-bottom-color: #E4EAF2 !important; }
-:root[data-theme="light"] .topbar-logo-text,
-:root[data-theme="light"] .topbar-username,
-:root[data-theme="light"] .page-title,
-:root[data-theme="light"] .panel-title,
-:root[data-theme="light"] .sidebar-item { color: #0B1829 !important; }
-:root[data-theme="light"] .sidebar { background: #FFFFFF !important; border-right: 1px solid #E4EAF2 !important; }
-:root[data-theme="light"] .sidebar-item:hover { background: rgba(11,24,41,0.05) !important; color: #0B1829 !important; }
-:root[data-theme="light"] .sidebar-item.active { background: rgba(30,155,255,0.10) !important; color: #1474CC !important; }
-:root[data-theme="light"] .sidebar-section-label { color: #5A6B82 !important; }
-:root[data-theme="light"] .topbar-icon-btn,
-:root[data-theme="light"] .topbar-user,
-:root[data-theme="light"] .topbar-client-select,
-:root[data-theme="light"] .topbar-search input,
-:root[data-theme="light"] .mobile-menu-btn { background: #F4F6FA !important; border-color: #E4EAF2 !important; color: #0B1829 !important; }
-:root[data-theme="light"] .topbar-search input::placeholder { color: #5A6B82 !important; }
-:root[data-theme="light"] .panel,
-:root[data-theme="light"] .card,
-:root[data-theme="light"] .stat-card,
-:root[data-theme="light"] .deployment-card,
-:root[data-theme="light"] .ticket-card,
-:root[data-theme="light"] .env-card { background: #FFFFFF !important; border-color: #E4EAF2 !important; color: #0B1829 !important; box-shadow: 0 4px 24px rgba(11,24,41,0.06) !important; }
-:root[data-theme="light"] .panel-header,
-:root[data-theme="light"] table thead { background: #F4F6FA !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] table, :root[data-theme="light"] table td, :root[data-theme="light"] table th { color: #0B1829 !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] table tbody tr:hover { background: rgba(11,24,41,0.04) !important; }
-:root[data-theme="light"] .btn-secondary,
-:root[data-theme="light"] .btn.btn-secondary { background: #F4F6FA !important; color: #0B1829 !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] input, :root[data-theme="light"] textarea, :root[data-theme="light"] select { background: #FFFFFF !important; color: #0B1829 !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] .breadcrumb,
-:root[data-theme="light"] .page-subtitle,
-:root[data-theme="light"] .muted,
-:root[data-theme="light"] .text-muted { color: #5A6B82 !important; }
-:root[data-theme="light"] .sidebar-overlay { background: rgba(11,24,41,0.35) !important; }
-
-/* === EXTRA RESPONSIVE FIXES === */
-@media (max-width: 1024px) {
-  .topbar-search { max-width: 260px !important; }
-  .topbar-username { display: none !important; }
-}
-@media (max-width: 768px) {
-  .topbar { padding: 0 12px !important; gap: 8px !important; }
-  .topbar-client-select { display: none !important; }
-  .topbar-search { display: none !important; }
-  .main { padding: 16px !important; }
-  .page-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
-  .page-header-actions { flex-wrap: wrap !important; width: 100% !important; }
-  .page-title { font-size: 22px !important; }
-  table { font-size: 13px !important; }
-  .panel { overflow-x: auto !important; }
-  .grid, .stats-grid, .cards-grid { grid-template-columns: 1fr !important; }
-}
-@media (max-width: 480px) {
-  .topbar { height: 56px !important; }
-  .topbar-logo-text { display: none !important; }
-  .btn { padding: 8px 12px !important; font-size: 13px !important; }
-  .theme-toggle { width: 40px !important; height: 40px !important; bottom: 12px !important; right: 12px !important; }
-}
-img, video, table { max-width: 100%; }
-.main { min-width: 0 !important; }
-</style>
-
-<script>
-/* Sync theme across pages */
-(function(){
-  window.addEventListener('storage', function(e){
-    if (e.key === 'cf-theme' && e.newValue) {
-      document.documentElement.setAttribute('data-theme', e.newValue);
-    }
-  });
-})();
-</script>
+      if (document.readyState !== 'loading') init(); else document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
 
 </body>
+
 </html>
