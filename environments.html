@@ -1,1771 +1,2568 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Environments — Corefinity</title>
-<style>
-:root{
-  --c-0b1829: #0B1829;
-  --c-0b1829: #0b1829;
-  --c-111f33: #111f33;
-  --c-14263d: #14263d;
-  --c-1e3350: #1e3350;
-  --c-8ca4be: #8ca4be;
-  --c-b4c8df: #b4c8df;
-  --c-ffffff: #ffffff;
-  --c-1e9bff: #1E9BFF;
-  --c-1474cc: #1474CC;
-  --c-00c9b1: #00C9B1;
-  --c-00a896: #00a896;
-  --c-f26522: #F26522;
-  --tt-bg: rgba(255,255,255,0.06);
-  --tt-border: rgba(255,255,255,0.14);
-  --tt-fg: #ffffff;
-}
-:root[data-theme="light"]{
-  --c-0b1829: #F4F6FA;
-  --c-0b1829: #F4F6FA;
-  --c-111f33: #FFFFFF;
-  --c-14263d: #FFFFFF;
-  --c-1e3350: #E4EAF2;
-  --c-8ca4be: #5A6B82;
-  --c-b4c8df: #1F2D40;
-  --c-ffffff: #0B1829;
-  --c-1e9bff: #1E9BFF;
-  --c-1474cc: #1474CC;
-  --c-00c9b1: #00B89E;
-  --c-00a896: #00917F;
-  --c-f26522: #F26522;
-  --tt-bg: rgba(11,24,41,0.06);
-  --tt-border: rgba(11,24,41,0.10);
-  --tt-fg: #0B1829;
-}
-html, body { transition: background-color .35s ease, color .35s ease; }
-.theme-toggle {
-  position: fixed; top: 18px; right: 18px; z-index: 9999;
-  width: 42px; height: 42px; border-radius: 999px;
-  display: inline-flex; align-items: center; justify-content: center;
-  background: var(--tt-bg);
-  border: 1px solid var(--tt-border);
-  color: var(--tt-fg);
-  cursor: pointer;
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  transition: transform .25s ease, background .25s ease, border-color .25s ease;
-  box-shadow: 0 6px 20px -8px rgba(0,0,0,0.3);
-}
-.theme-toggle:hover { transform: translateY(-1px); }
-.theme-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
-
-
-/* ============================
-   CSS CUSTOM PROPERTIES
-============================ */
-:root {
-  --navy: var(--c-0b1829);
-  --navy-mid: var(--c-111f33);
-  --navy-card: var(--c-14263d);
-  --navy-border: var(--c-1e3350);
-  --blue-bright: var(--c-1e9bff);
-  --blue-mid: var(--c-1474cc);
-  --orange: var(--c-f26522);
-  --orange-hover: #d95a16;
-  --teal: var(--c-00c9b1);
-  --slate: var(--c-8ca4be);
-  --slate-light: var(--c-b4c8df);
-  --white: var(--c-ffffff);
-  --white-90: rgba(255,255,255,0.9);
-  --white-60: rgba(255,255,255,0.6);
-  --white-30: rgba(255,255,255,0.3);
-  --white-10: rgba(255,255,255,0.08);
-  --white-05: rgba(255,255,255,0.04);
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --danger: #ef4444;
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-  --radius: 12px;
-  --radius-sm: 8px;
-  --radius-lg: 18px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.35);
-  --shadow-lg: 0 12px 48px rgba(0,0,0,0.5);
-  --glow-blue: 0 0 40px rgba(30,155,255,0.18);
-  --glow-orange: 0 0 40px rgba(242,101,34,0.25);
-  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--navy);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.6;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ============================
-   SUBTLE GRID BACKGROUND
-============================ */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(30,155,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(30,155,255,0.03) 1px, transparent 1px);
-  background-size: 48px 48px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ============================
-   TOP NAVIGATION BAR
-============================ */
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(11,24,41,0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--navy-border);
-  height: 60px;
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  gap: 16px;
-}
-
-.topbar-logo {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-
-.topbar-logo-icon {
-  width: 32px;
-  height: 32px;
-  background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 800;
-  color: white;
-  font-family: var(--font-display);
-  letter-spacing: -1px;
-}
-
-.topbar-logo-text {
-  font-family: var(--font-display);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.3px;
-}
-
-.topbar-client-select {
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  border-radius: 8px;
-  padding: 6px 12px;
-  color: var(--slate-light);
-  font-family: var(--font-body);
-  font-size: 13px;
-  cursor: pointer;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238ca4be' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
-  min-width: 180px;
-}
-
-.topbar-search {
-  flex: 1;
-  max-width: 420px;
-  position: relative;
-}
-
-.topbar-search input {
-  width: 100%;
-  background: var(--white-05);
-  border: 1px solid var(--navy-border);
-  border-radius: 8px;
-  padding: 7px 14px 7px 36px;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 13px;
-  outline: none;
-  transition: var(--transition);
-}
-
-.topbar-search input::placeholder { color: var(--slate); }
-.topbar-search input:focus { border-color: var(--blue-bright); background: var(--white-10); }
-
-.topbar-search-icon {
-  position: absolute;
-  left: 11px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--slate);
-  font-size: 14px;
-}
-
-.topbar-actions {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.topbar-icon-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--slate-light);
-  font-size: 15px;
-  transition: var(--transition);
-  position: relative;
-}
-
-.topbar-icon-btn:hover { background: var(--white-10); color: var(--white); border-color: var(--blue-bright); }
-
-.notif-dot {
-  position: absolute;
-  top: 7px;
-  right: 7px;
-  width: 7px;
-  height: 7px;
-  background: var(--orange);
-  border-radius: 50%;
-  border: 1.5px solid var(--navy);
-}
-
-.topbar-user {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 5px 10px 5px 5px;
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: var(--transition);
-}
-
-.topbar-user:hover { border-color: var(--blue-bright); }
-
-.topbar-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  background: linear-gradient(135deg, var(--orange), #e05216);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  color: white;
-  font-family: var(--font-display);
-}
-
-.topbar-username {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--white-90);
-}
-
-.topbar-chevron { color: var(--slate); font-size: 11px; }
-
-/* ============================
-   LAYOUT SHELL
-============================ */
-.layout {
-  display: flex;
-  min-height: calc(100vh - 60px);
-  position: relative;
-  z-index: 1;
-}
-
-/* ============================
-   SIDEBAR
-============================ */
-.sidebar {
-  width: 220px;
-  flex-shrink: 0;
-  background: var(--navy-mid);
-  border-right: 1px solid var(--navy-border);
-  padding: 20px 0;
-  overflow-y: auto;
-  position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
-}
-
-.sidebar::-webkit-scrollbar { width: 3px; }
-.sidebar::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb { background: var(--navy-border); border-radius: 2px; }
-
-.sidebar-section {
-  margin-bottom: 6px;
-}
-
-.sidebar-section-label {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--slate);
-  padding: 10px 20px 6px;
-}
-
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 8px 20px;
-  text-decoration: none;
-  color: var(--slate-light);
-  font-size: 13.5px;
-  font-weight: 400;
-  transition: var(--transition);
-  border-left: 2px solid transparent;
-  cursor: pointer;
-}
-
-.sidebar-item:hover { color: var(--white); background: var(--white-05); }
-
-.sidebar-item.active {
-  color: var(--blue-bright);
-  background: rgba(30,155,255,0.08);
-  border-left-color: var(--blue-bright);
-  font-weight: 500;
-}
-
-.sidebar-item svg {
-  width: 16px;
-  height: 16px;
-  opacity: 0.8;
-  flex-shrink: 0;
-}
-
-.sidebar-item.active svg { opacity: 1; }
-
-.sidebar-badge {
-  margin-left: auto;
-  background: var(--orange);
-  color: white;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 1px 6px;
-  border-radius: 20px;
-}
-
-.sidebar-sub {
-  padding-left: 44px;
-}
-
-.sidebar-sub .sidebar-item {
-  font-size: 13px;
-  padding: 6px 20px 6px 0;
-  border-left: none;
-}
-
-/* ============================
-   MAIN CONTENT
-============================ */
-.main {
-  flex: 1;
-  min-width: 0;
-  padding: 32px 36px 60px;
-}
-
-/* ============================
-   PAGE HEADER
-============================ */
-.page-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 28px;
-  gap: 16px;
-}
-
-.page-header-left {}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12.5px;
-  color: var(--slate);
-  margin-bottom: 8px;
-}
-
-.breadcrumb a { color: var(--blue-bright); text-decoration: none; }
-.breadcrumb a:hover { text-decoration: underline; }
-.breadcrumb span { opacity: 0.5; }
-
-.page-title {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 700;
-  color: var(--white);
-  letter-spacing: -0.5px;
-}
-
-.page-subtitle {
-  color: var(--slate);
-  font-size: 14px;
-  margin-top: 4px;
-}
-
-.page-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-/* ============================
-   BUTTONS
-============================ */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 9px 18px;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  font-weight: 500;
-  cursor: pointer;
-  border: none;
-  transition: var(--transition);
-  text-decoration: none;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.btn-primary {
-  background: var(--orange);
-  color: white;
-  box-shadow: 0 2px 12px rgba(242,101,34,0.35);
-}
-
-.btn-primary:hover { background: var(--orange-hover); transform: translateY(-1px); box-shadow: 0 4px 18px rgba(242,101,34,0.4); }
-
-.btn-secondary {
-  background: var(--white-10);
-  color: var(--white-90);
-  border: 1px solid var(--navy-border);
-}
-
-.btn-secondary:hover { background: var(--white-10); border-color: var(--blue-bright); color: var(--white); }
-
-.btn-blue {
-  background: var(--blue-bright);
-  color: white;
-  box-shadow: 0 2px 12px rgba(30,155,255,0.3);
-}
-
-.btn-blue:hover { background: var(--blue-mid); transform: translateY(-1px); }
-
-.btn-ghost {
-  background: transparent;
-  color: var(--slate-light);
-  border: 1px solid var(--navy-border);
-}
-
-.btn-ghost:hover { color: var(--white); border-color: var(--slate); }
-
-.btn-sm { padding: 6px 12px; font-size: 12.5px; }
-.btn-icon { padding: 8px; width: 34px; height: 34px; justify-content: center; }
-
-.btn-danger { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
-.btn-danger:hover { background: rgba(239,68,68,0.25); }
-
-/* ============================
-   PANEL / CARD
-============================ */
-.panel {
-  background: var(--navy-card);
-  border: 1px solid var(--navy-border);
-  border-radius: var(--radius);
-  overflow: hidden;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--navy-border);
-}
-
-.panel-title {
-  font-family: var(--font-display);
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--white);
-}
-
-.panel-body { padding: 20px; }
-
-.panel-body.no-pad { padding: 0; }
-
-/* ============================
-   BADGES / STATUS PILLS
-============================ */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 9px;
-  border-radius: 20px;
-  font-size: 11.5px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.badge::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.badge-success { background: rgba(34,197,94,0.12); color: #4ade80; }
-.badge-success::before { background: #4ade80; box-shadow: 0 0 5px #4ade80; }
-
-.badge-danger { background: rgba(239,68,68,0.12); color: #f87171; }
-.badge-danger::before { background: #f87171; }
-
-.badge-warning { background: rgba(245,158,11,0.12); color: #fbbf24; }
-.badge-warning::before { background: #fbbf24; }
-
-.badge-info { background: rgba(30,155,255,0.12); color: var(--blue-bright); }
-.badge-info::before { background: var(--blue-bright); }
-
-.badge-neutral { background: var(--white-10); color: var(--slate-light); }
-.badge-neutral::before { background: var(--slate); }
-
-.badge-orange { background: rgba(242,101,34,0.12); color: var(--orange); }
-.badge-orange::before { background: var(--orange); }
-
-/* ============================
-   TABS COMPONENT
-============================ */
-.tab-bar {
-  display: flex;
-  gap: 2px;
-  border-bottom: 1px solid var(--navy-border);
-  padding: 0 20px;
-  overflow-x: auto;
-}
-
-.tab-bar::-webkit-scrollbar { height: 2px; }
-
-.tab-item {
-  padding: 12px 14px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--slate);
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
-  white-space: nowrap;
-  transition: var(--transition);
-}
-
-.tab-item:hover {
-  color: var(--white);
-}
-
-.tab-item.active {
-  color: var(--orange);
-  border-bottom-color: var(--orange);
-}
-
-/* ============================
-   TABLE
-============================ */
-.cf-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.cf-table thead tr {
-  border-bottom: 1px solid var(--navy-border);
-}
-
-.cf-table th {
-  text-align: left;
-  padding: 11px 16px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--slate);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  white-space: nowrap;
-}
-
-.cf-table th .sort-icon { opacity: 0.5; margin-left: 4px; cursor: pointer; }
-
-.cf-table td {
-  padding: 12px 16px;
-  font-size: 13.5px;
-  color: var(--white-90);
-  border-bottom: 1px solid rgba(30,51,80,0.5);
-  vertical-align: middle;
-}
-
-.cf-table tbody tr { transition: var(--transition); }
-
-.cf-table tbody tr:last-child td { border-bottom: none; }
-
-.cf-table tbody tr:hover td { background: var(--white-05); }
-
-.cf-table .link { color: var(--blue-bright); text-decoration: none; cursor: pointer; }
-.cf-table .link:hover { text-decoration: underline; }
-
-/* ============================
-   FORM ELEMENTS
-============================ */
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 16px;
-}
-
-.form-label {
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--slate-light);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.form-input, .form-select, .form-textarea {
-  background: var(--white-10);
-  border: 1px solid var(--navy-border);
-  border-radius: var(--radius-sm);
-  padding: 8px 12px;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 13.5px;
-  outline: none;
-  transition: var(--transition);
-}
-
-.form-input::placeholder, .form-textarea::placeholder {
-  color: var(--slate);
-}
-
-.form-input:focus, .form-select:focus, .form-textarea:focus {
-  border-color: var(--blue-bright);
-  background: rgba(30,155,255,0.05);
-}
-
-.form-textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-.form-help {
-  font-size: 12px;
-  color: var(--slate);
-  margin-top: 2px;
-}
-
-/* ============================
-   ACTION CLUSTER
-============================ */
-.action-cluster {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-/* ============================
-   STATUS INDICATORS
-============================ */
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.status-dot.up { background: var(--success); }
-.status-dot.down { background: var(--danger); }
-.status-dot.warning { background: var(--warning); }
-
-/* ============================
-   METRIC CARDS
-============================ */
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.metric-card {
-  background: var(--white-05);
-  border: 1px solid var(--navy-border);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  text-align: center;
-}
-
-.metric-value {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 4px;
-}
-
-.metric-label {
-  font-size: 12px;
-  color: var(--slate);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* ============================
-   RESPONSIVE TWEAKS
-============================ */
-@media (max-width: 900px) {
-  .sidebar {
-    display: none;
-  }
-
-  .main {
-    padding: 20px;
-  }
-}
-
-/* ============================
-   SCROLLBAR
-============================ */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--navy);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--navy-border);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--slate);
-}
-
-</style>
-
-<style id="cf-injected-responsive">
-@media (max-width: 960px) {
-  .sidebar { position: fixed !important; left: 0; top: var(--topbar-height, 62px); transform: translateX(-100%); z-index: 200; width: 262px; height: calc(100vh - var(--topbar-height, 62px)); transition: transform .25s ease; box-shadow: 0 16px 60px rgba(0,0,0,0.6); display: block !important; }
-  .sidebar.mobile-open { transform: translateX(0); }
-  .sidebar-overlay { display: none; position: fixed; inset: var(--topbar-height,62px) 0 0 0; background: rgba(0,0,0,0.5); z-index: 150; }
-  .sidebar-overlay.active { display: block; }
-  .mobile-menu-btn { display: inline-flex !important; }
-  .topbar-client-select, .topbar-divider, .topbar-username { display: none !important; }
-  .topbar-search { max-width: 220px; }
-  .main { padding: 18px !important; }
-}
-@media (max-width: 600px) {
-  .topbar-search { display: none !important; }
-  .topbar-logo-text { display: none; }
-  .stats-row, .grid, .cards-grid { grid-template-columns: 1fr !important; }
-  .page-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-}
-.theme-toggle { position: fixed; bottom: 18px; right: 18px; top: auto; z-index: 9999; width: 44px; height: 44px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #fff; cursor: pointer; backdrop-filter: blur(14px) saturate(160%); box-shadow: 0 6px 20px -8px rgba(0,0,0,0.4); }
-:root[data-theme="light"] .theme-toggle { background: rgba(11,24,41,0.06); border-color: rgba(11,24,41,0.12); color: #0B1829; }
-.theme-toggle svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.theme-toggle .icon-sun { display: none; }
-:root[data-theme="light"] .theme-toggle .icon-sun { display: block; }
-:root[data-theme="light"] .theme-toggle .icon-moon { display: none; }
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+    <title>Environments — Corefinity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #080f1a;
+            --navy-mid: #0d1825;
+            --navy-card: #111e2e;
+            --navy-card-hover: #152435;
+            --navy-border: #1a2f48;
+            --navy-border-light: #203a57;
+            --blue-bright: #2196ff;
+            --blue-mid: #1474CC;
+            --blue-glow: rgba(33, 150, 255, .15);
+            --orange: #f5722a;
+            --orange-hover: #e05a16;
+            --orange-glow: rgba(245, 114, 42, .15);
+            --teal: #00d9be;
+            --teal-glow: rgba(0, 217, 190, .12);
+            --slate: #7a96b4;
+            --slate-light: #a8c0d8;
+            --white: #f0f6ff;
+            --white-90: rgba(240, 246, 255, .9);
+            --white-60: rgba(240, 246, 255, .6);
+            --white-30: rgba(240, 246, 255, .3);
+            --white-10: rgba(255, 255, 255, .07);
+            --white-05: rgba(255, 255, 255, .03);
+            --success: #22d45e;
+            --success-glow: rgba(34, 212, 94, .12);
+            --warning: #f5a623;
+            --danger: #ef4444;
+            --purple: #a855f7;
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 14px;
+            --radius-sm: 9px;
+            --radius-lg: 20px;
+            --shadow: 0 4px 30px rgba(0, 0, 0, .45);
+            --shadow-lg: 0 16px 60px rgba(0, 0, 0, .6);
+            --transition: .2s cubic-bezier(.4, 0, .2, 1);
+            --sidebar-width: 228px;
+            --topbar-height: 62px;
+        }
+
+        :root[data-theme="light"] {
+            --navy: #F4F6FA;
+            --navy-mid: #FFFFFF;
+            --navy-card: #FFFFFF;
+            --navy-card-hover: #F0F3F8;
+            --navy-border: #E4EAF2;
+            --navy-border-light: #D6DEEA;
+            --slate: #5A6B82;
+            --slate-light: #1F2D40;
+            --white: #0B1829;
+            --white-90: rgba(11, 24, 41, .92);
+            --white-60: rgba(11, 24, 41, .65);
+            --white-30: rgba(11, 24, 41, .35);
+            --white-10: rgba(11, 24, 41, .06);
+            --white-05: rgba(11, 24, 41, .03);
+            --shadow: 0 4px 30px rgba(15, 30, 55, .10);
+            --shadow-lg: 0 16px 60px rgba(15, 30, 55, .14);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            background: var(--navy);
+            color: var(--white);
+            font-family: var(--font-body);
+            font-size: 15px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            transition: background .3s, color .3s;
+            min-height: 100vh
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(33, 150, 255, .04) 1px, transparent 1px), linear-gradient(90deg, rgba(33, 150, 255, .04) 1px, transparent 1px);
+            background-size: 64px 64px;
+            mask-image: radial-gradient(ellipse at top, black 30%, transparent 75%)
+        }
+
+        :root[data-theme="light"] body::before {
+            background-image: linear-gradient(rgba(20, 116, 204, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(20, 116, 204, .05) 1px, transparent 1px)
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: inherit
+        }
+
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+            color: inherit
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            height: var(--topbar-height);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 0 22px;
+            background: rgba(8, 15, 26, .75);
+            backdrop-filter: blur(18px) saturate(160%);
+            border-bottom: 1px solid var(--navy-border)
+        }
+
+        :root[data-theme="light"] .topbar {
+            background: rgba(255, 255, 255, .85)
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--white-10);
+            border: 1px solid var(--navy-border);
+            align-items: center;
+            justify-content: center;
+            color: var(--white)
+        }
+
+        .topbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .topbar-logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 14px;
+            box-shadow: 0 4px 14px var(--blue-glow)
+        }
+
+        .topbar-logo-text {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -.01em
+        }
+
+        .topbar-divider {
+            width: 1px;
+            height: 26px;
+            background: var(--navy-border)
+        }
+
+        .topbar-client-select {
+            height: 36px;
+            padding: 0 32px 0 12px;
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 9px;
+            color: var(--white-90);
+            font-size: 13px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237a96b4' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 10px center
+        }
+
+        .topbar-search {
+            flex: 1;
+            max-width: 420px;
+            position: relative;
+            display: flex;
+            align-items: center
+        }
+
+        .topbar-search input {
+            width: 100%;
+            height: 36px;
+            padding: 0 38px 0 36px;
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 9px;
+            font-size: 13px;
+            transition: var(--transition)
+        }
+
+        .topbar-search input:focus {
+            outline: none;
+            border-color: var(--blue-bright);
+            box-shadow: 0 0 0 3px var(--blue-glow)
+        }
+
+        .search-icon-wrap {
+            position: absolute;
+            left: 12px;
+            color: var(--slate)
+        }
+
+        .search-kbd {
+            position: absolute;
+            right: 10px;
+            font-size: 11px;
+            padding: 2px 7px;
+            background: var(--white-10);
+            border-radius: 5px;
+            color: var(--white-60);
+            font-family: var(--font-mono)
+        }
+
+        .topbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto
+        }
+
+        .topbar-icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white-60);
+            position: relative;
+            transition: var(--transition)
+        }
+
+        .topbar-icon-btn:hover {
+            color: var(--white);
+            border-color: var(--navy-border-light);
+            transform: translateY(-1px)
+        }
+
+        .notif-dot {
+            position: absolute;
+            top: 7px;
+            right: 8px;
+            width: 7px;
+            height: 7px;
+            background: var(--orange);
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px var(--navy-mid)
+        }
+
+        .topbar-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px 10px 4px 4px;
+            border-radius: 10px;
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            cursor: pointer;
+            transition: var(--transition)
+        }
+
+        .topbar-user:hover {
+            border-color: var(--navy-border-light)
+        }
+
+        .topbar-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: linear-gradient(135deg, var(--orange), var(--orange-hover));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: #fff
+        }
+
+        .topbar-username {
+            font-size: 13px;
+            font-weight: 500
+        }
+
+        .topbar-chevron {
+            color: var(--slate);
+            font-size: 11px
+        }
+
+        .layout {
+            display: flex;
+            min-height: calc(100vh - var(--topbar-height))
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            padding: 18px 12px;
+            background: var(--navy-mid);
+            border-right: 1px solid var(--navy-border);
+            position: sticky;
+            top: var(--topbar-height);
+            height: calc(100vh - var(--topbar-height));
+            overflow-y: auto
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 5px
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--navy-border);
+            border-radius: 3px
+        }
+
+        .sidebar-section {
+            margin-bottom: 16px
+        }
+
+        .sidebar-section-label {
+            display: block;
+            padding: 0 12px 8px;
+            font-size: 10.5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--slate)
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 9px 12px;
+            border-radius: 9px;
+            font-size: 13.5px;
+            color: var(--white-60);
+            transition: var(--transition);
+            position: relative;
+            margin-bottom: 2px
+        }
+
+        .sidebar-item:hover {
+            background: var(--white-10);
+            color: var(--white)
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(135deg, var(--blue-glow), transparent);
+            color: var(--blue-bright);
+            font-weight: 600
+        }
+
+        .sidebar-item.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 3px;
+            background: var(--blue-bright);
+            border-radius: 0 3px 3px 0
+        }
+
+        .sidebar-item svg {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            opacity: .85
+        }
+
+        .sidebar-item.active svg {
+            opacity: 1
+        }
+
+        .sidebar-badge {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 1px 7px;
+            background: var(--orange);
+            color: #fff;
+            border-radius: 8px;
+            font-weight: 600
+        }
+
+        .sidebar-sub {
+            padding-left: 14px;
+            border-left: 1px dashed var(--navy-border);
+            margin: 2px 0 6px 22px
+        }
+
+        .sidebar-sub .sidebar-item {
+            padding: 6px 10px;
+            font-size: 12.5px
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: var(--topbar-height) 0 0 0;
+            background: rgba(0, 0, 0, .55);
+            z-index: 99
+        }
+
+        :root[data-theme="light"] .sidebar-item {
+            color: #1F2D40
+        }
+
+        :root[data-theme="light"] .sidebar-item:hover {
+            background: rgba(11, 24, 41, .05);
+            color: #0B1829
+        }
+
+        :root[data-theme="light"] .sidebar-item.active {
+            background: rgba(33, 150, 255, .10);
+            color: #1474CC
+        }
+
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 28px 32px 60px
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 18px;
+            margin-bottom: 26px;
+            flex-wrap: wrap
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 6px;
+            font-size: 12.5px;
+            color: var(--slate);
+            margin-bottom: 6px
+        }
+
+        .breadcrumb a:hover {
+            color: var(--blue-bright)
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 30px;
+            font-weight: 700;
+            letter-spacing: -.02em;
+            line-height: 1.1
+        }
+
+        .page-subtitle {
+            margin-top: 6px;
+            color: var(--white-60);
+            font-size: 14px;
+            max-width: 640px
+        }
+
+        .page-header-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            white-space: nowrap
+        }
+
+        .btn:hover {
+            transform: translateY(-1px)
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+            color: #fff;
+            box-shadow: 0 6px 18px var(--blue-glow)
+        }
+
+        .btn-secondary {
+            background: var(--navy-card);
+            border-color: var(--navy-border);
+            color: var(--white-90)
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy-border-light)
+        }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, .12);
+            border-color: rgba(239, 68, 68, .4);
+            color: var(--danger)
+        }
+
+        .btn-ghost {
+            color: var(--white-60)
+        }
+
+        .btn-ghost:hover {
+            color: var(--white);
+            background: var(--white-10)
+        }
+
+        .btn-sm {
+            height: 32px;
+            padding: 0 12px;
+            font-size: 12.5px
+        }
+
+        .panel {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            padding: 22px;
+            box-shadow: var(--shadow)
+        }
+
+        .panel+.panel {
+            margin-top: 18px
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+        .panel-title {
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 600
+        }
+
+        .panel-desc {
+            color: var(--white-60);
+            font-size: 13px;
+            margin-top: 4px
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(2, 1fr)
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        .grid-4 {
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .stat-card {
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            padding: 18px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden
+        }
+
+        .stat-label {
+            color: var(--white-60);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            font-weight: 600
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 6px
+        }
+
+        .stat-meta {
+            margin-top: 6px;
+            font-size: 12.5px;
+            color: var(--slate)
+        }
+
+        .stat-trend.up {
+            color: var(--success)
+        }
+
+        .stat-trend.down {
+            color: var(--danger)
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 20px
+        }
+
+        .form-grid.full>* {
+            grid-column: span 2
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .field.span-2 {
+            grid-column: span 2
+        }
+
+        .field label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--white-90);
+            letter-spacing: .01em
+        }
+
+        .field .hint {
+            font-size: 12px;
+            color: var(--slate);
+            margin-top: 2px
+        }
+
+        .field input[type=text],
+        .field input[type=number],
+        .field input[type=email],
+        .field input[type=password],
+        .field input[type=url],
+        .field select,
+        .field textarea {
+            height: 40px;
+            padding: 0 12px;
+            background: var(--navy-mid);
+            border: 1px solid var(--navy-border);
+            border-radius: 9px;
+            font-size: 13.5px;
+            transition: var(--transition);
+            width: 100%
+        }
+
+        .field textarea {
+            height: auto;
+            padding: 10px 12px;
+            min-height: 100px;
+            resize: vertical;
+            font-family: var(--font-mono);
+            font-size: 12.5px
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--blue-bright);
+            box-shadow: 0 0 0 3px var(--blue-glow)
+        }
+
+        .field select {
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237a96b4' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 32px
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13.5px;
+            color: var(--white-90);
+            cursor: pointer
+        }
+
+        .checkbox-row input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--blue-bright)
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 38px;
+            height: 22px;
+            flex-shrink: 0
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0
+        }
+
+        .slider-sw {
+            position: absolute;
+            inset: 0;
+            background: var(--navy-border-light);
+            border-radius: 22px;
+            transition: .25s
+        }
+
+        .slider-sw::before {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 3px;
+            top: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: .25s
+        }
+
+        .switch input:checked+.slider-sw {
+            background: var(--blue-bright)
+        }
+
+        .switch input:checked+.slider-sw::before {
+            transform: translateX(16px)
+        }
+
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px 14px;
+            border: 1px solid var(--navy-border);
+            border-radius: 10px;
+            background: var(--navy-mid)
+        }
+
+        .switch-row .meta {
+            font-size: 12px;
+            color: var(--slate);
+            margin-top: 2px
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid var(--navy-border);
+            flex-wrap: wrap
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 20px;
+            letter-spacing: .02em
+        }
+
+        .badge.success {
+            background: var(--success-glow);
+            color: var(--success)
+        }
+
+        .badge.warning {
+            background: rgba(245, 166, 35, .12);
+            color: var(--warning)
+        }
+
+        .badge.danger {
+            background: rgba(239, 68, 68, .12);
+            color: var(--danger)
+        }
+
+        .badge.info {
+            background: var(--blue-glow);
+            color: var(--blue-bright)
+        }
+
+        .badge.muted {
+            background: var(--white-10);
+            color: var(--white-60)
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block
+        }
+
+        .dot.success {
+            background: var(--success);
+            box-shadow: 0 0 0 3px var(--success-glow)
+        }
+
+        .dot.warning {
+            background: var(--warning)
+        }
+
+        .dot.danger {
+            background: var(--danger)
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            background: var(--navy-card)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            min-width: 560px
+        }
+
+        table thead {
+            background: var(--white-05)
+        }
+
+        table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--slate);
+            font-weight: 700;
+            border-bottom: 1px solid var(--navy-border)
+        }
+
+        table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--navy-border);
+            color: var(--white-90)
+        }
+
+        table tbody tr:last-child td {
+            border-bottom: none
+        }
+
+        table tbody tr:hover {
+            background: var(--white-05)
+        }
+
+        .env-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            padding: 6px;
+            background: var(--navy-card);
+            border: 1px solid var(--navy-border);
+            border-radius: 14px;
+            margin-bottom: 22px;
+            scrollbar-width: thin
+        }
+
+        .env-tabs::-webkit-scrollbar {
+            height: 6px
+        }
+
+        .env-tab {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            height: 38px;
+            padding: 0 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--white-60);
+            transition: var(--transition);
+            white-space: nowrap;
+            cursor: pointer;
+            background: transparent;
+            border: 1px solid transparent
+        }
+
+        .env-tab:hover {
+            background: var(--white-10);
+            color: var(--white)
+        }
+
+        .env-tab.active {
+            background: linear-gradient(135deg, var(--blue-bright), var(--blue-mid));
+            color: #fff;
+            box-shadow: 0 4px 14px var(--blue-glow)
+        }
+
+        .env-tab svg {
+            width: 14px;
+            height: 14px
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn .25s ease
+        }
+
+        .tab-panel.active {
+            display: block
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        .env-hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 22px;
+            background: linear-gradient(135deg, rgba(33, 150, 255, .10), rgba(0, 217, 190, .06));
+            border: 1px solid var(--navy-border);
+            border-radius: var(--radius);
+            margin-bottom: 22px;
+            flex-wrap: wrap
+        }
+
+        .env-hero h2 {
+            font-family: var(--font-display);
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .env-hero .meta {
+            display: flex;
+            gap: 18px;
+            color: var(--white-60);
+            font-size: 13px;
+            margin-top: 4px;
+            flex-wrap: wrap
+        }
+
+        .env-hero code {
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            color: var(--blue-bright)
+        }
+
+        :root[data-theme="light"] .topbar-icon-btn,
+        :root[data-theme="light"] .topbar-user,
+        :root[data-theme="light"] .topbar-client-select,
+        :root[data-theme="light"] .topbar-search input,
+        :root[data-theme="light"] .mobile-menu-btn {
+            background: #F4F6FA;
+            border-color: #E4EAF2;
+            color: #0B1829
+        }
+
+        :root[data-theme="light"] .panel,
+        :root[data-theme="light"] .stat-card,
+        :root[data-theme="light"] .table-wrap {
+            background: #fff;
+            border-color: #E4EAF2;
+            box-shadow: 0 4px 24px rgba(11, 24, 41, .06)
+        }
+
+        :root[data-theme="light"] table thead {
+            background: #F4F6FA
+        }
+
+        :root[data-theme="light"] .field input,
+        :root[data-theme="light"] .field select,
+        :root[data-theme="light"] .field textarea {
+            background: #fff;
+            border-color: #E4EAF2
+        }
+
+        :root[data-theme="light"] .switch-row {
+            background: #F4F6FA;
+            border-color: #E4EAF2
+        }
+
+        :root[data-theme="light"] .env-tabs {
+            background: #fff;
+            border-color: #E4EAF2
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            z-index: 9999;
+            width: 44px;
+            height: 44px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .18);
+            color: #fff;
+            cursor: pointer;
+            backdrop-filter: blur(14px) saturate(160%);
+            box-shadow: 0 6px 20px -8px rgba(0, 0, 0, .4);
+            transition: transform .2s
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px)
+        }
+
+        :root[data-theme="light"] .theme-toggle {
+            background: rgba(11, 24, 41, .06);
+            border-color: rgba(11, 24, 41, .12);
+            color: #0B1829
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round
+        }
+
+        .theme-toggle .icon-sun {
+            display: none
+        }
+
+        :root[data-theme="light"] .theme-toggle .icon-sun {
+            display: block
+        }
+
+        :root[data-theme="light"] .theme-toggle .icon-moon {
+            display: none
+        }
+
+        @media (max-width:1100px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media (max-width:960px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: var(--topbar-height);
+                transform: translateX(-100%);
+                z-index: 200;
+                width: 262px;
+                height: calc(100vh - var(--topbar-height));
+                transition: transform .25s ease;
+                box-shadow: 0 16px 60px rgba(0, 0, 0, .6)
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0)
+            }
+
+            .sidebar-overlay.active {
+                display: block
+            }
+
+            .mobile-menu-btn {
+                display: inline-flex
+            }
+
+            .topbar-client-select,
+            .topbar-divider {
+                display: none
+            }
+
+            .topbar-search {
+                max-width: 240px
+            }
+
+            .main {
+                padding: 22px 18px 60px
+            }
+        }
+
+        @media (max-width:760px) {
+            .topbar {
+                padding: 0 12px;
+                gap: 8px
+            }
+
+            .topbar-search {
+                display: none
+            }
+
+            .topbar-username {
+                display: none
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4,
+            .form-grid {
+                grid-template-columns: 1fr
+            }
+
+            .form-grid.full>* {
+                grid-column: auto
+            }
+
+            .field.span-2 {
+                grid-column: auto
+            }
+
+            .page-title {
+                font-size: 22px
+            }
+
+            .page-header {
+                align-items: flex-start
+            }
+
+            .page-header-actions {
+                width: 100%;
+                justify-content: flex-start
+            }
+
+            .stat-value {
+                font-size: 24px
+            }
+
+            .panel {
+                padding: 16px
+            }
+
+            .env-hero {
+                padding: 14px 16px
+            }
+
+            .env-hero h2 {
+                font-size: 18px
+            }
+
+            .env-hero .meta {
+                gap: 10px;
+                font-size: 12px
+            }
+
+            table {
+                min-width: 420px
+            }
+
+            table th,
+            table td {
+                padding: 10px 12px
+            }
+
+            .form-actions {
+                justify-content: stretch
+            }
+
+            .form-actions .btn {
+                flex: 1;
+                justify-content: center
+            }
+
+            .switch-row {
+                padding: 10px 12px
+            }
+
+            .env-tab {
+                height: 34px;
+                padding: 0 10px;
+                font-size: 12px
+            }
+
+            .env-tabs {
+                padding: 4px;
+                gap: 4px
+            }
+        }
+
+        @media (max-width:480px) {
+            :root {
+                --topbar-height: 54px
+            }
+
+            .topbar {
+                height: 54px
+            }
+
+            .topbar-logo-text {
+                display: none
+            }
+
+            .topbar-icon-btn:not(:last-child):not(:nth-last-child(2)) {
+                display: none
+            }
+
+            .btn {
+                padding: 0 10px;
+                font-size: 12.5px;
+                height: 36px
+            }
+
+            .btn-sm {
+                height: 30px;
+                padding: 0 10px;
+                font-size: 12px
+            }
+
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                bottom: 12px;
+                right: 12px
+            }
+
+            .main {
+                padding: 16px 12px 56px
+            }
+
+            .page-title {
+                font-size: 20px
+            }
+
+            .stat-card {
+                padding: 14px
+            }
+
+            .stat-value {
+                font-size: 22px
+            }
+
+            .panel-title {
+                font-size: 16px
+            }
+
+            .grid {
+                gap: 12px
+            }
+
+            .env-tab svg {
+                display: none
+            }
+
+            .env-tab {
+                padding: 0 10px;
+                font-size: 11.5px
+            }
+
+            .topbar-user {
+                padding: 4px 6px 4px 4px
+            }
+        }
+
+        @media (max-width:360px) {
+            .topbar {
+                padding: 0 8px;
+                gap: 6px
+            }
+
+            .main {
+                padding: 14px 10px 52px
+            }
+
+            .page-title {
+                font-size: 18px
+            }
+
+            .stat-value {
+                font-size: 20px
+            }
+
+            .btn {
+                padding: 0 8px;
+                font-size: 12px
+            }
+
+            .grid-4,
+            .grid-3,
+            .grid-2 {
+                grid-template-columns: 1fr
+            }
+
+            .topbar-actions {
+                gap: 4px
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-
-    <!-- ============================
-     TOP NAVIGATION BAR
-============================ -->
     <header class="topbar">
-        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" type="button" style="display:none;background:rgba(255,255,255,0.06);border:1px solid var(--navy-border, rgba(255,255,255,0.14));border-radius:9px;width:38px;height:38px;align-items:center;justify-content:center;cursor:pointer;color:currentColor;flex-shrink:0;margin-right:8px;">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
-        <a class="topbar-logo" href="deployment.html">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+        </button>
+        <a class="topbar-logo" href="index.html">
             <div class="topbar-logo-icon">Cf</div>
             <span class="topbar-logo-text">corefinity</span>
         </a>
-
+        <div class="topbar-divider"></div>
         <select class="topbar-client-select">
-            <option>Currently viewing as: All clients</option>
+            <option>All clients</option>
             <option>Example Agency</option>
             <option>Atherton Bikes</option>
             <option>Sensory Direct</option>
         </select>
-
         <div class="topbar-search">
-            <span class="topbar-search-icon">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <span class="search-icon-wrap"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8" />
                     <path d="M21 21l-4.35-4.35" />
-                </svg>
-            </span>
-            <input type="text" placeholder="Press / to search environments...">
+                </svg></span>
+            <input type="text" placeholder="Search anything…" aria-label="Search">
+            <span class="search-kbd">/</span>
         </div>
-
         <div class="topbar-actions">
-            <button class="topbar-icon-btn" title="Notifications">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button class="topbar-icon-btn" title="Terminal"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.8">
+                    <polyline points="4 17 10 11 4 5" />
+                    <line x1="12" y1="19" x2="20" y2="19" />
+                </svg></button>
+            <button class="topbar-icon-btn" title="Documentation"><svg width="15" height="15" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                </svg></button>
+            <button class="topbar-icon-btn" title="Notifications"><svg width="15" height="15" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
-                </svg>
-                <span class="notif-dot"></span>
-            </button>
-
-            <div class="topbar-user">
+                </svg><span class="notif-dot"></span></button>
+            <a class="topbar-user" href="profile.html">
                 <div class="topbar-avatar">CJ</div>
                 <span class="topbar-username">Catherine Jarosz</span>
-                <span class="topbar-chevron">£</span>
-            </div>
+                <span class="topbar-chevron">▾</span>
+            </a>
         </div>
     </header>
 
-    <!-- ============================
-     LAYOUT SHELL
-============================ -->
     <div class="layout">
 
-        <!-- SIDEBAR -->
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Overview</span>
-                <a class="sidebar-item " href="index.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+                <a class="sidebar-item" href="index.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    </svg>
                     Dashboard
                 </a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Infrastructure</span>
                 <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" />
+                    </svg>
                     Websites
                 </a>
                 <a class="sidebar-item active" href="environments.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
                     Environments
                     <span class="sidebar-badge">12</span>
                 </a>
                 <div class="sidebar-sub">
-                    <a class="sidebar-item" href="#">Production</a>
-                    <a class="sidebar-item" href="#">Staging</a>
-                    <a class="sidebar-item" href="#">Development</a>
+                    <a class="sidebar-item" href="environments.html">Production</a>
+                    <a class="sidebar-item" href="environments.html">Staging</a>
+                    <a class="sidebar-item" href="environments.html">Development</a>
                 </div>
-                <a class="sidebar-item " href="deployment.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <a class="sidebar-item" href="deployment.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>
                     Deployments
                 </a>
                 <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <path d="M8 21h8M12 17v4" />
+                    </svg>
                     Clusters
                 </a>
                 <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="2" y="2" width="20" height="8" rx="2" />
+                        <rect x="2" y="14" width="20" height="8" rx="2" />
+                        <path d="M6 6h.01M6 18h.01" />
+                    </svg>
                     Providers
                 </a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Support</span>
-                <a class="sidebar-item " href="tickets.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                <a class="sidebar-item" href="tickets.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
+                    </svg>
                     Tickets
                     <span class="sidebar-badge">3</span>
                 </a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">Monitoring</span>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    All Monitors
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    Performance
-                </a>
+                <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>All Monitors</a>
+                <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg>Performance</a>
             </div>
             <div class="sidebar-section">
                 <span class="sidebar-section-label">System</span>
-                <a class="sidebar-item " href="profile.html">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <a class="sidebar-item" href="profile.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
                     Profile
                 </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                    Logs
-                </a>
-                <a class="sidebar-item" href="#">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 110 12M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                    Settings
-                </a>
+                <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8">
+                        <polyline points="4 17 10 11 4 5" />
+                        <line x1="12" y1="19" x2="20" y2="19" />
+                    </svg>Logs</a>
+                <a class="sidebar-item" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.8">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+                    </svg>Settings</a>
             </div>
         </nav>
-        <div class="sidebar-overlay" id="sidebarOverlay"></div><!-- MAIN CONTENT -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <main class="main">
 
-            <!-- PAGE HEADER -->
             <div class="page-header">
-                <div class="page-header-left">
-                    <div class="breadcrumb">
-                        <a href="deployment.html">Home</a>
-                        <span>£</span>
-                        <span>Environments</span>
-                    </div>
+                <div>
+                    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>Environments</span></div>
                     <h1 class="page-title">Environments</h1>
-                    <p class="page-subtitle">Manage and configure all your hosting environments.</p>
+                    <p class="page-subtitle">Configure compute, networking, security and observability.</p>
                 </div>
-                <div class="page-header-actions">
-                    <button class="btn btn-secondary">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" />
-                        </svg>
-                        Export
-                    </button>
-                    <button class="btn btn-primary">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        New Environment
-                    </button>
-                </div>
+                <div class="page-header-actions"><button class="btn btn-secondary">Switch env</button><a
+                        class="btn btn-primary" href="deployment.html">Deploy</a></div>
             </div>
-
-            <!-- TABS -->
-            <div class="tab-bar">
-                <div class="tab-item active" onclick="switchTab('general')">General</div>
-                <div class="tab-item" onclick="switchTab('pods')">Pods</div>
-                <div class="tab-item" onclick="switchTab('nodes')">Nodes</div>
-                <div class="tab-item" onclick="switchTab('deployments')">Deployments</div>
-                <div class="tab-item" onclick="switchTab('pipelines')">Pipelines</div>
-                <div class="tab-item" onclick="switchTab('emails')">Emails</div>
-                <div class="tab-item" onclick="switchTab('cache-warmer')">Cache Warmer</div>
-                <div class="tab-item" onclick="switchTab('actions')">Actions</div>
-                <div class="tab-item" onclick="switchTab('diagnostics')">Diagnostics</div>
-                <div class="tab-item" onclick="switchTab('autoscaler')">Autoscaler</div>
-                <div class="tab-item" onclick="switchTab('monitors')">Monitors</div>
-                <div class="tab-item" onclick="switchTab('quick-actions')">Quick Actions</div>
-                <div class="tab-item" onclick="switchTab('firewall')">Firewall</div>
+            <div class="env-hero">
+                <div>
+                    <h2><span class="dot success"></span>example-agency · production</h2>
+                    <div class="meta"><span><b>Region:</b> EU-West</span><span><b>Runtime:</b> Node
+                            20</span><span><b>Domain:</b> <code>example-agency.com</code></span><span><b>Last
+                                deploy:</b> 2m ago</span></div>
+                </div>
+                <div style="display:flex;gap:8px"><span class="badge info">Production</span><span
+                        class="badge success"><span class="dot success"></span>Healthy</span></div>
             </div>
-
-            <!-- GENERAL TAB -->
-            <div id="general-tab" class="panel" style="margin-top:0;border-top-left-radius:0;">
-                <div class="panel-header">
-                    <span class="panel-title">General Settings</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">Save Changes</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="form-label">Environment Name</label>
-                        <input type="text" class="form-input" value="Production Environment">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Domain</label>
-                        <input type="text" class="form-input" value="manage.corefinity.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Environment Type</label>
-                        <select class="form-select">
-                            <option>Production</option>
-                            <option>Staging</option>
-                            <option>Development</option>
-                            <option>Testing</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Provider</label>
-                        <select class="form-select">
-                            <option>Google Cloud Platform</option>
-                            <option>AWS</option>
-                            <option>Azure</option>
-                            <option>DigitalOcean</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Platform</label>
-                        <select class="form-select">
-                            <option>Laravel</option>
-                            <option>Magento 2</option>
-                            <option>WooCommerce</option>
-                            <option>WordPress</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-textarea" placeholder="Environment description...">Main production environment for Corefinity hosting control panel.</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PODS TAB -->
-            <div id="pods-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Pod Management</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">+ Add Pod</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Pod Name</th>
-                                <th>Status</th>
-                                <th>CPU</th>
-                                <th>Memory</th>
-                                <th>Uptime</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>web-1</strong></td>
-                                <td><span class="badge badge-success">Running</span></td>
-                                <td>45%</td>
-                                <td>2.1GB / 4GB</td>
-                                <td>3d 14h 22m</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Restart</button>
-                                        <button class="btn btn-ghost btn-sm">Logs</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>web-2</strong></td>
-                                <td><span class="badge badge-success">Running</span></td>
-                                <td>38%</td>
-                                <td>1.8GB / 4GB</td>
-                                <td>3d 14h 22m</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Restart</button>
-                                        <button class="btn btn-ghost btn-sm">Logs</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>db-1</strong></td>
-                                <td><span class="badge badge-success">Running</span></td>
-                                <td>67%</td>
-                                <td>3.2GB / 8GB</td>
-                                <td>7d 2h 15m</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Restart</button>
-                                        <button class="btn btn-ghost btn-sm">Logs</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- NODES TAB -->
-            <div id="nodes-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Node Management</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">+ Add Node</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Node Name</th>
-                                <th>Status</th>
-                                <th>Role</th>
-                                <th>Region</th>
-                                <th>Pods</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>prod-node-01</strong></td>
-                                <td><span class="badge badge-success">Ready</span></td>
-                                <td>Master</td>
-                                <td>us-central1-a</td>
-                                <td>3 / 10</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Details</button>
-                                        <button class="btn btn-ghost btn-sm">Drain</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>prod-node-02</strong></td>
-                                <td><span class="badge badge-success">Ready</span></td>
-                                <td>Worker</td>
-                                <td>us-central1-b</td>
-                                <td>5 / 10</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Details</button>
-                                        <button class="btn btn-ghost btn-sm">Drain</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- DEPLOYMENTS TAB -->
-            <div id="deployments-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Deployment History</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">+ New Deployment</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Deployment</th>
-                                <th>Status</th>
-                                <th>Triggered By</th>
-                                <th>Created</th>
-                                <th>Duration</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>update pricing blade.php</strong></td>
-                                <td><span class="badge badge-success">Succeeded</span></td>
-                                <td>Catherine Jarosz</td>
-                                <td>2026-04-22 10:21</td>
-                                <td>1m 42s</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">View</button>
-                                        <button class="btn btn-ghost btn-sm">Rollback</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Merge branch 'release/v2.22.0'</strong></td>
-                                <td><span class="badge badge-success">Succeeded</span></td>
-                                <td>Adam Peace</td>
-                                <td>2026-04-22 09:14</td>
-                                <td>1m 19s</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">View</button>
-                                        <button class="btn btn-ghost btn-sm">Rollback</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- PIPELINES TAB -->
-            <div id="pipelines-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Deployment Pipelines</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">+ Create Pipeline</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Pipeline Name</th>
-                                <th>Environment</th>
-                                <th>Trigger</th>
-                                <th>Last Run</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Magento 2 Pipeline</strong></td>
-                                <td><span class="badge badge-success">Production</span></td>
-                                <td>Manual</td>
-                                <td>2 hours ago</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-ghost btn-sm">Run</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Laravel Pipeline</strong></td>
-                                <td><span class="badge badge-warning">Staging</span></td>
-                                <td>Auto</td>
-                                <td>1 day ago</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-ghost btn-sm">Run</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- EMAILS TAB -->
-            <div id="emails-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Email Configuration</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">Save Settings</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="form-label">SMTP Server</label>
-                        <input type="text" class="form-input" value="smtp.gmail.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Port</label>
-                        <input type="text" class="form-input" value="587">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Username</label>
-                        <input type="text" class="form-input" value="noreply@corefinity.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Password</label>
-                        <input type="password" class="form-input" value="****************">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">From Email</label>
-                        <input type="text" class="form-input" value="deployments@corefinity.com">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Notification Recipients</label>
-                        <textarea class="form-textarea" placeholder="Enter email addresses, one per line">catherine@corefinity.com
-adam@corefinity.com
-devops@corefinity.com</textarea>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CACHE WARMER TAB -->
-            <div id="cache-warmer-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Cache Warmer Settings</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-blue btn-sm">Run Now</button>
-                        <button class="btn btn-primary btn-sm">Save Settings</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="form-label">Enable Cache Warmer</label>
-                        <select class="form-select">
-                            <option>Enabled</option>
-                            <option>Disabled</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Run Schedule</label>
-                        <select class="form-select">
-                            <option>After each deployment</option>
-                            <option>Daily at 2:00 AM</option>
-                            <option>Weekly on Sunday</option>
-                            <option>Manual only</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">URLs to Warm</label>
-                        <textarea class="form-textarea" placeholder="Enter URLs, one per line">https://manage.corefinity.com/
-https://manage.corefinity.com/dashboard
-https://manage.corefinity.com/deployments
-https://manage.corefinity.com/environments</textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Concurrency</label>
-                        <input type="number" class="form-input" value="5" min="1" max="20">
-                    </div>
-                </div>
-            </div>
-
-            <!-- ACTIONS TAB -->
-            <div id="actions-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Environment Actions</span>
-                </div>
-
-                <div class="panel-body">
-                    <div class="metric-grid">
-                        <div class="metric-card">
-                            <button class="btn btn-primary" style="width:100%;">Restart All Pods</button>
-                        </div>
-                        <div class="metric-card">
-                            <button class="btn btn-secondary" style="width:100%;">Clear Cache</button>
-                        </div>
-                        <div class="metric-card">
-                            <button class="btn btn-secondary" style="width:100%;">Reindex Database</button>
-                        </div>
-                        <div class="metric-card">
-                            <button class="btn btn-danger" style="width:100%;">Emergency Stop</button>
+            <div class="env-tabs"><button class="env-tab active" data-tab="general"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="12" r="3" />
+                        <path
+                            d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4" />
+                    </svg>General</button><button class="env-tab" data-tab="pods"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8">
+                        <circle cx="6" cy="6" r="3" />
+                        <circle cx="18" cy="6" r="3" />
+                        <circle cx="6" cy="18" r="3" />
+                        <circle cx="18" cy="18" r="3" />
+                    </svg>Pods</button><button class="env-tab" data-tab="nodes"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <path d="M8 21h8M12 17v4" />
+                    </svg>Nodes</button><button class="env-tab" data-tab="deployments"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>Deployments</button><button class="env-tab" data-tab="pipelines"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <polyline points="16 18 22 12 16 6" />
+                        <polyline points="8 6 2 12 8 18" />
+                    </svg>Pipelines</button><button class="env-tab" data-tab="emails"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M4 4h16v16H4z" />
+                        <polyline points="22 6 12 13 2 6" />
+                    </svg>Emails</button><button class="env-tab" data-tab="cache"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8">
+                        <path d="M14 11l-3 9L4 12l3-9 7 8z" />
+                        <path d="M14 11l6-3" />
+                    </svg>Cache Warmer</button><button class="env-tab" data-tab="actions"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                    </svg>Actions</button><button class="env-tab" data-tab="diag"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                    </svg>Diagnostics</button><button class="env-tab" data-tab="autoscaler"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        <polyline points="17 6 23 6 23 12" />
+                    </svg>Autoscaler</button><button class="env-tab" data-tab="monitors"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="2" y="3" width="20" height="14" rx="2" />
+                        <line x1="8" y1="21" x2="16" y2="21" />
+                        <line x1="12" y1="17" x2="12" y2="21" />
+                    </svg>Monitors</button><button class="env-tab" data-tab="quick"><svg viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.8">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9z" />
+                    </svg>Quick Actions</button><button class="env-tab" data-tab="firewall"><svg viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>Firewall</button></div>
+            <div id="panel-general" class="tab-panel active">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">General settings</div>
+                            <div class="panel-desc">Identity, region and runtime for this environment.</div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- DIAGNOSTICS TAB -->
-            <div id="diagnostics-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">System Diagnostics</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-blue btn-sm">Run Diagnostics</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Check</th>
-                                <th>Status</th>
-                                <th>Last Run</th>
-                                <th>Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Load Balancer</strong></td>
-                                <td><span class="badge badge-danger">Not Attached</span></td>
-                                <td>5 minutes ago</td>
-                                <td><button class="btn btn-ghost btn-sm">Fix</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>Database Connection</strong></td>
-                                <td><span class="badge badge-success">Healthy</span></td>
-                                <td>5 minutes ago</td>
-                                <td><button class="btn btn-ghost btn-sm">Details</button></td>
-                            </tr>
-                            <tr>
-                                <td><strong>SSL Certificate</strong></td>
-                                <td><span class="badge badge-success">Valid</span></td>
-                                <td>1 hour ago</td>
-                                <td><button class="btn btn-ghost btn-sm">Details</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- AUTOSCALER TAB -->
-            <div id="autoscaler-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Autoscaler Configuration</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">Save Settings</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="form-label">Enable Autoscaling</label>
-                        <select class="form-select">
-                            <option>Enabled</option>
-                            <option>Disabled</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Min Pods</label>
-                        <input type="number" class="form-input" value="2" min="1" max="10">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Max Pods</label>
-                        <input type="number" class="form-input" value="10" min="1" max="50">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">CPU Threshold (%)</label>
-                        <input type="number" class="form-input" value="70" min="50" max="90">
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Memory Threshold (%)</label>
-                        <input type="number" class="form-input" value="80" min="50" max="90">
-                    </div>
-                </div>
-            </div>
-
-            <!-- MONITORS TAB -->
-            <div id="monitors-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Monitoring Configuration</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">+ Add Monitor</button>
-                    </div>
-                </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Monitor</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th>Frequency</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Homepage</strong></td>
-                                <td>HTTP</td>
-                                <td><span class="badge badge-success">Up</span></td>
-                                <td>60s</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-ghost btn-sm">Test</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>API Endpoint</strong></td>
-                                <td>HTTP</td>
-                                <td><span class="badge badge-success">Up</span></td>
-                                <td>30s</td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-ghost btn-sm">Test</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- QUICK ACTIONS TAB -->
-            <div id="quick-actions-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Quick Actions</span>
-                </div>
-
-                <div class="panel-body">
-                    <div class="metric-grid">
-                        <div class="metric-card">
-                            <button class="btn btn-primary" style="width:100%;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                                </svg>
-                                Deploy Latest
-                            </button>
+                    <div class="form-grid">
+                        <div class="field"><label>Environment name</label><input type="text"
+                                value="example-agency-production"></div>
+                        <div class="field"><label>Display label</label><input type="text" value="Production"></div>
+                        <div class="field"><label>Stage</label><select>
+                                <option>Production</option>
+                                <option>Staging</option>
+                                <option>Preview</option>
+                                <option>Development</option>
+                            </select></div>
+                        <div class="field"><label>Region</label><select>
+                                <option>EU-West (Amsterdam)</option>
+                                <option>EU-Central (Frankfurt)</option>
+                                <option>US-East (Virginia)</option>
+                                <option>AP-South (Singapore)</option>
+                            </select></div>
+                        <div class="field"><label>Runtime</label><select>
+                                <option>Node 20 LTS</option>
+                                <option>Node 18</option>
+                                <option>PHP 8.3</option>
+                                <option>Python 3.12</option>
+                            </select></div>
+                        <div class="field"><label>Cluster</label><select>
+                                <option>cf-prod-eu-1</option>
+                                <option>cf-prod-eu-2</option>
+                            </select></div>
+                        <div class="field span-2">
+                            <label>Description</label><textarea>Customer-facing production environment for example-agency.com. Hosts the marketing site and the checkout flow.</textarea>
                         </div>
-                        <div class="metric-card">
-                            <button class="btn btn-secondary" style="width:100%;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M5 12H3l9-9 9 9h-2M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                                </svg>
-                                Backup Database
-                            </button>
+                    </div>
+                    <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px">
+                        <div class="switch-row">
+                            <div><b>Maintenance mode</b>
+                                <div class="meta">Show a holding page to visitors</div>
+                            </div><label class="switch"><input type="checkbox"><span class="slider-sw"></span></label>
                         </div>
-                        <div class="metric-card">
-                            <button class="btn btn-secondary" style="width:100%;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-                                </svg>
-                                Send Test Email
-                            </button>
+                        <div class="switch-row">
+                            <div><b>Lock environment</b>
+                                <div class="meta">Prevent accidental deploys</div>
+                            </div><label class="switch"><input type="checkbox"><span class="slider-sw"></span></label>
                         </div>
-                        <div class="metric-card">
-                            <button class="btn btn-secondary" style="width:100%;">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                </svg>
-                                Security Scan
-                            </button>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-danger">Delete environment</button><button
+                            class="btn btn-secondary">Cancel</button><button class="btn btn-primary">Save
+                            changes</button></div>
+                </div>
+            </div>
+            <div id="panel-pods" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Pods</div>
+                            <div class="panel-desc">Compute units serving traffic for this environment.</div>
+                        </div><button class="btn btn-primary btn-sm">+ Add pod</button>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>Replicas</label><input type="number" value="4" min="1" max="64"></div>
+                        <div class="field"><label>Pod size</label><select>
+                                <option>m5.large · 2 vCPU / 8 GB</option>
+                                <option>m5.xlarge · 4 vCPU / 16 GB</option>
+                                <option>c5.xlarge · 4 vCPU / 8 GB</option>
+                            </select></div>
+                        <div class="field"><label>CPU request (m)</label><input type="number" value="500"></div>
+                        <div class="field"><label>CPU limit (m)</label><input type="number" value="2000"></div>
+                        <div class="field"><label>Memory request (Mi)</label><input type="number" value="1024"></div>
+                        <div class="field"><label>Memory limit (Mi)</label><input type="number" value="4096"></div>
+                        <div class="field"><label>Restart policy</label><select>
+                                <option>Always</option>
+                                <option>On failure</option>
+                                <option>Never</option>
+                            </select></div>
+                        <div class="field"><label>Health check path</label><input type="text" value="/healthz"></div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Active pods</div><span class="badge success">4 / 4 healthy</span>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Pod</th>
+                                    <th>Node</th>
+                                    <th>CPU</th>
+                                    <th>Memory</th>
+                                    <th>Uptime</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">app-7c4f-a1</code>
+                                    </td>
+                                    <td>node-eu-w1</td>
+                                    <td>34%</td>
+                                    <td>1.2 / 4 GB</td>
+                                    <td>3d 14h</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Running</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Logs</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">app-7c4f-a2</code>
+                                    </td>
+                                    <td>node-eu-w2</td>
+                                    <td>41%</td>
+                                    <td>1.4 / 4 GB</td>
+                                    <td>3d 14h</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Running</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Logs</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">app-7c4f-a3</code>
+                                    </td>
+                                    <td>node-eu-w3</td>
+                                    <td>28%</td>
+                                    <td>0.9 / 4 GB</td>
+                                    <td>1d 02h</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Running</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Logs</a></td>
+                                </tr>
+                                <tr>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">app-7c4f-a4</code>
+                                    </td>
+                                    <td>node-eu-w1</td>
+                                    <td>52%</td>
+                                    <td>1.8 / 4 GB</td>
+                                    <td>4h 12m</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Running</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Logs</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="panel-nodes" class="tab-panel">
+                <div class="grid grid-3" style="margin-bottom:18px">
+                    <div class="stat-card">
+                        <div class="stat-label">Nodes</div>
+                        <div class="stat-value">3</div>
+                        <div class="stat-meta">All healthy</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg CPU</div>
+                        <div class="stat-value">38%</div>
+                        <div class="stat-meta">Utilization</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg Memory</div>
+                        <div class="stat-value">62%</div>
+                        <div class="stat-meta">Of allocated</div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Cluster nodes</div>
+                        <div style="display:flex;gap:8px"><button class="btn btn-secondary btn-sm">Drain</button><button
+                                class="btn btn-primary btn-sm">+ Add node</button></div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>Min nodes</label><input type="number" value="2"></div>
+                        <div class="field"><label>Max nodes</label><input type="number" value="8"></div>
+                        <div class="field"><label>Instance class</label><select>
+                                <option>m5.large</option>
+                                <option>m5.xlarge</option>
+                                <option>c5.2xlarge</option>
+                            </select></div>
+                        <div class="field"><label>Disk per node (GB)</label><input type="number" value="100"></div>
+                    </div>
+                    <div class="table-wrap" style="margin-top:18px">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Node</th>
+                                    <th>Zone</th>
+                                    <th>CPU</th>
+                                    <th>Memory</th>
+                                    <th>Pods</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><b>node-eu-w1</b></td>
+                                    <td>eu-west-1a</td>
+                                    <td>42%</td>
+                                    <td>5.1 / 8 GB</td>
+                                    <td>14</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Ready</span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>node-eu-w2</b></td>
+                                    <td>eu-west-1b</td>
+                                    <td>33%</td>
+                                    <td>4.6 / 8 GB</td>
+                                    <td>11</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Ready</span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>node-eu-w3</b></td>
+                                    <td>eu-west-1c</td>
+                                    <td>38%</td>
+                                    <td>4.9 / 8 GB</td>
+                                    <td>12</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Ready</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="panel-deployments" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Deployment settings</div>
+                            <div class="panel-desc">How code reaches this environment.</div>
+                        </div><a class="btn btn-primary btn-sm" href="deployment.html">+ New deployment</a>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>Source repository</label><input type="text"
+                                value="github.com/example-agency/web"></div>
+                        <div class="field"><label>Branch</label><input type="text" value="main"></div>
+                        <div class="field"><label>Build command</label><input type="text" value="npm run build"></div>
+                        <div class="field"><label>Output directory</label><input type="text" value="dist"></div>
+                        <div class="field"><label>Strategy</label><select>
+                                <option>Rolling</option>
+                                <option>Blue / Green</option>
+                                <option>Canary</option>
+                                <option>Recreate</option>
+                            </select></div>
+                        <div class="field"><label>Concurrency</label><input type="number" value="2"></div>
+                    </div>
+                    <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px">
+                        <div class="switch-row">
+                            <div><b>Auto-deploy on push</b>
+                                <div class="meta">Trigger build when main is updated</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Require approval</b>
+                                <div class="meta">Manual gate before promoting to production</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Auto-rollback on failure</b>
+                                <div class="meta">Revert if health checks fail post-deploy</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-secondary">Cancel</button><button
+                            class="btn btn-primary">Save</button></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title" style="margin-bottom:14px">Recent deployments</div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Commit</th>
+                                    <th>Author</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#3421</td>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">a3f9c21</code></td>
+                                    <td>Catherine</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Live</span></td>
+                                    <td>2m ago</td>
+                                </tr>
+                                <tr>
+                                    <td>#3417</td>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">1a3e2b9</code></td>
+                                    <td>Catherine</td>
+                                    <td><span class="badge danger">Failed</span></td>
+                                    <td>1h ago</td>
+                                </tr>
+                                <tr>
+                                    <td>#3414</td>
+                                    <td><code style="font-family:var(--font-mono);font-size:12px">2c8b101</code></td>
+                                    <td>Eli</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Live</span></td>
+                                    <td>Yesterday</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="panel-pipelines" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Pipelines</div>
+                            <div class="panel-desc">CI/CD stages run for every deployment.</div>
+                        </div><button class="btn btn-primary btn-sm">+ Add stage</button>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        <div class="switch-row">
+                            <div><b>1 · Install dependencies</b>
+                                <div class="meta">npm ci · ~32s</div>
+                            </div><span class="badge success">Enabled</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>2 · Lint & type-check</b>
+                                <div class="meta">eslint && tsc --noEmit · ~18s</div>
+                            </div><span class="badge success">Enabled</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>3 · Unit tests</b>
+                                <div class="meta">vitest run · ~45s</div>
+                            </div><span class="badge success">Enabled</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>4 · Build</b>
+                                <div class="meta">npm run build · ~1m 12s</div>
+                            </div><span class="badge success">Enabled</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>5 · Deploy</b>
+                                <div class="meta">Rolling release · ~38s</div>
+                            </div><span class="badge success">Enabled</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>6 · Smoke tests</b>
+                                <div class="meta">playwright e2e · ~28s</div>
+                            </div><span class="badge muted">Disabled</span>
+                        </div>
+                    </div>
+                    <div class="form-grid" style="margin-top:18px">
+                        <div class="field"><label>Pipeline timeout (min)</label><input type="number" value="30"></div>
+                        <div class="field"><label>Parallel jobs</label><input type="number" value="3"></div>
+                        <div class="field span-2"><label>Custom pre-deploy script</label><textarea>./scripts/migrate.sh
+./scripts/warm-cache.sh</textarea></div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-secondary">Cancel</button><button
+                            class="btn btn-primary">Save pipeline</button></div>
+                </div>
+            </div>
+            <div id="panel-emails" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Outgoing email</div>
+                            <div class="panel-desc">SMTP configuration for transactional mail.</div>
+                        </div><span class="badge success"><span class="dot success"></span>Verified</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>From name</label><input type="text" value="Example Agency"></div>
+                        <div class="field"><label>From email</label><input type="email"
+                                value="hello@example-agency.com"></div>
+                        <div class="field"><label>Reply-to</label><input type="email"
+                                value="support@example-agency.com"></div>
+                        <div class="field"><label>SMTP host</label><input type="text" value="smtp.corefinity-mail.io">
+                        </div>
+                        <div class="field"><label>SMTP port</label><input type="number" value="587"></div>
+                        <div class="field"><label>Encryption</label><select>
+                                <option>STARTTLS</option>
+                                <option>SSL/TLS</option>
+                                <option>None</option>
+                            </select></div>
+                        <div class="field"><label>Username</label><input type="text" value="apikey"></div>
+                        <div class="field"><label>Password</label><input type="password" value="••••••••••••"></div>
+                        <div class="field span-2"><label>Daily send limit</label><input type="number" value="50000">
+                        </div>
+                    </div>
+                    <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px">
+                        <div class="switch-row">
+                            <div><b>SPF</b>
+                                <div class="meta">v=spf1 include:corefinity-mail.io ~all</div>
+                            </div><span class="badge success">Verified</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>DKIM</b>
+                                <div class="meta">cf._domainkey.example-agency.com</div>
+                            </div><span class="badge success">Verified</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>DMARC</b>
+                                <div class="meta">p=quarantine; pct=100</div>
+                            </div><span class="badge warning">Pending propagation</span>
+                        </div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-secondary">Send test email</button><button
+                            class="btn btn-primary">Save</button></div>
+                </div>
+            </div>
+            <div id="panel-cache" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Cache warmer</div>
+                            <div class="panel-desc">Preload routes after every deploy to keep cold-starts off your
+                                visitors.</div>
+                        </div><label class="switch"><input type="checkbox" checked><span
+                                class="slider-sw"></span></label>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>Schedule</label><select>
+                                <option>After every deploy</option>
+                                <option>Hourly</option>
+                                <option>Every 6 hours</option>
+                                <option>Daily at 03:00 UTC</option>
+                            </select></div>
+                        <div class="field"><label>Concurrency</label><input type="number" value="6"></div>
+                        <div class="field"><label>Request timeout (s)</label><input type="number" value="20"></div>
+                        <div class="field"><label>User-Agent</label><input type="text" value="Corefinity-Warmer/1.0">
+                        </div>
+                        <div class="field span-2"><label>URLs to warm (one per line)</label><textarea>https://example-agency.com/
+https://example-agency.com/products
+https://example-agency.com/blog
+https://example-agency.com/contact
+https://example-agency.com/sitemap.xml</textarea></div>
+                    </div>
+                    <div
+                        style="margin-top:14px;padding:12px 14px;background:var(--white-05);border:1px solid var(--navy-border);border-radius:10px;font-size:13px;display:flex;justify-content:space-between">
+                        <span>Last run · 4 minutes ago · 28 URLs</span><span class="badge success">100% hits</span>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-secondary">Run now</button><button
+                            class="btn btn-primary">Save</button></div>
+                </div>
+            </div>
+            <div id="panel-actions" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Environment actions</div>
+                        <div class="panel-desc">Run common maintenance tasks safely.</div>
+                    </div>
+                    <div class="grid grid-2">
+                        <div style="padding:18px;border:1px solid var(--navy-border);border-radius:12px"><b>Restart
+                                pods</b>
+                            <div style="color:var(--white-60);font-size:13px;margin:6px 0 12px">Rolling restart of all
+                                running pods. Zero downtime.</div><button class="btn btn-primary btn-sm">Restart
+                                now</button>
+                        </div>
+                        <div style="padding:18px;border:1px solid var(--navy-border);border-radius:12px"><b>Clear
+                                cache</b>
+                            <div style="color:var(--white-60);font-size:13px;margin:6px 0 12px">Purge edge + Redis cache
+                                for this environment.</div><button class="btn btn-secondary btn-sm">Clear cache</button>
+                        </div>
+                        <div style="padding:18px;border:1px solid var(--navy-border);border-radius:12px"><b>Run
+                                migrations</b>
+                            <div style="color:var(--white-60);font-size:13px;margin:6px 0 12px">Apply pending database
+                                migrations.</div><button class="btn btn-secondary btn-sm">Run</button>
+                        </div>
+                        <div style="padding:18px;border:1px solid var(--navy-border);border-radius:12px"><b>Rotate
+                                secrets</b>
+                            <div style="color:var(--white-60);font-size:13px;margin:6px 0 12px">Generate new credentials
+                                for all integrations.</div><button class="btn btn-secondary btn-sm">Rotate</button>
+                        </div>
+                        <div style="padding:18px;border:1px solid var(--navy-border);border-radius:12px"><b>Snapshot
+                                database</b>
+                            <div style="color:var(--white-60);font-size:13px;margin:6px 0 12px">Take a manual
+                                point-in-time snapshot.</div><button class="btn btn-secondary btn-sm">Snapshot</button>
+                        </div>
+                        <div style="padding:18px;border:1px solid var(--navy-border);border-radius:12px"><b>Clone
+                                environment</b>
+                            <div style="color:var(--white-60);font-size:13px;margin:6px 0 12px">Create a staging copy of
+                                this environment.</div><button class="btn btn-secondary btn-sm">Clone</button>
                         </div>
                     </div>
                 </div>
+                <div class="panel">
+                    <div class="panel-title" style="margin-bottom:14px">Custom action</div>
+                    <div class="form-grid">
+                        <div class="field"><label>Name</label><input type="text" placeholder="e.g. Reindex search">
+                        </div>
+                        <div class="field"><label>Container</label><select>
+                                <option>app</option>
+                                <option>worker</option>
+                                <option>scheduler</option>
+                            </select></div>
+                        <div class="field span-2"><label>Command</label><input type="text"
+                                placeholder="npm run reindex"></div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-primary">Add action</button></div>
+                </div>
             </div>
-
-            <!-- FIREWALL TAB -->
-            <div id="firewall-tab" class="panel" style="margin-top:0;border-top-left-radius:0;display:none;">
-                <div class="panel-header">
-                    <span class="panel-title">Firewall Rules</span>
-                    <div class="action-cluster">
-                        <button class="btn btn-primary btn-sm">+ Add Rule</button>
+            <div id="panel-diag" class="tab-panel">
+                <div class="grid grid-3" style="margin-bottom:18px">
+                    <div class="stat-card">
+                        <div class="stat-label">Health checks</div>
+                        <div class="stat-value">12 / 12</div>
+                        <div class="stat-meta">Passing</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Error rate (1h)</div>
+                        <div class="stat-value">0.04%</div>
+                        <div class="stat-meta"><span class="stat-trend down">▼ 0.02%</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">p95 latency</div>
+                        <div class="stat-value">218<span style="font-size:14px;color:var(--white-60)">ms</span></div>
+                        <div class="stat-meta">Last 5 min</div>
                     </div>
                 </div>
-
-                <div class="panel-body">
-                    <table class="cf-table">
-                        <thead>
-                            <tr>
-                                <th>Rule</th>
-                                <th>Type</th>
-                                <th>Source</th>
-                                <th>Port</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Allow HTTP</strong></td>
-                                <td><span class="badge badge-success">Allow</span></td>
-                                <td>0.0.0.0/0</td>
-                                <td>80</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Allow HTTPS</strong></td>
-                                <td><span class="badge badge-success">Allow</span></td>
-                                <td>0.0.0.0/0</td>
-                                <td>443</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong>Block SSH</strong></td>
-                                <td><span class="badge badge-danger">Block</span></td>
-                                <td>0.0.0.0/0</td>
-                                <td>22</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="action-cluster">
-                                        <button class="btn btn-ghost btn-sm">Edit</button>
-                                        <button class="btn btn-danger btn-sm">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Diagnostics report</div><button class="btn btn-primary btn-sm">Run new
+                            check</button>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:10px">
+                        <div class="switch-row">
+                            <div><b>DNS resolution</b>
+                                <div class="meta">example-agency.com → 188.114.97.5</div>
+                            </div><span class="badge success"><span class="dot success"></span>OK</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>SSL certificate</b>
+                                <div class="meta">Valid · expires in 64 days</div>
+                            </div><span class="badge success">OK</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Database connection</b>
+                                <div class="meta">14 / 100 connections used</div>
+                            </div><span class="badge success">OK</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Redis connection</b>
+                                <div class="meta">Latency 1.2ms</div>
+                            </div><span class="badge success">OK</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Disk space</b>
+                                <div class="meta">42 GB / 100 GB used</div>
+                            </div><span class="badge success">OK</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Background jobs</b>
+                                <div class="meta">2 jobs queued · oldest 4s</div>
+                            </div><span class="badge warning">Slight backlog</span>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>External webhooks</b>
+                                <div class="meta">Stripe, Mailchimp, Sentry</div>
+                            </div><span class="badge success">OK</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title" style="margin-bottom:14px">Run live diagnostics</div>
+                    <div class="form-grid">
+                        <div class="field"><label>Check type</label><select>
+                                <option>HTTP probe</option>
+                                <option>TCP ping</option>
+                                <option>DNS lookup</option>
+                                <option>SSL inspection</option>
+                                <option>Trace route</option>
+                            </select></div>
+                        <div class="field"><label>Target host</label><input type="text" value="example-agency.com">
+                        </div>
+                        <div class="field span-2"><label>Notes</label><textarea
+                                placeholder="Optional context for this run…"></textarea></div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-primary">Run check</button></div>
                 </div>
             </div>
-
+            <div id="panel-autoscaler" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Autoscaler</div>
+                            <div class="panel-desc">Automatically add or remove pods based on load.</div>
+                        </div><label class="switch"><input type="checkbox" checked><span
+                                class="slider-sw"></span></label>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>Min replicas</label><input type="number" value="2"></div>
+                        <div class="field"><label>Max replicas</label><input type="number" value="16"></div>
+                        <div class="field"><label>Target CPU %</label><input type="number" value="65"></div>
+                        <div class="field"><label>Target memory %</label><input type="number" value="75"></div>
+                        <div class="field"><label>Scale-up cooldown (s)</label><input type="number" value="60"></div>
+                        <div class="field"><label>Scale-down cooldown (s)</label><input type="number" value="300"></div>
+                        <div class="field"><label>Metric</label><select>
+                                <option>CPU + Memory</option>
+                                <option>CPU only</option>
+                                <option>Requests / sec</option>
+                                <option>Custom (Prometheus)</option>
+                            </select></div>
+                        <div class="field"><label>Behavior</label><select>
+                                <option>Balanced</option>
+                                <option>Aggressive</option>
+                                <option>Conservative</option>
+                            </select></div>
+                    </div>
+                    <div style="margin-top:18px;display:flex;flex-direction:column;gap:10px">
+                        <div class="switch-row">
+                            <div><b>Scheduled scale-up</b>
+                                <div class="meta">Pre-warm pods before traffic spikes</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>Scale to zero (off-hours)</b>
+                                <div class="meta">Only on non-production environments</div>
+                            </div><label class="switch"><input type="checkbox"><span class="slider-sw"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-secondary">Cancel</button><button
+                            class="btn btn-primary">Save autoscaler</button></div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title" style="margin-bottom:14px">Recent scaling events</div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Event</th>
+                                    <th>From → To</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>12:42</td>
+                                    <td><span class="badge info">Scale up</span></td>
+                                    <td>4 → 6</td>
+                                    <td>CPU 78% > target 65%</td>
+                                </tr>
+                                <tr>
+                                    <td>11:08</td>
+                                    <td><span class="badge info">Scale up</span></td>
+                                    <td>2 → 4</td>
+                                    <td>Requests/sec spike</td>
+                                </tr>
+                                <tr>
+                                    <td>03:30</td>
+                                    <td><span class="badge muted">Scale down</span></td>
+                                    <td>4 → 2</td>
+                                    <td>Off-peak window</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="panel-monitors" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Monitors</div>
+                            <div class="panel-desc">Alert when metrics cross your thresholds.</div>
+                        </div><button class="btn btn-primary btn-sm">+ New monitor</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Threshold</th>
+                                    <th>Channel</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><b>p95 latency</b></td>
+                                    <td>HTTP</td>
+                                    <td>> 500ms for 5m</td>
+                                    <td>Slack #alerts</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Healthy</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td><b>5xx error rate</b></td>
+                                    <td>HTTP</td>
+                                    <td>> 1% for 2m</td>
+                                    <td>Slack #alerts, PagerDuty</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Healthy</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td><b>SSL expiry</b></td>
+                                    <td>Cert</td>
+                                    <td>
+                                        < 14 days</td>
+                                    <td>Email · ops@</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Healthy</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td><b>DB connections</b></td>
+                                    <td>Metric</td>
+                                    <td>> 80 of 100</td>
+                                    <td>Slack #db</td>
+                                    <td><span class="badge warning">Pending</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Queue lag</b></td>
+                                    <td>Metric</td>
+                                    <td>> 60s for 3m</td>
+                                    <td>Slack #workers</td>
+                                    <td><span class="badge success"><span class="dot success"></span>Healthy</span></td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title" style="margin-bottom:14px">Add monitor</div>
+                    <div class="form-grid">
+                        <div class="field"><label>Name</label><input type="text"
+                                placeholder="e.g. Cart abandonment spike"></div>
+                        <div class="field"><label>Type</label><select>
+                                <option>HTTP probe</option>
+                                <option>Metric</option>
+                                <option>Log pattern</option>
+                                <option>Cert expiry</option>
+                            </select></div>
+                        <div class="field"><label>Threshold</label><input type="text" placeholder="e.g. > 1% for 2m">
+                        </div>
+                        <div class="field"><label>Notify channel</label><select>
+                                <option>Slack #alerts</option>
+                                <option>Email</option>
+                                <option>PagerDuty</option>
+                                <option>Webhook</option>
+                            </select></div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-primary">Create monitor</button></div>
+                </div>
+            </div>
+            <div id="panel-quick" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Quick actions</div>
+                            <div class="panel-desc">One-click shortcuts pinned to the dashboard.</div>
+                        </div><button class="btn btn-primary btn-sm">+ Add quick action</button>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="switch-row">
+                            <div><b>⚡ Restart app</b>
+                                <div class="meta">Rolling restart · keyboard: ⌘R</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>🧹 Clear cache</b>
+                                <div class="meta">Edge + Redis · keyboard: ⌘K</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>🔁 Redeploy last</b>
+                                <div class="meta">Re-runs latest successful build</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>🛡 Maintenance mode</b>
+                                <div class="meta">Show holding page</div>
+                            </div><label class="switch"><input type="checkbox"><span class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>📦 Snapshot DB</b>
+                                <div class="meta">Manual point-in-time</div>
+                            </div><label class="switch"><input type="checkbox" checked><span
+                                    class="slider-sw"></span></label>
+                        </div>
+                        <div class="switch-row">
+                            <div><b>🚪 Open shell</b>
+                                <div class="meta">SSH into a pod</div>
+                            </div><label class="switch"><input type="checkbox"><span class="slider-sw"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-grid" style="margin-top:18px">
+                        <div class="field"><label>New action label</label><input type="text"
+                                placeholder="e.g. Reindex search"></div>
+                        <div class="field"><label>Run command</label><input type="text" placeholder="npm run reindex">
+                        </div>
+                        <div class="field"><label>Icon</label><input type="text" value="⚙️"></div>
+                        <div class="field"><label>Confirmation required</label><select>
+                                <option>Yes</option>
+                                <option>No</option>
+                            </select></div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-primary">Add</button></div>
+                </div>
+            </div>
+            <div id="panel-firewall" class="tab-panel">
+                <div class="panel">
+                    <div class="panel-header">
+                        <div>
+                            <div class="panel-title">Firewall</div>
+                            <div class="panel-desc">Inbound rules applied at the edge.</div>
+                        </div><label class="switch"><input type="checkbox" checked><span
+                                class="slider-sw"></span></label>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field"><label>Default policy</label><select>
+                                <option>Allow all</option>
+                                <option>Deny all</option>
+                            </select></div>
+                        <div class="field"><label>Rate limit (req/min/IP)</label><input type="number" value="600"></div>
+                        <div class="field"><label>Bot protection</label><select>
+                                <option>Standard</option>
+                                <option>Strict</option>
+                                <option>Off</option>
+                            </select></div>
+                        <div class="field"><label>Geo blocking</label><select>
+                                <option>None</option>
+                                <option>Block selected</option>
+                                <option>Allow selected only</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-header">
+                        <div class="panel-title">Rules</div><button class="btn btn-primary btn-sm">+ Add rule</button>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Action</th>
+                                    <th>Source</th>
+                                    <th>Path</th>
+                                    <th>Method</th>
+                                    <th>Hits (24h)</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><span class="badge success">Allow</span></td>
+                                    <td>10.0.0.0/8</td>
+                                    <td>/admin/*</td>
+                                    <td>ANY</td>
+                                    <td>2,341</td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><span class="badge danger">Block</span></td>
+                                    <td>185.220.0.0/16</td>
+                                    <td>*</td>
+                                    <td>ANY</td>
+                                    <td>4,812</td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><span class="badge warning">Challenge</span></td>
+                                    <td>* (Tor exit nodes)</td>
+                                    <td>/login</td>
+                                    <td>POST</td>
+                                    <td>312</td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td><span class="badge success">Allow</span></td>
+                                    <td>* </td>
+                                    <td>/api/webhooks/stripe</td>
+                                    <td>POST</td>
+                                    <td>1,108</td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td><span class="badge danger">Block</span></td>
+                                    <td>*</td>
+                                    <td>/wp-admin*</td>
+                                    <td>ANY</td>
+                                    <td>9,221</td>
+                                    <td><a class="btn btn-ghost btn-sm" href="#">Edit</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel">
+                    <div class="panel-title" style="margin-bottom:14px">Add rule</div>
+                    <div class="form-grid">
+                        <div class="field"><label>Action</label><select>
+                                <option>Allow</option>
+                                <option>Block</option>
+                                <option>Challenge</option>
+                                <option>Rate limit</option>
+                            </select></div>
+                        <div class="field"><label>Source IP / CIDR</label><input type="text" placeholder="0.0.0.0/0">
+                        </div>
+                        <div class="field"><label>Path pattern</label><input type="text" placeholder="/api/*"></div>
+                        <div class="field"><label>Method</label><select>
+                                <option>ANY</option>
+                                <option>GET</option>
+                                <option>POST</option>
+                                <option>PUT</option>
+                                <option>DELETE</option>
+                            </select></div>
+                        <div class="field span-2"><label>Description</label><input type="text"
+                                placeholder="Block scrapers from /products"></div>
+                    </div>
+                    <div class="form-actions"><button class="btn btn-primary">Add rule</button></div>
+                </div>
+            </div>
         </main>
     </div>
 
-    
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+        <svg class="icon-moon" viewBox="0 0 24 24">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4" />
+            <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+        </svg>
+    </button>
 
 
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var saved = localStorage.getItem('cf-theme') || 'dark';
+            root.setAttribute('data-theme', saved);
+            document.addEventListener('click', function (e) {
+                var t = e.target.closest('#themeToggle'); if (!t) return;
+                var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                root.setAttribute('data-theme', next); localStorage.setItem('cf-theme', next);
+            });
+            window.addEventListener('storage', function (e) { if (e.key === 'cf-theme' && e.newValue) root.setAttribute('data-theme', e.newValue); });
+            function init() {
+                var btn = document.getElementById('mobileMenuBtn'), sb = document.getElementById('sidebar'), ov = document.getElementById('sidebarOverlay');
+                if (btn && sb) {
+                    btn.addEventListener('click', function () { sb.classList.toggle('mobile-open'); if (ov) ov.classList.toggle('active'); });
+                    if (ov) ov.addEventListener('click', function () { sb.classList.remove('mobile-open'); ov.classList.remove('active'); });
+                    window.addEventListener('resize', function () { if (window.innerWidth > 960) { sb.classList.remove('mobile-open'); if (ov) ov.classList.remove('active'); } });
+                }
 
-
-<button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
-  <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-  <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-</button>
-<script>
-(function(){
-  var root = document.documentElement;
-  var saved = localStorage.getItem('cf-theme') || 'dark';
-  root.setAttribute('data-theme', saved);
-  document.addEventListener('click', function(e){
-    var t = e.target.closest('#themeToggle'); if(!t) return;
-    var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    root.setAttribute('data-theme', next);
-    localStorage.setItem('cf-theme', next);
-  });
-})();
-</script>
-
-<script>
-(function(){
-  function init(){
-    var btn = document.getElementById('mobileMenuBtn');
-    var sb = document.getElementById('sidebar');
-    var ov = document.getElementById('sidebarOverlay');
-    if (!btn || !sb) return;
-    btn.addEventListener('click', function(){
-      sb.classList.toggle('mobile-open');
-      if (ov) ov.classList.toggle('active');
-    });
-    if (ov) ov.addEventListener('click', function(){
-      sb.classList.remove('mobile-open');
-      ov.classList.remove('active');
-    });
-    window.addEventListener('resize', function(){
-      if (window.innerWidth > 960) {
-        sb.classList.remove('mobile-open');
-        if (ov) ov.classList.remove('active');
-      }
-    });
-  }
-  if (document.readyState !== 'loading') init();
-  else document.addEventListener('DOMContentLoaded', init);
-})();
-</script>
-
-
-<!-- CF SHARED THEME + RESPONSIVE FIXES -->
-<style id="cf-shared-fixes">
-/* === LIGHT THEME OVERRIDES for navbar/topbar/sidebar and components === */
-:root[data-theme="light"] body { background: var(--c-0b1829) !important; color: var(--c-ffffff) !important; }
-:root[data-theme="light"] body::before { background-image:
-  linear-gradient(rgba(20,116,204,0.05) 1px, transparent 1px),
-  linear-gradient(90deg, rgba(20,116,204,0.05) 1px, transparent 1px) !important; }
-:root[data-theme="light"] .topbar { background: rgba(255,255,255,0.92) !important; border-bottom-color: #E4EAF2 !important; }
-:root[data-theme="light"] .topbar-logo-text,
-:root[data-theme="light"] .topbar-username,
-:root[data-theme="light"] .page-title,
-:root[data-theme="light"] .panel-title,
-:root[data-theme="light"] .sidebar-item { color: #0B1829 !important; }
-:root[data-theme="light"] .sidebar { background: #FFFFFF !important; border-right: 1px solid #E4EAF2 !important; }
-:root[data-theme="light"] .sidebar-item:hover { background: rgba(11,24,41,0.05) !important; color: #0B1829 !important; }
-:root[data-theme="light"] .sidebar-item.active { background: rgba(30,155,255,0.10) !important; color: #1474CC !important; }
-:root[data-theme="light"] .sidebar-section-label { color: #5A6B82 !important; }
-:root[data-theme="light"] .topbar-icon-btn,
-:root[data-theme="light"] .topbar-user,
-:root[data-theme="light"] .topbar-client-select,
-:root[data-theme="light"] .topbar-search input,
-:root[data-theme="light"] .mobile-menu-btn { background: #F4F6FA !important; border-color: #E4EAF2 !important; color: #0B1829 !important; }
-:root[data-theme="light"] .topbar-search input::placeholder { color: #5A6B82 !important; }
-:root[data-theme="light"] .panel,
-:root[data-theme="light"] .card,
-:root[data-theme="light"] .stat-card,
-:root[data-theme="light"] .deployment-card,
-:root[data-theme="light"] .ticket-card,
-:root[data-theme="light"] .env-card { background: #FFFFFF !important; border-color: #E4EAF2 !important; color: #0B1829 !important; box-shadow: 0 4px 24px rgba(11,24,41,0.06) !important; }
-:root[data-theme="light"] .panel-header,
-:root[data-theme="light"] table thead { background: #F4F6FA !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] table, :root[data-theme="light"] table td, :root[data-theme="light"] table th { color: #0B1829 !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] table tbody tr:hover { background: rgba(11,24,41,0.04) !important; }
-:root[data-theme="light"] .btn-secondary,
-:root[data-theme="light"] .btn.btn-secondary { background: #F4F6FA !important; color: #0B1829 !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] input, :root[data-theme="light"] textarea, :root[data-theme="light"] select { background: #FFFFFF !important; color: #0B1829 !important; border-color: #E4EAF2 !important; }
-:root[data-theme="light"] .breadcrumb,
-:root[data-theme="light"] .page-subtitle,
-:root[data-theme="light"] .muted,
-:root[data-theme="light"] .text-muted { color: #5A6B82 !important; }
-:root[data-theme="light"] .sidebar-overlay { background: rgba(11,24,41,0.35) !important; }
-
-/* === EXTRA RESPONSIVE FIXES === */
-@media (max-width: 1024px) {
-  .topbar-search { max-width: 260px !important; }
-  .topbar-username { display: none !important; }
-}
-@media (max-width: 768px) {
-  .topbar { padding: 0 12px !important; gap: 8px !important; }
-  .topbar-client-select { display: none !important; }
-  .topbar-search { display: none !important; }
-  .main { padding: 16px !important; }
-  .page-header { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
-  .page-header-actions { flex-wrap: wrap !important; width: 100% !important; }
-  .page-title { font-size: 22px !important; }
-  table { font-size: 13px !important; }
-  .panel { overflow-x: auto !important; }
-  .grid, .stats-grid, .cards-grid { grid-template-columns: 1fr !important; }
-}
-@media (max-width: 480px) {
-  .topbar { height: 56px !important; }
-  .topbar-logo-text { display: none !important; }
-  .btn { padding: 8px 12px !important; font-size: 13px !important; }
-  .theme-toggle { width: 40px !important; height: 40px !important; bottom: 12px !important; right: 12px !important; }
-}
-img, video, table { max-width: 100%; }
-.main { min-width: 0 !important; }
-</style>
-
-<script>
-/* Sync theme across pages */
-(function(){
-  window.addEventListener('storage', function(e){
-    if (e.key === 'cf-theme' && e.newValue) {
-      document.documentElement.setAttribute('data-theme', e.newValue);
-    }
-  });
-})();
-</script>
+                document.querySelectorAll('.env-tabs').forEach(function (group) {
+                    group.querySelectorAll('.env-tab').forEach(function (tab) {
+                        tab.addEventListener('click', function () {
+                            group.querySelectorAll('.env-tab').forEach(function (t) { t.classList.remove('active'); });
+                            tab.classList.add('active');
+                            var target = tab.getAttribute('data-tab');
+                            document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+                            var el = document.getElementById('panel-' + target); if (el) el.classList.add('active');
+                        });
+                    });
+                });
+            }
+            if (document.readyState !== 'loading') init(); else document.addEventListener('DOMContentLoaded', init);
+        })();
+    </script>
 
 </body>
+
 </html>
